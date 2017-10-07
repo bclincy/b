@@ -1,0 +1,36 @@
+{
+  "name": "brianclincy",
+  "version": "1.0.0",
+  "description": "Brian Clincy Web site done with a decoupled front-end and back-end",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bclincy/b.git"
+  },
+  "keywords": [
+    "Brian",
+    "Clincy",
+    "NNUtS",
+    "bclincy",
+    "Brian",
+    "Da",
+    "Developer",
+    "13IDS",
+    "13lack",
+    "Integrated",
+    "Data",
+    "Solutions"
+  ],
+  "author": "Brian Clincy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bclincy/b/issues"
+  },
+  "homepage": "https://github.com/bclincy/b#readme",
+  "devDependencies": {
+    "lodash": "^4.17.4"
+  }
+}

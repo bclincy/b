@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Brian Clincy is who I am...</title>
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/animate.css" />
+  </head>
+  <body>
+    <header class="v-header container">
+      <video src="assets/codevideo.mp4" autoplay poster="posterimage.jpg">
+
+      </video>
+    </header>
+<div class="container">
+  <header class="text-center text-white p-5 animated slide">
+    <h1>Brian Clincy</h1>
+  </header>
+  <section id="sidebar">
+
+  </section>
+
+</div>
+  </body>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script type="text/javascript">
+  (function(){
+        $('#animateBtn').click(function(){
+          animate('#anim-head', 'bounce');
+          animate('#anim-body', 'rubberBand');
+          return false;
+        });
+
+        $('#animateBtn2').click(function(){
+          animate('header', 'slideOutUp');
+          setTimeout(function(){
+            $('header').css('visibility','hidden');
+          }, 1000);
+          return false;
+        });
+
+        // Animate
+        function animate(element, animation){
+          $(element).addClass('animated '+animation);
+          var wait = setTimeout(function(){
+            $(element).removeClass('animated '+animation);
+          }, 1000);
+        }
+      })
+  </script>
+</html>

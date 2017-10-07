@@ -1,0 +1,32 @@
+{
+  "name": "bapp-dev",
+  "authors": [
+    "Brian Clincy <bclincy@gmail.com>"
+  ],
+  "description": "Brian Clincy Application front end and backend person web site",
+  "main": "index.html",
+  "keywords": [
+    "Brian",
+    "Clincy",
+    "Clincy",
+    "bclincy",
+    "NNUtS",
+    "Podcast",
+    "Bee",
+    "Clincy"
+  ],
+  "license": "MIT",
+  "homepage": "http://brianclincy.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "font-awesome": "fontawesome#^4.7.0",
+    "bootstrap": "v4.0.0-alpha.6"
+  }
+}
