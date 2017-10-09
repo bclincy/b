@@ -1,51 +1,110 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8">
     <title>Brian Clincy is who I am...</title>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/animate.css" />
-  </head>
-  <body>
-    <header class="v-header container">
-      <video src="assets/codevideo.mp4" autoplay poster="posterimage.jpg">
+    <link rel="stylesheet" href="vendor/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/animate.css"/>
+    <link rel="stylesheet" href="css/frontpage.css">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand" href="#">
+        <img src="https://v4-alpha.getbootstrap.com/assets/brand/bootstrap-solid.svg" width="30" height="30" alt="">
+    </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="text" placeholder="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
 
-      </video>
-    </header>
-<div class="container">
-  <header class="text-center text-white p-5 animated slide">
-    <h1>Brian Clincy</h1>
-  </header>
-  <section id="sidebar">
+<header class="videbg content">
+    <div class="fullscreen-video-wrap">
+        <video src="assets/codevideo.mp4" autoplay="true" loop="true"></video>
+    </div>
+    <div class="overlay-header animated slideInLeft"></div>
+    <div class="card animated rotateInDownRight">
+        <div class="firstinfo"><img src="images/bclincy_bitemoji.png" width="488" height="405" alt="Brian Clincy Bitemoji version"/>
+            <div class="profileinfo">
+                <h1>Brian Clincy</h1>
+                <h3>Senior Software Application Developer</h3>
+                <p class="bio">I gotta title!</p>
+                <a class="btn btn-lg" href="about/Story_to_tell">My Words</a>
+            </div>
+        </div>
+    </div>
+    <div class="badgescard animated zoomInDown">
+        <span class="fa fa-facebook"></span>
+        <span class="fa fa-twitter"> </span>
+        <span class="fa fa-google-plus"></span>
+        <span class="fa fa-youtube"></span>
+        <span class="fa fa-dribble"></span>
+        <span class="fa fa-google"></span>
+        <span class="fa fa-android"> </span>
+    </div>
+</header>
+<section id="newsletter" class="bg-inverse p-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="single">
+                    <h2>Stay in the know...</h2>
 
-  </section>
+                    <p>I promise I won't spam you (Truthfully I have better stuff to do with my time.)</p>
 
-</div>
-  </body>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script type="text/javascript">
-  (function(){
-        $('#animateBtn').click(function(){
-          animate('#anim-head', 'bounce');
-          animate('#anim-body', 'rubberBand');
-          return false;
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Enter your email">
+         <span class="input-group-btn">
+         <button class="btn btn-lg btn-theme" type="submit">Subscribe</button>
+         </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+</body>
+<script src="vendor/bower_components/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript">
+    document.ready(function () {
+        $('#animateBtn').click(function () {
+            animate('#anim-head', 'bounce');
+            animate('#anim-body', 'rubberBand');
+            return false;
         });
 
-        $('#animateBtn2').click(function(){
-          animate('header', 'slideOutUp');
-          setTimeout(function(){
-            $('header').css('visibility','hidden');
-          }, 1000);
-          return false;
+        $('#animateBtn2').click(function () {
+            animate('header', 'slideOutUp');
+            setTimeout(function () {
+                $('header').css('visibility', 'hidden');
+            }, 1000);
+            return false;
         });
 
         // Animate
-        function animate(element, animation){
-          $(element).addClass('animated '+animation);
-          var wait = setTimeout(function(){
-            $(element).removeClass('animated '+animation);
-          }, 1000);
+        function animate(element, animation) {
+            $(element).addClass('animated ' + animation);
+            var wait = setTimeout(function () {
+                $(element).removeClass('animated ' + animation);
+            }, 1000);
         }
-      })
-  </script>
+    })
+</script>
 </html>
