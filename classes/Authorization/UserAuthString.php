@@ -54,7 +54,7 @@ class UserAuthString
         $mac_dec = substr($str, 0, $mac_block_size);
         $str = substr($str, $mac_block_size);
         if (empty($str)) {
-           $str = false;
+            $str = false;
         }
 
         return $str;

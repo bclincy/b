@@ -8,6 +8,12 @@ $config['db']['user']   = "root";
 $config['db']['pass']   = "root";
 $config['db']['dbname'] = "brianclincy";
 
+if (file_exists('../vendor/autoload.php')) {
+    require_once('../vendor/autoload.php');
+} elseif (file_exists('vendor/autoload.php')){
+    require_once('vendor/autoload.php');
+}
+
 $app = new \Slim\App(['settings'=> $config]);
 $container = $app->getContainer();
 $container['logger'] = function($c) {

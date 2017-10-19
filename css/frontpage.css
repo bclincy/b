@@ -1,9 +1,10 @@
+@import "https://fonts.googleapis.com/css?family=Open+Sans:300,400";
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Open Sans', sans-serif;
     font-size: 1rem;
     line-height: 1.5;
     color: #333;
@@ -14,6 +15,10 @@ body {
     border-radius: 0;
     background-color: rgba(0,0,0,0.5);
     z-index: 5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
 }
 .videbg {
     height: 100vh;
@@ -24,7 +29,7 @@ body {
     color: #fff;
 }
 
-.content {
+.pcontainer {
     max-width: 960px;
     padding-left: 1rem;
     padding-right: 1rem;
@@ -42,7 +47,7 @@ body {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
 }
@@ -80,57 +85,69 @@ body {
         padding-left:3rem;
     }
 }
+
+
+#newsletter {
+    color: #ffffff;
+}
 .card {
-    width: 500px;
+    width: 550px;
     min-height: 100px;
     padding: 20px;
     border-radius: 3px;
     background-color: white;
-    /*box-shadow: 0 10 20 shadow rgba(0, 0, 0, 0.2);*/
+    box-shadow: 0px 20px 20px rgba(0, 0, 0, 0.9);
     position: relative;
     overflow: hidden;
     z-index: 3;
-    animation-delay: 2s;
-    animation-duration: 1s;
 }
 
-/*.card:after {*/
-    /*content: '';*/
-    /*display: block;*/
-    /*width: 190px;*/
-    /*height: 300px;*/
-    /*background: cadetblue;*/
-    /*position: absolute;*/
-    /*animation: rotatemagic 0.75s cubic-bezier(0.425, 1.04, 0.47, 1.105) 1s both;*/
-/*}*/
+
+.card:after {
+    content: '';
+    display: block;
+    width: 180px;
+    height: 400px;
+    background: #2e3338;
+    top: -60px;
+    left: -50px;
+    position: absolute;
+    -ms-transform: rotate(-35deg); /* IE 9 */
+    -webkit-transform: rotate(-35deg); /* Safari */
+    transform: rotate(-35deg);
+    animation: rotatemagic 0.75s cubic-bezier(0.425, 1.04, 0.47, 1.105) 1s both;
+}
 
 .badgescard {
     padding: 10px 20px;
     border-radius: 3px;
-    background-color: #00bcd4;
+    background-color: #5A5A5A;
     color:#fff;
     width: 480px;
-    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.2);
-    position: absolute;
-    z-index: -1;
+    box-shadow: 1px 10px 20px rgba(0, 0, 0, 0.2);
+    z-index: 3;
     left: 10px;
     bottom: 10px;
-    animation-delay: 2s;
-    animation-duration: 1s;
-    /*animation: animainfos 0.5s cubic-bezier(0.425, 1.04, 0.47, 1.105) 0.75s forwards;*/
+    animation: animainfos 0.5s cubic-bezier(0.425, 1.04, 0.47, 1.105) 0.75s forwards;
 }
+
+.badgescard span {
+    font-size: 1.6em;
+    margin: 0px 6px;
+    opacity: 0.6;
+}
+
 .firstinfo {
     flex-direction: row;
     z-index: 2;
     position: relative;
 }
-.firstinfo h1 {
-    color:#001f3f;
-}
+
 .firstinfo img {
     border-radius: 50%;
     width: 120px;
     height: 120px;
+    margin: 20px;
     float: left;
 }
 
@@ -139,17 +156,18 @@ body {
 }
 
 .firstinfo .profileinfo h1 {
-    font-size: 1.8em;
+    font-size: 1.8rem;
+    color: #222426;
 }
 
 .firstinfo .profileinfo h3 {
     font-size: 1.1rem;
-    color: #014c8c;
+    color: #00bcd4;
     font-style: italic;
 }
 
 .firstinfo .profileinfo p.bio {
-    padding: 10px 0;
+    padding: 10px 0px;
     color: #5A5A5A;
     line-height: 1.2;
     font-style: initial;

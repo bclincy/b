@@ -34,7 +34,6 @@
         </form>
     </div>
 </nav>
-
 <header class="videbg content">
     <div class="fullscreen-video-wrap">
         <video src="assets/codevideo.mp4" autoplay="true" loop="true"></video>
@@ -45,8 +44,8 @@
             <div class="profileinfo">
                 <h1>Brian Clincy</h1>
                 <h3>Senior Software Application Developer</h3>
-                <p class="bio">I gotta title!</p>
-                <a class="btn btn-lg" href="about/Story_to_tell">My Words</a>
+                <p class="bio">LAMP and Javascript Savvy guy!</p>
+                <a class="btn btn-primary btn-lg" href="about/Story_to_tell">My Words</a>
             </div>
         </div>
     </div>
@@ -70,9 +69,9 @@
                     <p>I promise I won't spam you (Truthfully I have better stuff to do with my time.)</p>
 
                     <div class="input-group">
-                        <input type="email" class="form-control" placeholder="Enter your email">
+                        <input type="email" class="form-control" placeholder="Enter your email" id="email" required="required">
          <span class="input-group-btn">
-         <button class="btn btn-lg btn-theme" type="submit">Subscribe</button>
+         <button class="btn btn-lg btn-theme" id="shortNewsletter" type="submit">Subscribe</button>
          </span>
                     </div>
                 </div>
@@ -80,10 +79,18 @@
         </div>
     </div>
 </section>
+<footer>
+    <div class="col-md-4">Home</div>
+</footer>
 </body>
 <script src="vendor/bower_components/jquery/dist/jquery.min.js"></script>
 <script type="text/javascript">
-    document.ready(function () {
+   $(document).ready(function () {
+
+       $('#shortNewsletter').click(function () {
+          var postData = {email: $('#email').val()};
+          console.log(postData);
+       });
         $('#animateBtn').click(function () {
             animate('#anim-head', 'bounce');
             animate('#anim-body', 'rubberBand');
@@ -104,6 +111,11 @@
             var wait = setTimeout(function () {
                 $(element).removeClass('animated ' + animation);
             }, 1000);
+        }
+
+        function newsletter() {
+            let email = $('#email').val();
+            console.log(email);
         }
     })
 </script>

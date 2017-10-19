@@ -2,7 +2,6 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require '../vendor/autoload.php';
 require '../conf/slimConfig.php';
 
 $app->get('/hello/{name}', function (Request $request, Response $response) {
@@ -33,5 +32,11 @@ $app->get('/docs/{id}', function (Request $request, Response $response) {
 	    return $response;
 });
 
+$app->post('newsletter/{id}', function (Request $request, Response $response) {
+    $data = $request->getParsedBody();
+    $ticket_data = [];
+    $ticket_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
+    $ticket_data['description'] = filter_var($data['description'], FILTER_SANITIZE_STRING);
+});
 
 $app->run();
