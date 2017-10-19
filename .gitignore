@@ -6,5 +6,5 @@
 /vendor/
 /logs/
 /node_modules/
-/config/slimConfig.php
+/conf/slimConfig.php
 /.idea
