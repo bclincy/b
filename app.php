@@ -14,9 +14,8 @@ require_once 'conf/slimConfig.php';
 $app->get('/nnuts/{id}', function (Request $request, Response $response) {
     $name = $request->getAttribute('id');
     $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
-    $stmt->execute();
+    $stmt->execute([':id' => $name]);
     $this->logger->addInfo('Docs get by Id');
-    $name = $request->getAttribute('name');
 
     $response->getBody()->write('hello' . print_r($stmt, true));
 
@@ -24,9 +23,12 @@ $app->get('/nnuts/{id}', function (Request $request, Response $response) {
     return $response;
 });
 
-$app->get('/nnuts', function (Request $request, Response $response) {
-    $name = $request->getAttribute('name');
-    $response->getBody()->write("Hello, $name");
+$app->get('/nnuts/episode/{name}', function (Request $request, Response $response) {
+    $name = '%' . $request->getAttribute('name') . '%';
+    $query = $this->pdo->prepare('SELECT * FROM podcast where title like :name');
+    $query->execute([':name' => $name]);
+    $results = $query->fetchall();
+    $response->getBody()->write(print_r($results, true));
 
     return $response;
 });
