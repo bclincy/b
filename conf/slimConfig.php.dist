@@ -1,12 +1,18 @@
-<?php
-
 $config['displayErrorDetails'] = true;
 $config['addContentLengthHeader'] = false;
 
 $config['db']['host']   = "localhost";
-$config['db']['user']   = "user";
-$config['db']['pass']   = "password";
-$config['db']['dbname'] = "exampleapp";
+$config['db']['user']   = "root";
+$config['db']['pass']   = "root";
+$config['db']['dbname'] = "brianclincy";
+
+//Bootstrap the autoload if call from with both levels
+
+if (file_exists('../vendor/autoload.php')) {
+    require_once('../vendor/autoload.php');
+} elseif (file_exists('vendor/autoload.php')){
+    require_once('vendor/autoload.php');
+}
 
 $app = new \Slim\App(['settings'=> $config]);
 $container = $app->getContainer();
@@ -16,7 +22,7 @@ $container['logger'] = function($c) {
     $logger->pushHandler($file_handler);
     return $logger;
 };
-$container['db'] = function ($c) {
+$container['pdo'] = function ($c) {
     $db = $c['settings']['db'];
     $pdo = new PDO('mysql:host=' . $db['host'] . ';dbname=' . $db['dbname'],
         $db['user'], $db['pass']);
