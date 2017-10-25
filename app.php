@@ -32,4 +32,13 @@ $app->get('/nnuts/episode/{name}', function (Request $request, Response $respons
 
     return $response;
 });
+$app->get('/shoutouts', function (Request $request, Response $response) {
+    $name = '%' . $request->getAttribute('name') . '%';
+    $query = $this->pdo->prepare('SELECT * FROM podcast where title like :name');
+    $query->execute([':name' => $name]);
+    $results = $query->fetchall();
+    $response->getBody()->write('');
+
+    return $response;
+});
 $app->run();
