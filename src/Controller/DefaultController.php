@@ -18,6 +18,6 @@ class DefaultController
 
     public function indexAction(Request $request, Response $response)
     {
-        die('made it here');
+        return 'Home Controller';
     }
 }

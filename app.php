@@ -9,6 +9,7 @@
 //bootstrap slim
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+
 require_once 'conf/slimConfig.php';
 
 $container['view'] = function ($container) {
@@ -19,6 +20,10 @@ $container['view'] = function ($container) {
     ));
 
     return $view;
+};
+
+$container['HomeController'] = function (\Slim\Container $container) {
+    return new \app\Controller\HomeController();
 };
 
 $app->get('/nnuts/{id}', function (Request $request, Response $response) {
@@ -55,5 +60,6 @@ $app->get('/shoutouts', function (Request $request, Response $response) {
 $app->get('/home', function (Request $request, Response $response){
     return $this->view->render($response, 'index.html.twig', ['title' => 'Home again']);
 });
+$app->get('/hop', 'HomeController:indexAction');
 
 $app->run();
