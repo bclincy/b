@@ -11,6 +11,16 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 require_once 'conf/slimConfig.php';
 
+$container['view'] = function ($container) {
+    $view = new \Slim\Views\Twig('resources/views', ['cache' => false, ]);
+    $view->addExtension(new \Slim\Views\TwigExtension(
+        $container->router,
+        $container->request->getUri()
+    ));
+
+    return $view;
+};
+
 $app->get('/nnuts/{id}', function (Request $request, Response $response) {
     $name = $request->getAttribute('id');
     $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
@@ -41,4 +51,9 @@ $app->get('/shoutouts', function (Request $request, Response $response) {
 
     return $response;
 });
+
+$app->get('/home', function (Request $request, Response $response){
+    return $this->view->render($response, 'index.html.twig', ['title' => 'Home again']);
+});
+
 $app->run();

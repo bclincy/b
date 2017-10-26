@@ -6,7 +6,7 @@ namespace app\Authorization;
  * @author Brian Clincy
  */
 
-class UserAuthString
+class Encryptor
 {
     /**
      * @param int $length
@@ -86,8 +86,8 @@ class UserAuthString
      */
     public static function encryptStr ($str)
     {
-        $keylen = rand(10, 25);
-        $key = self::randKey($keylen);
+        $keylen = [16, 24, 32];
+        $key = self::randKey($keylen[array_rand($keylen, 1)]);
         $encryptedStr =  static::encrypt($str, $key);
 
         return base64_encode($encryptedStr . ':' . $key );
