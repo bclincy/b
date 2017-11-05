@@ -37,10 +37,34 @@
                   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
               </li>
               <li class="nav-item">
-                  <a class="nav-link" href="#">Link</a>
+                  <a class="nav-link" href="#">About</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/Community" id="communityItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Community
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="community">
+                      <a class="dropdown-item" href="/community/ACHIEVE">ACHIEVE</a>
+                      <a class="dropdown-item" href="/community/Love_Community_Garden">Love Community Garden</a>
+                      <a class="dropdown-item" href="/community/Muskegon_area_sports">Muskegon area Sports</a>
+                      <a class="dropdown-item" href="/community/Muskegon_TEDx">Muskegon TEDx</a>
+                      <a class="dropdown-item" href="/community/Yuba_Love">Yuba Love</a>
+                  </div>
               </li>
               <li class="nav-item">
-                  <a class="nav-link disabled" href="#">Disabled</a>
+                  <a class="nav-link" href="/gallary">Gallary</a>
+              </li>
+              <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="/services" id="servicesItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                      Services
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                      <a class="dropdown-item" href="/services/Coaching">Basketball Coach</a>
+                      <a class="dropdown-item" href="/services/community_engagement">Community Engagements</a>
+                      <a class="dropdown-item" href="/services/Design">Graphic Designer</a>
+                      <a class="dropdown-item" href="/services/Photography">Photographer</a>
+                      <a class="dropdown-item" href="/services/Web">Web Development</a>
+                  </div>
               </li>
           </ul>
           <form class="form-inline my-2 my-lg-0">
@@ -54,5 +78,9 @@
           My body
       {% endblock %}
   </div>
+  {% block javascript %}
+      <script src="/vendor/components/jquery/dist/jquery.min.js"></script>
+      <script src="/vendor/components/bootstrap/dist/js/bootstrap.js"></script>
+  {% endblock %}
   </body>
 </html>
