@@ -8,10 +8,10 @@
     "slim/twig-view": "^2.3"
   },
   "autoload": {
-    "psr-4": {
-      "app\\": "classes",
-      "src\\Controller\\": "src/Controller"
-    }
+    "classmap": [
+      "src/Controller/HomeController.php",
+      "classes"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

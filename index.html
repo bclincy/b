@@ -79,6 +79,7 @@
         <video src="assets/codevideo.mp4" autoplay="yes" loop="true"></video>
     </div>
     <div class="overlay-header animated slideInLeft"></div>
+    <div class="nav-overlay-header animated slideInLeft"></div>
     <div class="card animated rotateInDownRight">
         <div class="firstinfo"><img src="images/bclincy_bitemoji.png" width="488" height="405" alt="Brian Clincy Bitemoji version"/>
             <div class="profileinfo">
@@ -107,13 +108,14 @@
                     <h2>Stay in the know...</h2>
 
                     <p>I promise I won't spam you (Truthfully I have better stuff to do with my time.)</p>
-
+                    <form id="frmnews">
                     <div class="input-group">
+
                         <input type="email" class="form-control" placeholder="Enter your email" id="email" required="required">
          <span class="input-group-btn">
          <button class="btn btn-lg btn-theme" id="shortNewsletter" type="submit">Subscribe</button>
          </span>
-                    </div>
+                    </div></form>
                 </div>
             </div>
         </div>
@@ -139,10 +141,34 @@
     </div>
 </footer>
 </body>
+<script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
 <script src="vendor/components/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/components/bootstrap/dist/js/bootstrap.js"></script>
 <script type="text/javascript">
-   $(document).ready(function () {
+    document.getElementById('frmnews').addEventListener('submit', signup);
+    function signup(e) {
+        e.preventDefault();
+        var xhr = new XMLHttpRequest();
+        var email = document.getElementById('email').value;
+        if (ValidateEmail(email) === true) {
+            xhr.open('POST','/api/newsletter/' + email, true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.send({emailadd: email});
+            console.log(xhr);
+        }
+        console.log('clicked');
+    }
+
+    function ValidateEmail(email)
+    {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
+        {
+            return (true)
+        }
+        alert("You have entered an invalid email address!")
+        return (false)
+    }
+    $(document).ready(function () {
 
         $('#animateBtn').click(function () {
             animate('#anim-head', 'bounce');

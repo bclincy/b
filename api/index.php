@@ -34,7 +34,20 @@ $app->options('/docs/{key}/{num}', function (Request $request, Response $respons
 	    return $response;
 });
 
-$app->post('newsletter/{id}', function (Request $request, Response $response) {
+$app->post('/newsletter/{id}', function (Request $request, Response $response) {
+    $response = $response->withHeader('Content-type', 'application/json');
+    $data = $request->getParsedBody();
+    die($request->getParsedBody());
+    if ($data['email'] === null) {
+        $data['status'] = 'Failed';
+    }
+    $data['status'] = 'success';
+    $response = $response->withJson($data);
+
+    return $response;
+
+});
+$app->post('docs/{id}', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
     $ticket_data = [];
     $ticket_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);

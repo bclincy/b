@@ -5,7 +5,6 @@
  * Date: 10/14/17
  * Time: 3:10 PM
  */
-
 //bootstrap slim
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -23,7 +22,7 @@ $container['view'] = function ($container) {
 };
 
 $container['HomeController'] = function (\Slim\Container $container) {
-    return new \app\Controller\HomeController();
+    return new \app\Controller\HomeController($container);
 };
 
 $app->get('/nnuts/{id}', function (Request $request, Response $response) {
@@ -62,4 +61,5 @@ $app->get('/home', function (Request $request, Response $response){
 });
 $app->get('/hop', 'HomeController:indexAction');
 
+$app->get('/{category}/{title}', 'HomeController:category');
 $app->run();

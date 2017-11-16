@@ -2,19 +2,35 @@
 
 namespace app\Controller;
 
+use Interop\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as view;
 class HomeController
 {
-    protected $view;
+    protected $container;
 
-    public function __construct() {
-        $this->view = new view('resources/views', ['cache' => false]);
+    public function __construct(ContainerInterface $container)
+    {
+        $this->container = $container;
     }
-    public function home(Request $request, Response $response, $args) {
+
+
+    public function test() {
         // your code here
         // use $this->view to render the HTML
-        return $response;
+        return 'sike';
+    }
+
+    public function indexAction ()
+    {
+        return $this->view->render($this->response, 'index.html.twig', ['title' => 'Home again']);
+    }
+
+    public function category (Request $request, $response, $args)
+    {
+
+        die(print_r($request->getAttribute('category'), true));
+        return $this->view->render($response, 'index.html.twig', ['title' => 'Home again']);
     }
 }
