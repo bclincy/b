@@ -6,7 +6,9 @@ require '../conf/slimConfig.php';
 $container['apiStatus'] = [
     'erorr' => ['code' => [400 => 'Bad Request']]
 ];
-
+$container['ApiController'] = function (\Slim\Container $container) {
+    return new \app\Controller\ApiController($container);
+};
 
 $app->get('/hello/{name}', function (Request $request, Response $response) {
 	    $name = $request->getAttribute('name');
@@ -35,16 +37,13 @@ $app->options('/docs/{key}/{num}', function (Request $request, Response $respons
 });
 
 $app->post('/newsletter/{id}', function (Request $request, Response $response) {
-    $response = $response->withHeader('Content-type', 'application/json');
-    $data = $request->getParsedBody();
-    die($request->getParsedBody());
-    if ($data['email'] === null) {
-        $data['status'] = 'Failed';
-    }
-    $data['status'] = 'success';
-    $response = $response->withJson($data);
+    $body = $request->getParsedBody();
+//    $body->write('{"your_content": "here"}');
+    $data = ['fname'=>'Brian', 'lname'=>'clincy'];
+    die($request->getBody());
 
-    return $response;
+    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+
 
 });
 $app->post('docs/{id}', function (Request $request, Response $response) {
