@@ -86,13 +86,14 @@ body {
     animation-delay: 1s;
     animation-duration: 1s;
 }
-.section{
-    padding:20px 0;
-}
-
-.section-b{
-    background:#333;
+section{
+    background:#000;
     color:#fff;
+    padding: 2rem 0 5em 0;
+}
+section img {
+    float:left;
+    padding: 5px 10px 10px 0;
 }
 
 @media(max-width:960px){
@@ -101,7 +102,6 @@ body {
         padding-left:3rem;
     }
 }
-
 
 #newsletter {
     color: #ffffff;
@@ -199,6 +199,10 @@ footer {
     display: flex;
     align-items: center;
     justify-content: center;
+    list-style: none;
+}
+footer ul li {
+    list-style: none;
 }
 footer img {
     border: none;

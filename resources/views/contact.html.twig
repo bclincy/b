@@ -1,141 +1,63 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>{{ title }}</title>
-      <link rel="stylesheet" href="/vendor/components/bootstrap/dist/css/bootstrap.min.css"/>
-      <link rel="stylesheet" href="/css/animate.css"/>
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-  </head>
-  <body>
-  <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-      </button>
-      <a class="navbar-brand" href="#">
-          <!-- Xbox B icon by Icons8 -->
-          <img class="icon icons8-Xbox-B" width="50" height="50" alt="Brian Clincy is here"
-               src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEG0lEQVRoQ92ai7FMQRCG+0aACBABIkA
-             EiAARIAJEgAi4ESACRIAIEAEioL6t+bd6z2u658w+6k7Vqd1765ye/vvv1/TZM7sg6+yC4LCeQC6b2W0zu2lmd8zsWrm8rX6aGddnM/tmZl
-             /M7E8PY/YA8tDM7perRacPZsZ13vKwnlkD5LmZPRpYHQtjbS4sjdX9gi2YgzEuGNSCqddm9qYFUAsQFHjrAHwvCmDVrJsACjafmtmNAgBAj
-             4sxwpiyQF6VTdkAACiA9XssDAQjAsT3Z1HBUSBY7lMJ5L9m9qJsGt0ncx/GQf6l4pp3I0xHgODXuBKfsEBcDH0/o2jkXvZ6V9hhL1xtcc8a
-             EM8EIKA/GwcRxafuYW/cFlcDxCIzNSBfHROHBCFgQzC35qyyBIRge1Lc6RggpsCQmomh0ZoDguIEN4HN933HRM39iBncjASAi40y5RyQH6V
-             OkP5g5hQWTJD+qTPXhwpNASH1UbUJbixxSgvPIPhHBp4CIjYmKVxAJXesAUcZugD8PZsBtceIlSEQagQ1o4WNKBABRRmMxWdmiRVqC7Vms4
-             ZAsNS9UoC2NwV38UDoZIfP09bjqhiLoGURtIDJLBn7o++4PRBy9u8i8coK2hHxsrQZUwqyDywIDLUhkxUn9fRA6ELfl8MO1s0uz8gSEOQqo
-             fB9x0WCm8IkR4AHJd52XEvCa0rM7ZUBIqMhK5tUvCG2unpGhLJFMMIzQNQ1UHCJm2zAj7zHA1HazfqsGIoC4WisRNDKPuDpA4mtTf/lgfyb
-             yWRBt91hRMdd/6wfSPQ40+zouy8gNfC0G5zvM9lqKPMgQH4t+L0fOBAruFe2wgPqIECWfJ/CSIYkVlizrXmF1lkgZI6rJXhaKI8Gu/RTluR
-             vutlM5lKwb1upY6XfYVHMpnwZjTjbFG8P5JAFcW11H+l6rBYFIJxA1QplGVlsUQ7ZNHJw09mbDEcCiK5q04igXm38VEHU3FefUnzb+AWRVN
-             t45OimbekPCh/2WpHHqO7sh/EySyOqxYMVApWGs36LpSODCr0byQLwxhq549SZXdOKFlYylm25V2yEhg+elVMcB00mh9qAjh4IF2up9C0W
-             n3sGtyVdk7FSAzoE6vBTHSD31HhClh+kp0emkqfRy7HADN8GzA4Ma9P41Gi/MzOpVxo1IOiWfunSAVD65VIECHp5ZkgANG1Nb18DIHmVgXz
-             2DL9cigLR/koA/E3ckJ57vgxl2q44SB24skBUXZmCcAgTIAAywsweWbE6I1qKsABQJ2hdUgZqASJ22JxLgPi/mkU+6aWmfjDAqFQ/GPATTQ
-             BgkEibM/LQNUAkDOsxMMOyLQsm6buyQ/OdvXoAkUD9NMP/qMazxX0EL+6nxlE/9WgxwN6ArFZmjYCejKzRY/Wz/wEM9SNCAy/gMAAAAABJR
-             U5ErkJggg==">
-      </a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav mr-auto">
-              <li class="nav-item active">
-                  <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/about">About</a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="/Community" id="communityItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Community
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="community">
-                      <a class="dropdown-item" href="/community/ACHIEVE">ACHIEVE</a>
-                      <a class="dropdown-item" href="/community/Love_Community_Garden">Love Community Garden</a>
-                      <a class="dropdown-item" href="/community/Muskegon_area_sports">Muskegon area Sports</a>
-                      <a class="dropdown-item" href="/community/Muskegon_TEDx">Muskegon TEDx</a>
-                      <a class="dropdown-item" href="/community/Yuba_Love">Yuba Love</a>
-                  </div>
-              </li>
-              <li class="nav-item">
-                  <a class="nav-link" href="/gallary">Gallary</a>
-              </li>
-              <li class="nav-item dropdown">
-                  <a class="nav-link dropdown-toggle" href="/services" id="servicesItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                      Services
-                  </a>
-                  <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                      <a class="dropdown-item" href="/services/Coaching">Basketball Coach</a>
-                      <a class="dropdown-item" href="/services/community_engagement">Community Engagements</a>
-                      <a class="dropdown-item" href="/services/Design">Graphic Designer</a>
-                      <a class="dropdown-item" href="/services/Photography">Photographer</a>
-                      <a class="dropdown-item" href="/services/Web">Web Development</a>
-                  </div>
-              </li>
-          </ul>
-          <form class="form-inline my-2 my-lg-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search">
-              <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-          </form>
-      </div>
-  </nav>
-  <div class="container">
-      {% block content %}
-          <div class="center"><button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Contact</button></div>
-      {% endblock %}
-      {% block contact %}
-      {% endblock %}
-  </div>
-  {% block modal %}
-  <!-- line modal -->
-  <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-      <div class="modal-dialog">
-          <div class="modal-content">
-              <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
-                  <h3 class="modal-title" id="lineModalLabel">My Modal</h3>
-              </div>
-              <div class="modal-body">
+{% extends "layout.html.twig" %}
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/login.css">
+{% endblock %}
+{% block content %}
+    <div class="center"><button data-toggle="modal" data-target="#squarespaceModal" class="btn btn-primary center-block">Contact</button></div>
+    <div>
+        <button data-toggle="modal" data-target="#login-modal" class="btn btn-primary center-block">Contact</button></div>
+{% endblock %}
+{% block modal %}
+    <!-- line modal -->
+    <div class="modal fade" id="squarespaceModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">×</span><span class="sr-only">Close</span></button>
+                    <h3 class="modal-title" id="lineModalLabel">My Modal</h3>
+                </div>
+                <div class="modal-body">
 
-                  <!-- content goes here -->
-                  <form>
-                      <div class="form-group">
-                          <label for="exampleInputEmail1">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                      </div>
-                      <div class="form-group">
-                          <label for="exampleInputPassword1">Password</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                      </div>
-                      <div class="form-group">
-                          <label for="exampleInputFile">File input</label>
-                          <input type="file" id="exampleInputFile">
-                          <p class="help-block">Example block-level help text here.</p>
-                      </div>
-                      <div class="checkbox">
-                          <label>
-                              <input type="checkbox"> Check me out
-                          </label>
-                      </div>
-                      <button type="submit" class="btn btn-default">Submit</button>
-                  </form>
+                    <!-- content goes here -->
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFile">File input</label>
+                            <input type="file" id="exampleInputFile">
+                            <p class="help-block">Example block-level help text here.</p>
+                        </div>
+                        <div class="checkbox">
+                            <label>
+                                <input type="checkbox"> Check me out
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
 
-              </div>
-              <div class="modal-footer">
-                  <div class="btn-group btn-group-justified" role="group" aria-label="group button">
-                      <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
-                      </div>
-                      <div class="btn-group btn-delete hidden" role="group">
-                          <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
-                      </div>
-                      <div class="btn-group" role="group">
-                          <button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
-                      </div>
-                  </div>
-              </div>
-          </div>
-      </div>
-  </div>
-  {% endblock %}
-  {% block javascript %}
-      <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
-      <script src="/vendor/components/jquery/dist/jquery.min.js"></script>
-      <script src="/vendor/components/bootstrap/dist/js/bootstrap.js"></script>
-  {% endblock %}
-  </body>
-</html>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group btn-group-justified" role="group" aria-label="group button">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-default" data-dismiss="modal"  role="button">Close</button>
+                        </div>
+                        <div class="btn-group btn-delete hidden" role="group">
+                            <button type="button" id="delImage" class="btn btn-default btn-hover-red" data-dismiss="modal"  role="button">Delete</button>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <button type="button" id="saveImage" class="btn btn-default btn-hover-green" data-action="save" role="button">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% include 'modal.html.twig' %}
+{% endblock %}

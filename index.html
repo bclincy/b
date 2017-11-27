@@ -5,12 +5,28 @@
     <title>Brian Clincy is who I am...</title>
     <link rel="stylesheet" href="vendor/components/bootstrap/dist/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="css/animate.css"/>
-    <link rel="stylesheet" href="css/frontpage.css">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/frontpage.css"/>
+    <link rel="stylesheet" href="vendor/components/font-awesome/css/font-awesome.min.css"/>
+    <!--/ Facebook Thumb Fixer Open Graph /-->
+    <meta property="og:type" content="Home Page"/>
+    <meta property="og:url" content="http://brianclincy.com"/>
+    <meta property="og:title" content="Brian Clincy a working in process guy"/>
+    <meta property="og:description"
+          content="Brian Clincy who is much bigger than his official title found his web page"/>
+    <meta property="og:site_name" content="Officially Brian Clincy from Muskegon, MI"/>
+    <meta property="og:image" content="http://brianclincy.com/images/thinking.jpg"/>
+
+    <meta itemscope content="Brian Clincy who is much bigger than his official title found his web page"
+          itemtype="description" name="description" property="og:description"/>
+    <meta content="http://www.brianclincy.com/images/thinking.jpg" itemprop="image" property="og:image"/>
+    <meta content="http://www.brianclincy.com" itemprop="url" property="og:url"/>
+    <link rel="canonical" href="http://www.brianclincy.com"/>
 </head>
 <body>
 <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+            aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
@@ -41,7 +57,8 @@
                 <a class="nav-link" href="/about">About</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/Community" id="communityItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="/Community" id="communityItem" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     Community
                 </a>
                 <div class="dropdown-menu" aria-labelledby="community">
@@ -56,7 +73,8 @@
                 <a class="nav-link" href="/gallary">Gallary</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/services" id="servicesItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="/services" id="servicesItem" data-toggle="dropdown"
+                   aria-haspopup="true" aria-expanded="false">
                     Services
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -81,63 +99,166 @@
     <div class="overlay-header animated slideInLeft"></div>
     <div class="nav-overlay-header animated slideInLeft"></div>
     <div class="card animated rotateInDownRight">
-        <div class="firstinfo"><img src="images/bclincy_bitemoji.png" width="488" height="405" alt="Brian Clincy Bitemoji version"/>
+        <div class="firstinfo"><img src="images/bclincy_bitemoji.png" width="488" height="405"
+                                    alt="Brian Clincy Bitemoji version"/>
             <div class="profileinfo">
                 <h1>Brian Clincy</h1>
                 <h3>Senior Software Application Developer</h3>
-                <p class="bio">Dynamic &amp; Official</p>
-                <a class="btn btn-primary btn-lg" href="about/Story_to_tell">My Words</a>
+                <p class="bio">Bigger than my Title!</p>
+                <a class="btn btn-primary btn-lg" href="about/goals">Goals!</a>
             </div>
         </div>
     </div>
     <div class="badgescard animated zoomInDown">
-        <span class="fa fa-facebook"></span>
-        <span class="fa fa-twitter"> </span>
-        <span class="fa fa-google-plus"></span>
-        <span class="fa fa-youtube"></span>
-        <span class="fa fa-dribble"></span>
-        <span class="fa fa-google"></span>
-        <span class="fa fa-android"> </span>
+        <a href="https://www.facebook.com/brianclincy/"><span class="fa fa-facebook"></span></a>
+        <a href="https://twitter.com/clincy"><span class="fa fa-twitter"> </span></a>
+        <a href="https://google.com/+BrianClincy"><span class="fa fa-google-plus"></span></a>
+        <a href="http://youtube.com/c/BrianClincy"><span class="fa fa-youtube"></span></a>
+        <a href="tel:1-616-777-7977"><span class="fa-phone" data-toggle="tooltip" title="(616) 777-7977"></span></a>
     </div>
 </header>
-<section id="newsletter" class="bg-inverse p-3">
+<section id="newsletter">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="single">
                     <h2>Stay in the know...</h2>
-
                     <p>I promise I won't spam you (Truthfully I have better stuff to do with my time.)</p>
                     <form id="frmnews">
-                    <div class="input-group">
-
-                        <input type="email" class="form-control" placeholder="Enter your email" id="email" required="required">
-         <span class="input-group-btn">
-         <button class="btn btn-lg btn-theme" id="shortNewsletter" type="submit">Subscribe</button>
-         </span>
-                    </div></form>
+                        <div class="input-group">
+                            <input type="email" class="form-control" placeholder="Enter your email" id="email"
+                                   required="required">
+                            <span class="input-group-btn">
+                            <button class="btn btn-lg btn-theme" id="shortNewsletter" type="submit">Subscribe</button>
+                            </span>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </section>
+<section id="contact" class="bg-inverse p-3">
+    <a name="contact"></a>
+    <div class="container-fluid">
+        <form id="contactFrm">
+            <h1>Contact Clincy</h1>
+            <div class="row">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <div class="well well-sm">
+                                <form>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="name">
+                                                    Name</label>
+                                                <input type="text" class="form-control" id="name"
+                                                       placeholder="Enter name" required="required"/>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="email">
+                                                    Email Address</label>
+                                                <div class="input-group">
+                                                    <span class="input-group-addon"><i class="fa fa-envelope"
+                                                                                       aria-hidden="true"></i></span>
+                                                    </span>
+                                                    <input type="email" class="form-control" id="email"
+                                                           placeholder="Enter email" required="required"/>
+                                                </div>
+                                                <small id="emailHelp" class="form-text text-muted">We'll never share
+                                                    your email with anyone else.
+                                                </small>
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="subject">
+                                                    Subject</label>
+                                                <select id="subject" name="subject" class="form-control"
+                                                        required="required">
+                                                    <option value="" selected="">Select a Subject:</option>
+                                                    <option value="service">Hit Brian Up</option>
+                                                    <option value="suggestions">Suggestions</option>
+                                                    <option value="product">Product Support</option>
+                                                    <option value="webIssues">Web Problems</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="name">
+                                                    Message</label>
+                                                <textarea name="message" id="message" class="form-control" rows="9"
+                                                          cols="25" required="required"
+                                                          placeholder="Message"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <button type="submit" class="btn btn-primary pull-right" id="btnContactUs">
+                                                Send Message
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <form>
+                                <address>
+                                    <strong>Brian Clincy</strong><br>
+                                    PO Box 693<br>
+                                    Muskegon, MI 49443-0693<br>
+                                    <abbr title="Phone">
+                                        P:</abbr>
+                                    <a href="tel:1-616-777-7977">(616) 777-7977</a>
+                                </address>
+                                <address>
+                                    <strong>bclincy</strong><br>
+                                    <a href="/contact" id="displayemail"></a>
+                                </address>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+</section>
+<section id="preview">
+    <div class="container">
+        <div class="img p-2"><img src="/images/tn/thinking_tn.jpg" width="100" height="100"
+                                  alt="Brian Clincy Stuff on his mind" title="life out loud">
+            Brian Clincy, I'm a work in process. Everyday my goal is to be collectively be better than I was yesterday.
+            Today at the intersection of knowledge and wisdom meet is where you'll find me. As I share my journey and
+            status of everyday lessons my dream is to help other avoid my pitfalls, and connect my history with my
+            future.
+        </div>
+        <div><a href="about/goals#continue" class="btn btn-outline-secondary">Read more...</a></div>
+    </div>
+</section>
 <footer>
     <div class="m-4">
-        <img src="images/brianclincy-type.png" width="200" height="137" alt="Brian Clincy in words" title="Brian Clincy logo">
+        <img src="images/brianclincy-type.png" width="200" height="137" alt="Brian Clincy in words"
+             title="Brian Clincy logo">
     </div>
-   <div class="nav m-4"><ul>
-       <li>Home</li>
-       <li>Dope</li>
-       <li>NNUtS :: Podcast</li>
-       <li>Hire me :: App Dev</li>
-   </ul>
-   </div>
-    <div class="m-4"><h3>Brian Clincy</h3>
-        <p>Muskegon Location</p>
-        <address>PO Box 693<br>Muskegon, MI 49442</address>
+    <div class="nav m-4">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about">About</a></li>
+            <li><a href="/nnuts">NNUtS :: Podcast</a></li>
+            <li>Hire me :: App Dev</li>
+        </ul>
     </div>
-    <div><h3>13IDS</h3>
-        <p>Fort Myers Location</p>
+    <div class="m-4">
+        <ul>
+            <li>Bee Notes</li>
+            <li>Community</li>
+            <li>Services</li>
+            <li>Shoutouts</li>
+        </ul>
+    </div>
+    <div><h3>Network</h3>
+        <ul>
+            <li><a href="http://muskegonareasports.com">Muskegon Area Sports</a></li>
+            <li>http://muskegonareasports.com</li>
+        </ul>
     </div>
 </footer>
 </body>
@@ -145,31 +266,35 @@
 <script src="vendor/components/jquery/dist/jquery.min.js"></script>
 <script src="/vendor/components/bootstrap/dist/js/bootstrap.js"></script>
 <script type="text/javascript">
+    document.getElementById('displayemail').innerHTML = 'brian@brianclincy.com';
     document.getElementById('frmnews').addEventListener('submit', signup);
+    document.getElementById('contactFrm').addEventListener('submit', sendContact);
+
     function signup(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
         var email = document.getElementById('email').value;
         if (ValidateEmail(email) === true) {
-            xhr.open('POST','/api/newsletter/' + email, true);
+            xhr.open('POST', '/api/newsletter/' + email, true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.send({emailadd: email});
             xhr.onload = function (data) {
-                console.log(data);
-            }
+                if (this.status === 200) {
+//                    var resp = JSON.parse(this.responseText);
+                    console.log(this.responseText);
+                }
+            };
+            xhr.send(JSON.stringify({email: email}));
         }
-        console.log('clicked');
     }
 
-    function ValidateEmail(email)
-    {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))
-        {
+    function ValidateEmail(email) {
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             return (true)
         }
         alert("You have entered an invalid email address!")
         return (false)
     }
+
     $(document).ready(function () {
 
         $('#animateBtn').click(function () {
@@ -194,6 +319,29 @@
             }, 1000);
         }
 
-    })
+    });
+
+    function sendContact(e) {
+        e.preventDefault();
+        console.log(this);
+        var json = toJSONString(this);
+        console.log(json);
+    }
+
+    function toJSONString(form) {
+        var obj = {};
+        var elements = form.querySelectorAll("input, select, textarea, email, number");
+        for (var i = 0; i < elements.length; ++i) {
+            var element = elements[i];
+            var name = element.name;
+            var value = element.value;
+
+            if (name) {
+                obj[name] = value;
+            }
+        }
+
+        return JSON.stringify(obj);
+    }
 </script>
 </html>

@@ -10,6 +10,11 @@ $container['ApiController'] = function (\Slim\Container $container) {
     return new \app\Controller\ApiController($container);
 };
 
+$container['hasAccess'] = function (\Slim\Container $container) {
+    // Todo: This authenticate users of the API for now return true
+    return true;
+};
+
 $app->get('/hello/{name}', function (Request $request, Response $response) {
 	    $name = $request->getAttribute('name');
 	    $response->getBody()->write("Hello, $name");
@@ -37,11 +42,7 @@ $app->options('/docs/{key}/{num}', function (Request $request, Response $respons
 });
 
 $app->post('/newsletter/{id}', function (Request $request, Response $response) {
-    $body = $request->getParsedBody();
-//    $body->write('{"your_content": "here"}');
-    $data = ['fname'=>'Brian', 'lname'=>'clincy'];
-    die($request->getBody());
-
+   $data = $request->getParsedBody();
     return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 
 
@@ -52,5 +53,8 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
     $ticket_data['title'] = filter_var($data['title'], FILTER_SANITIZE_STRING);
     $ticket_data['description'] = filter_var($data['description'], FILTER_SANITIZE_STRING);
 });
+
+$app->post('/test', 'ApiController:newsSignup');
+$app->post('/contact', 'ApiController:contact');
 
 $app->run();

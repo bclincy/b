@@ -61,5 +61,5 @@ $app->get('/home', function (Request $request, Response $response){
 });
 $app->get('/hop', 'HomeController:indexAction');
 
-$app->get('/{category}/{title}', 'HomeController:category');
+$app->get('/{category}/{title}', 'HomeController:category' );
 $app->run();

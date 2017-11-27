@@ -1,0 +1,37 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    font-family: Georgia sans-serif;
+}
+.flexer {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-start;
+    justify-content: flex-start;
+    min-height:100vh;
+    width: 99vw;
+}
+#skills {
+    background-color: #001f3f;
+    color: white;
+    width:25vh;
+    padding: 2rem 1rem 3rem 1rem;
+}
+#skills ul li {
+    list-style: none;
+    padding: 5px;
+}
+#resumeBody {
+    padding: 10px;
+}
+#resumeBody section {
+    margin: 10px 0 10px 0;
+}
+.gold {
+    color: #DAA520;
+    text-shadow: 2px 2px #000000;
+}

@@ -5,11 +5,12 @@
     "slim/php-view": "^2.2",
     "guzzlehttp/guzzle": "^6.3",
     "phpunit/phpunit": "^6.4",
-    "slim/twig-view": "^2.3"
+    "slim/twig-view": "^2.3",
+    "swiftmailer/swiftmailer": "^6.0"
   },
   "autoload": {
     "classmap": [
-      "src/Controller/HomeController.php",
+      "src/Controller",
       "classes"
     ]
   },
