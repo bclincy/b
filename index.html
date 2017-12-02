@@ -164,7 +164,7 @@
                                                     <span class="input-group-addon"><i class="fa fa-envelope"
                                                                                        aria-hidden="true"></i></span>
                                                     </span>
-                                                    <input type="email" class="form-control" id="email"
+                                                    <input type="email" class="form-control email" name="emailCnt" id="emailCnt"
                                                            placeholder="Enter email" required="required"/>
                                                 </div>
                                                 <small id="emailHelp" class="form-text text-muted">We'll never share
@@ -323,19 +323,25 @@
 
     function sendContact(e) {
         e.preventDefault();
-        console.log(this);
-        var json = toJSONString(this);
-        console.log(json);
+        var frmData = toJSONString(this);
+        xhr.open('POST', '/api/contact/', true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function (data) {
+            if (this.status === 200) {
+//                    var resp = JSON.parse(this.responseText);
+                console.log(this.responseText);
+            }
+        };
+        xhr.send(frmData);
     }
 
     function toJSONString(form) {
         var obj = {};
-        var elements = form.querySelectorAll("input, select, textarea, email, number");
+        var elements = form.querySelectorAll("input, select, textarea, number, email, .email");
         for (var i = 0; i < elements.length; ++i) {
             var element = elements[i];
             var name = element.name;
             var value = element.value;
-
             if (name) {
                 obj[name] = value;
             }

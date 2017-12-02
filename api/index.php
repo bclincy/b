@@ -43,9 +43,7 @@ $app->options('/docs/{key}/{num}', function (Request $request, Response $respons
 
 $app->post('/newsletter/{id}', function (Request $request, Response $response) {
    $data = $request->getParsedBody();
-    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
-
-
+   return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 });
 $app->post('docs/{id}', function (Request $request, Response $response) {
     $data = $request->getParsedBody();
@@ -55,6 +53,6 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
 });
 
 $app->post('/test', 'ApiController:newsSignup');
-$app->post('/contact', 'ApiController:contact');
+$app->post('/contact', 'ApiController:contactFrm');
 
 $app->run();

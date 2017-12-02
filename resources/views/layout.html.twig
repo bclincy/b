@@ -76,6 +76,16 @@
       </div>
   </nav>
   <div class="container">
+      {% block breadcrum %}
+          <nav class="breadcrumb">
+              <a class="breadcrumb-item" href="/">Home</a>
+              {% if breadcrum is defined %}
+                {% for crum in breadcrum %}
+                    <a class="breadcrumb-item" href="{{ crum.link }}">{{ crum.name }}</a>
+                {% endfor %}
+              {% endif %}
+          </nav>
+      {% endblock %}
       {% block content %}
           <h1>Blackhole</h1>
           <p>The blackout my attempt at rationalizing the whole in my life. There are a lot of things I can't explain.
