@@ -4,7 +4,9 @@ use \Psr\Http\Message\ResponseInterface as Response;
 
 require '../conf/slimConfig.php';
 $container['apiStatus'] = [
-    'erorr' => ['code' => [400 => 'Bad Request']]
+    'codes' =>
+        [400 => ['title' => 'Bad Request', 'msg' => 'The resource requested is not exists or no longer available']],
+        [401 => ['title' => 'Unauthorized Request', 'msg' => 'Unauthorized please check your credentials']],
 ];
 $container['ApiController'] = function (\Slim\Container $container) {
     return new \app\Controller\ApiController($container);
@@ -53,6 +55,12 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
 });
 
 $app->post('/test', 'ApiController:newsSignup');
-$app->post('/contact', 'ApiController:contactFrm');
+$app->post('/contact/', function (Request $request, Response $response) {
+    global $container;
+//    die(print_r($container, true));
+    $data = $request->getParsedBody();
+    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+});
+//$app->post('/contact/', 'ApiController:contactFrm');
 
 $app->run();

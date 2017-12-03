@@ -269,6 +269,7 @@
     document.getElementById('displayemail').innerHTML = 'brian@brianclincy.com';
     document.getElementById('frmnews').addEventListener('submit', signup);
     document.getElementById('contactFrm').addEventListener('submit', sendContact);
+    var xhr = new XMLHttpRequest();
 
     function signup(e) {
         e.preventDefault();

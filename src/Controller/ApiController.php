@@ -44,6 +44,7 @@ class ApiController
      */
     public function contactFrm (Request $request, Response $response, $args)
     {
+        die(print_r($this->container, true));
         $data = $request->getParsedBody();
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
     }
@@ -56,13 +57,9 @@ class ApiController
     public function newsSignup(Request $request, Response $response)
     {
         $body = $request->getBody();
-//    $body->write('{"your_content": "here"}');
         $data = ['fname'=>'Brian', 'lname'=>'clincy'];
-        die($body);
 
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
-
-
     }
 
     public function restErrors($msg)

@@ -20,7 +20,12 @@ $container['view'] = function ($container) {
 
     return $view;
 };
-
+$container['NotFoundHandler'] = function ($c) {
+    return new app\Controller\notFoundErrors($c->get('view'), function ($request, $response) use ($c) {
+        return $c['response']
+            ->withStatus(404);
+    });
+};
 $container['HomeController'] = function (\Slim\Container $container) {
     return new \app\Controller\HomeController($container);
 };
