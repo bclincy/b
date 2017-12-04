@@ -33,8 +33,12 @@ class HomeController
     public function pageAction (Request $request, Response $response, $data)
     {
         if ($request->getAttribute('title') !== null || !$this->title) {
-//            if(!this)
-            $stmt = $this->pdo->prepare('SELECT * FROM docs WHERE title');
+            $title = empty($this->title) ? $request->getAttribute('title') : $this->title;
+            $sql = 'SELECT * FROM docs WHERE title like :title || docName like :title';
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->execute([':title' =>'%' . $title . '%']);
+            $row = $stmt->fetchAll();
+            die(print_r($row, true));
         }
         return $this->view->render($response, 'contact.html.twig', ['title' => 'Home again']);
     }

@@ -49,6 +49,11 @@ class ApiController
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
     }
 
+    public function test()
+    {
+        die(var_dump($this));
+    }
+
     /**
      * @param Request $request
      * @param Response $response

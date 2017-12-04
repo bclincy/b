@@ -1,6 +1,7 @@
 <?php
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
+use \app\Controller\ApiController as API;
 
 require '../conf/slimConfig.php';
 $container['apiStatus'] = [
@@ -9,7 +10,7 @@ $container['apiStatus'] = [
         [401 => ['title' => 'Unauthorized Request', 'msg' => 'Unauthorized please check your credentials']],
 ];
 $container['ApiController'] = function (\Slim\Container $container) {
-    return new \app\Controller\ApiController($container);
+    return new API($container);
 };
 
 $container['hasAccess'] = function (\Slim\Container $container) {
@@ -54,13 +55,11 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
     $ticket_data['description'] = filter_var($data['description'], FILTER_SANITIZE_STRING);
 });
 
-$app->post('/test', 'ApiController:newsSignup');
-$app->post('/contact/', function (Request $request, Response $response) {
-    global $container;
-//    die(print_r($container, true));
-    $data = $request->getParsedBody();
-    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
-});
 //$app->post('/contact/', 'ApiController:contactFrm');
+//$app->post('/contact/', function (Request $request, Response $response) {
+//    $data = $request->getParsedBody();
+//    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+//});
+$app->post('/contact/', 'ApiController:test');
 
 $app->run();
