@@ -60,6 +60,6 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
 //    $data = $request->getParsedBody();
 //    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 //});
-$app->post('/contact/', 'ApiController:test');
+$app->post('/contact/', 'ApiController:contactFrm');
 
 $app->run();

@@ -5,6 +5,7 @@
     <title>{{ title }}</title>
       <link href="/vendor/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+      <meta property="og:title" content="{% if data.title %}{{ data.title }}{% else %}Brian Clincy a work in Progress{% endif %}"/>
   </head>
   <body>
   <nav class="navbar navbar-toggleable-md navbar-light bg-faded">

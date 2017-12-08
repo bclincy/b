@@ -10,6 +10,7 @@ class HomeController
 {
     protected $container;
     protected $title;
+    protected $cat;
 
     public function __construct(ContainerInterface $container)
     {
@@ -37,8 +38,8 @@ class HomeController
             $sql = 'SELECT * FROM docs WHERE title like :title || docName like :title';
             $stmt = $this->pdo->prepare($sql);
             $stmt->execute([':title' =>'%' . $title . '%']);
-            $row = $stmt->fetchAll();
-            die(print_r($row, true));
+            $data = $stmt->fetchAll();
+            die(print_r($data, true));
         }
         return $this->view->render($response, 'contact.html.twig', ['title' => 'Home again']);
     }
@@ -46,8 +47,8 @@ class HomeController
     public function category (Request $request, Response $response, $args)
     {
         $pdo = $this->container->get('pdo');
-        $cat = str_replace('_', ' ', $request->getAttribute('category'));
-        $data['breadcrum'][] = ['name' => $cat, 'link' => '/'.$cat.'/'];
+        $this->cat= str_replace('_', ' ', $request->getAttribute('category'));
+        $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/'.$cat.'/'];
         $this->title = $request->getAttribute('title') !== null ? $request->getAttribute('title') : null;
         if ($this->title !== null) {
             // Not an index page
@@ -67,8 +68,21 @@ class HomeController
         return $this->view->render($response, 'goals.html.twig', ['title' => 'My Goals']);
     }
 
-    private function removeUnderScore(str $string)
+    private function removeUnderScore(string $string)
     {
         return str_replace('_', ' ', $string);
+    }
+
+    private function addUnderScore(string $str)
+    {
+        return str_replace(' ', '_', $str);
+    }
+
+    private function createCanonicalUrl (string $title)
+    {
+        //This is direct contact link
+        $title = stristr($title, '_') ? $title : $this->addUnderScore($title);
+
+        return $this->container->get('router')->pathFor('pages', ['name'=> $title]);
     }
 }

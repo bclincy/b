@@ -34,7 +34,6 @@ class ApiController
     {
         $this->container = $container;
         $this->pdo = $this->container->get('pdo');
-        $this->view = $container->get('view');
     }
     /**
      * @param Request $request
@@ -51,7 +50,7 @@ class ApiController
 
     public function test()
     {
-        die(var_dump($this));
+        die('hello');
     }
 
     /**

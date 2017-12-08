@@ -8,6 +8,19 @@
       <link rel="stylesheet" href="/css/animate.css"/>
       <link href="/components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
       {% endblock %}
+      {% block metadata %}
+          <meta property="og:title" content="{{ data.title }}"/>
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          {% if data.keywords %}
+            <meta name="keywords" content="{{ data.keywords }}">
+        {% endif %}
+          {% if data.image %}
+            <meta name="og:image" content="{{ data.image }}">
+        {% endif %}
+        {% if data.description %}
+            <meta name="description" content="{{ data.keywords }}">
+        {% endif %}
+      {% endblock %}
   </head>
   <body>
   <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
