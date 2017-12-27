@@ -8,24 +8,31 @@
 //bootstrap slim
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use Psr7Middlewares\Middleware;
+use Slim\Views\Twig;
 
-require_once 'conf/slimConfig.php';
+require_once 'config/slimConfig.php';
 
 $container['view'] = function ($container) {
-    $view = new \Slim\Views\Twig('resources/views', ['cache' => false, ]);
+    $view = new \Slim\Views\Twig('templates/', [
+        'cache' => false,
+        'debug'=> true
+    ]);
     $view->addExtension(new \Slim\Views\TwigExtension(
         $container->router,
         $container->request->getUri()
     ));
+    $view->addExtension(new \Twig_Extension_Debug());
 
     return $view;
 };
-$container['NotFoundHandler'] = function ($c) {
-    return new app\Controller\notFoundErrors($c->get('view'), function ($request, $response) use ($c) {
-        return $c['response']
-            ->withStatus(404);
-    });
+$container['baseUrl'] = $_SERVER['HTTP_HOST'];
+$container['notFoundHandler'] = function ($c) {
+    return function ($request, $response) use ($c) {
+        return $c['view']->render($response, '404.html', [])->withStatus(404);
+    };
 };
+
 $container['HomeController'] = function (\Slim\Container $container) {
     return new \app\Controller\HomeController($container);
 };
@@ -64,7 +71,21 @@ $app->get('/shoutouts', function (Request $request, Response $response) {
 $app->get('/home', function (Request $request, Response $response){
     return $this->view->render($response, 'index.html.twig', ['title' => 'Home again']);
 });
-$app->get('/hop', 'HomeController:indexAction');
 
+$app->get('/resume', function (Request $request, Response $response) {
+    return $this->view->render($response, 'resume.html', [$request]);
+});
+$app->get('/testme', function (Request $request, Response $response) {
+    return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
+});
+
+$app->get('/contact', function (Request $request, Response $response) {
+    return $this->view->render($response, 'contact.html.twig', [$request]);
+});
+$app->post('/contact', 'HomeController:Contact');
+//$app->get('/about', 'HomeController:indexAction');
+
+$app->get('/pages/{title}', 'HomeController:pageAction' );
 $app->get('/{category}/{title}', 'HomeController:category' );
+$app->get('/{category}/', 'HomeController:category' );
 $app->run();

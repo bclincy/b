@@ -1,20 +1,21 @@
 {
-  "require": {
-    "slim/slim": "^3.8",
-    "monolog/monolog": "^1.23",
-    "slim/php-view": "^2.2",
-    "guzzlehttp/guzzle": "^6.3",
-    "phpunit/phpunit": "^6.4",
-    "slim/twig-view": "^2.3",
-    "swiftmailer/swiftmailer": "^6.0"
-  },
-  "autoload": {
-    "classmap": [
-      "src/Controller",
-      "classes"
-    ]
-  },
-  "autoload-dev": {
+    "require": {
+        "slim/slim-skeleton": "^3.1",
+        "monolog/monolog": "^1.23",
+        "slim/twig-view": "^2.3",
+        "swiftmailer/swiftmailer": "^5.4",
+        "pimple/pimple": "~3.0",
+        "oscarotero/psr7-middlewares": "^3.21",
+        "guzzlehttp/guzzle": "^6.3",
+        "doctrine/orm": "^2.5"
+    },
+    "autoload": {
+      "classmap": [
+        "src/Controller",
+        "classes"
+      ]
+    },
+    "autoload-dev": {
     "psr-4": {
       "app\\Controller\\Tests\\": "tests/Controller"
     }

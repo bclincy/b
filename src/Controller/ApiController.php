@@ -33,7 +33,7 @@ class ApiController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->pdo = $this->container->get('pdo');
+        $this->pdo = $this->container->pdo;
     }
     /**
      * @param Request $request
@@ -43,13 +43,13 @@ class ApiController
      */
     public function contactFrm (Request $request, Response $response, $args)
     {
-        die(print_r($this->container, true));
         $data = $request->getParsedBody();
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
     }
 
     public function test()
     {
+        echo 'noal';
         die('hello');
     }
 

@@ -2,10 +2,10 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>{{ title }}</title>
+    <title>{% block title %}{{ title }} {% endblock %}</title>
       <link href="/vendor/components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet"/>
-      <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
-      <meta property="og:title" content="{% if data.title %}{{ data.title }}{% else %}Brian Clincy a work in Progress{% endif %}"/>
+      <link href="/vendor/components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+      <meta property="og:title" content="{% if title %}{{ title }}{% else %}Brian Clincy a work in Progress{% endif %}"/>
   </head>
   <body>
   <nav class="navbar navbar-toggleable-md navbar-light bg-faded">
@@ -75,6 +75,9 @@
   </nav>
   <div class="container">
       {% block content %}
+          {% for line in data %}
+              {{ dump(line) }}
+          {% endfor %}
           <h1>Brian Clincy</h1>
           <p>Sweet day in the life of Zack</p>
       {% endblock %}
