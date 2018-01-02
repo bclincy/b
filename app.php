@@ -10,6 +10,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr7Middlewares\Middleware;
 use Slim\Views\Twig;
+use app\Content\youtubeListing as yt;
 
 require_once 'config/slimConfig.php';
 
@@ -76,6 +77,9 @@ $app->get('/resume', function (Request $request, Response $response) {
     return $this->view->render($response, 'resume.html', [$request]);
 });
 $app->get('/testme', function (Request $request, Response $response) {
+
+    $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
+    die('<pre>'. $youtube->init());
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
 

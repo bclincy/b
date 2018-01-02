@@ -15,14 +15,41 @@ use GuzzleHttp\Client as Client;
  */
 class HomeController
 {
+    /**
+     * @var ContainerInterface
+     */
     protected $container;
+    /**
+     * @var string title
+     */
     protected $title;
+    /**
+     * @var string cat
+     */
     protected $cat;
+    /**
+     * @var \PDO
+     */
     protected $pdo;
+    /**
+     * @var array
+     */
     protected $valid = ['title', 'content'];
+    /**
+     * @var
+     */
     protected $content;
+    /**
+     * @var
+     */
     protected $image;
 
+    /**
+     * HomeController constructor.
+     * @param ContainerInterface $container
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
@@ -31,17 +58,33 @@ class HomeController
     }
 
 
+    /**
+     * @return string
+     */
     public function test() {
         // your code here
         // use $this->view to render the HTML
         return 'sike';
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return mixed
+     */
     public function indexAction (Request $request, Response $response)
     {
         return $this->view->render($response, 'contact.html.twig', ['title' => 'Home again']);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param null $data
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function pageAction (Request $request, Response $response, $data = null)
     {
         if ($request->getAttribute('title') !== null || !$this->title) {
@@ -75,6 +118,14 @@ class HomeController
         return $this->view->render($response, 'default.html.twig', $content);
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return mixed
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
     public function category (Request $request, Response $response, $args)
     {
         $pdo = $this->container->get('pdo');
@@ -97,21 +148,38 @@ class HomeController
         );
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return mixed
+     */
     public function aboutIndex (Request $request, Response $response, $args)
     {
         return $this->view->render($response, 'goals.html.twig', ['title' => 'My Goals', 'data' => $args]);
     }
 
+    /**
+     * @param $string
+     * @return mixed
+     */
     private function removeUnderScore($string)
     {
         return str_replace('_', ' ', $string);
     }
 
+    /**
+     * @param $str
+     * @return mixed
+     */
     private function addUnderScore($str)
     {
         return str_replace(' ', '_', $str);
     }
 
+    /**
+     * @param $data
+     */
     private function buildContent($data)
     {
         $this->content['url'] = isset($this->content['title']) ? $this->createCanonicalUrl($this->content['title']) :
@@ -120,6 +188,9 @@ class HomeController
 
     }
 
+    /**
+     * @return bool
+     */
     private function openGraphImage ()
     {
         if ($this->content['content'] !== null) {
@@ -136,6 +207,10 @@ class HomeController
         return $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png' == $this->image ? false: true;
     }
 
+    /**
+     * @param $title
+     * @return string
+     */
     private function createCanonicalUrl ($title)
     {
         //This is direct contact link
@@ -144,11 +219,13 @@ class HomeController
         return '/pages/'.$title;
     }
 
+    
     private function postFrom()
     {
         $client = new Client();
-        $resp = $client->request('GET', 'http://' . $apiUrl . '/' .$resource);
+        $resp = $client->request('GET', 'http://' . $this->container->get('apiUrl') . '/' .$resource);
     }
+
 
     private function contact(Request $request, Response $response)
     {

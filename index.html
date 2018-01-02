@@ -273,12 +273,29 @@
     document.getElementById('displayemail').innerHTML = 'brian@brianclincy.com';
     document.getElementById('frmnews').addEventListener('submit', signup);
     document.getElementById('contactFrm').addEventListener('submit', sendContact);
-    var xhr = new XMLHttpRequest();
+
+
+    //  Todo: make this function for all request could change to fetch
+    function calls(data) {
+        const xhr = new XMLHttpRequest();
+        xhr.open(data.meth, data.endpoint, true);
+        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+        xhr.onload = function (data) {
+            if (this.status === 200) {
+                const resp = JSON.parse(this.responseText);
+            }
+        };
+        if (typeof (data.method) !== undefined && data.method === 'POST') {
+            const postData = JSON.stringify(data.pdata);
+        } else { const postData = '';}
+        xhr.send(postData);
+
+    }
 
     function signup(e) {
         e.preventDefault();
         var xhr = new XMLHttpRequest();
-        var email = document.getElementById('email').value;
+        const email = document.getElementById('email').value;
         if (ValidateEmail(email) === true) {
             xhr.open('POST', '/api/newsletter/' + email, true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
@@ -296,7 +313,7 @@
         if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
             return (true)
         }
-        alert("You have entered an invalid email address!")
+        alert("You have entered an invalid email address!");
         return (false)
     }
 

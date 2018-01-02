@@ -35,3 +35,4 @@ $container['pdo'] = function ($container) {
 };
 
 $container['apiUrl'] = 'http://' . $_SERVER['HTTP_HOST'] . '/api';
+$container['gApiKey'] = 'AIzaSyB5MApUbB0ybehwTXEOaPA4HK3UOSrZqus';

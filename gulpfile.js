@@ -11,5 +11,5 @@ gulp.task('styles', function() {
 
 gulp.task('default',['styles'], function(){
 	    console.log('hello world');
-})
+});
 
