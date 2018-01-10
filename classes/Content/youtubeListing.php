@@ -8,6 +8,7 @@
 
 namespace app\Content;
 
+use app\Authorization\Encryptor;
 use GuzzleHttp\Client as client;
 
 class youtubeListing
@@ -103,7 +104,7 @@ class youtubeListing
         if ($data->items !== null) {
             $details['channelTitle'] = $data->items[0]->snippet->channelTitle;
             foreach ($data->items as $item) {
-                $details['videos'][] = [
+                $details[] = [
                     'title' => $item->snippet->title,
                     'id' => $item->contentDetails->videoId,
                     'description' => $item->snippet->description,
@@ -116,11 +117,39 @@ class youtubeListing
                     'url' => 'https://youtube.com/embed/'. $item->contentDetails->videoId,
                 ];
             }
+            $details['hash'] = $this->generateHash();
             $this->listing = $details;
 
             return true;
         }
 
         return false;
+    }
+
+    private function createGenesisBlock()
+    {
+        if (!isset($this->listing['hash'])) {
+            $this->listing['meta'] = [
+                'name' => 'Youtube BlockChain',
+                'author' => 'Brian Clincy',
+                'version' => '1.0.0',
+                'hash' => 'Genesis',
+            ];
+        }
+    }
+
+    private function isChainValid()
+    {
+        
+    }
+
+    private function addBlock()
+    {
+
+    }
+
+    private function generateHash()
+    {
+        return encryptor::encryptStr(serialize($this->listing));
     }
 }

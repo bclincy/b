@@ -38,17 +38,7 @@ $container['HomeController'] = function (\Slim\Container $container) {
     return new \app\Controller\HomeController($container);
 };
 
-$app->get('/nnuts/{id}', function (Request $request, Response $response) {
-    $name = $request->getAttribute('id');
-    $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
-    $stmt->execute([':id' => $name]);
-    $this->logger->addInfo('Docs get by Id');
-
-    $response->getBody()->write('hello' . print_r($stmt, true));
-
-
-    return $response;
-});
+$app->get('/nnuts/{id}', 'HomeController:nnutsById');
 
 $app->get('/nnuts/episode/{name}', function (Request $request, Response $response) {
     $name = '%' . $request->getAttribute('name') . '%';
@@ -79,7 +69,7 @@ $app->get('/resume', function (Request $request, Response $response) {
 $app->get('/testme', function (Request $request, Response $response) {
 
     $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
-    die('<pre>'. $youtube->init());
+    die('<pre>'. var_dump($youtube->init()));
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
 
@@ -89,7 +79,7 @@ $app->get('/contact', function (Request $request, Response $response) {
 $app->post('/contact', 'HomeController:Contact');
 //$app->get('/about', 'HomeController:indexAction');
 
-$app->get('/pages/{title}', 'HomeController:pageAction' );
 $app->get('/{category}/{title}', 'HomeController:category' );
 $app->get('/{category}/', 'HomeController:category' );
+$app->get('/{title}', 'HomeController:pageAction' );
 $app->run();

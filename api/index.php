@@ -14,7 +14,7 @@ $container['apiStatus'] = [
     [500 => ['title'=> 'Server Error', 'msg' => 'Internal Server error our side is down' ]]
 ];
 $container['ApiController'] = function (\Slim\Container $container) {
-    return new API($container);
+    return new \app\Controller\ApiController($container);
 };
 
 $container['hasAccess'] = function (\Slim\Container $container) {
@@ -69,5 +69,6 @@ $app->post('docs/{id}', function (Request $request, Response $response) {
 //    return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 //});
 $app->post('/contact/', 'ApiController:contact');
+$app->get('/nnuts/{id}', function($request, $response){ die('hello world');});
 
 $app->run();

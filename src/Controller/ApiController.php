@@ -125,4 +125,21 @@ class ApiController
 
     }
 
+    public function nnutsById(Response $response, Request $request)
+    {
+        die('hello world');
+        try {
+            $id = $request->getAttribute('id');
+            $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            $data = $stmt->fetchAll();
+            $data = $data[0] !== null ? $data[0] : [];
+        } catch (\Exception $e) {
+            $this->logger->ERROR('NNUTS by ID' . print_r($request, true));
+            $data = $this->restErrors(400);
+        }
+        return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+
+    }
+
 }

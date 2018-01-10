@@ -219,11 +219,18 @@ class HomeController
         return '/pages/'.$title;
     }
 
-    
-    private function postFrom()
+    public function nnutsById(Request $request, Response $response)
+    {
+        $data = $this->postFrom('/nnuts/'.$request->getAttribute('id'));
+        echo '<pre>'. print_r($data, true);
+    }
+    private function postFrom($resource)
     {
         $client = new Client();
-        $resp = $client->request('GET', 'http://' . $this->container->get('apiUrl') . '/' .$resource);
+//        die($this->container->get('apiUrl'). );
+        $resp = $client->request('GET', $this->container->apiUrl . $resource);
+        $data = json_decode($resp->getBody(), true);
+
     }
 
 
