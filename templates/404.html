@@ -1,0 +1,42 @@
+{% extends 'index.html.twig' %}
+{% block title %}Error Page found{% endblock %}
+{% block content %}
+<style>
+    #alert {
+        width: 30vw;
+        height: 30vh;
+        padding: 30% 0;
+        margin: auto;
+    }
+    #alert h1 {
+        padding: 0 0 10px 0;
+        font-size: 2em;
+    }
+    .error-actions {
+        padding: 10px 10px 10px 0;
+    }
+
+    .error-details {
+        font-size: 1.2em;
+        font-family: "Helvetica Neue", sans-serif;
+        padding: 10px;
+    }
+</style>
+<div class="row" id="alert">
+    <div class="col-md-12">
+        <div class="error-template">
+            <h1>Oops!</h1>
+            <h2>404 Page Not Found</h2>
+            <div class="error-details">
+                We're sorry and embarrassed, an error has occurred, the requested page was not found or no longer exists!
+            </div>
+            <div class="error-actions">
+                <a href="/" class="btn btn-primary btn-lg"><i class="fa fa-home" aria-hidden="true"></i>
+                    Take Me Home </a><a href="/contact" class="btn btn-default btn-lg"><span
+                    class="glyphicon glyphicon-envelope"></span> Contact Support </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

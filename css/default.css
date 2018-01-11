@@ -1,0 +1,30 @@
+#breadcrumb {
+    margin: 2em 0 1em 0;
+}
+.top-scroll {
+    margin-top: 50px;
+}
+
+.top-scroll a {
+    text-decoration: none;
+    color: inherit;
+}
+
+i.scroll {
+    color: #333333;
+}
+
+i.scroll:hover {
+    color: #0a5175;
+}
+
+.widget-title {
+    font-size: 14px;
+    color: #000;
+    margin-top: 12px;
+    margin-bottom: 10px;
+    padding-bottom: 13px;
+    border-bottom: 1px solid #000;
+    line-height: 1;
+    font-weight: 700;
+}

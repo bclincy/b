@@ -33,7 +33,7 @@ class ApiController
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->pdo = $this->container->get('pdo');
+        $this->pdo = $this->container->pdo;
     }
     /**
      * @param Request $request
@@ -43,13 +43,40 @@ class ApiController
      */
     public function contactFrm (Request $request, Response $response, $args)
     {
-        die(print_r($this->container, true));
         $data = $request->getParsedBody();
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
     }
 
+    public function contact (Request $request, Response $response)
+    {
+        if( $data = $request->getParsedBody() ) {
+            $required = ['name', 'emailCnt', 'message'];
+            array_walk($required, function($val) {
+                if (!isset($data[$val]) && strlen($data[$val])){
+                    $error[] = ucwords($val) . ' is a required field';
+                }
+            });
+            if (isset($error) && is_array($error)) {
+                $msg['details'] = implode("\n", $error);
+                $msg['code'] = 400;
+                $data = $this->restErrors($msg);
+            } else {
+                $data = [];
+                $data['code'] = 200;
+                $data['success'] = true;
+                $data['status'] = "We sent an email";
+            }
+        }
+        if ($data == null) {
+            $data = $this->restErrors($msg['code'] = 500);
+        }
+        return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+
+    }
+
     public function test()
     {
+        echo 'noal';
         die('hello');
     }
 
@@ -95,6 +122,23 @@ class ApiController
         $data['status'] = 'Failed';
         $data['details'] = $this->error;
         return array_filter($data);
+
+    }
+
+    public function nnutsById(Response $response, Request $request)
+    {
+        die('hello world');
+        try {
+            $id = $request->getAttribute('id');
+            $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
+            $stmt->execute([':id' => $id]);
+            $data = $stmt->fetchAll();
+            $data = $data[0] !== null ? $data[0] : [];
+        } catch (\Exception $e) {
+            $this->logger->ERROR('NNUTS by ID' . print_r($request, true));
+            $data = $this->restErrors(400);
+        }
+        return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 
     }
 
