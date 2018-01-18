@@ -28,3 +28,10 @@ i.scroll:hover {
     line-height: 1;
     font-weight: 700;
 }
+.content {
+    min-height: 30rem;
+    padding-bottom: 2em;
+}
+#contact {
+    min-height: 30rem;
+}

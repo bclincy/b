@@ -33,6 +33,10 @@ $container['pdo'] = function ($container) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
-
+$container['gtoken'] = function ($container) {
+    $client = new Google_Client();
+    $client->setApplicationName("Client_Library_Examples");
+    $client->setDeveloperKey("YOUR_APP_KEY");
+};
 $container['apiUrl'] = 'http://' . $_SERVER['HTTP_HOST'] . '/api';
 $container['gApiKey'] = 'AIzaSyB5MApUbB0ybehwTXEOaPA4HK3UOSrZqus';

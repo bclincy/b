@@ -109,7 +109,7 @@
             </div>
         </div>
     </div>
-    <div class="badgescard animated zoomInDown">
+    <div class="badgescard animated zoomInDown social">
         <a href="https://www.facebook.com/brianclincy/"><span class="fa fa-facebook"></span></a>
         <a href="https://twitter.com/clincy"><span class="fa fa-twitter"> </span></a>
         <a href="https://google.com/+BrianClincy"><span class="fa fa-google-plus"></span></a>
@@ -139,11 +139,9 @@
     </div>
 </section>
 <section id="contact" class="bg-inverse p-3">
-    <a name="contact"></a>
+    <a name="contactus"></a>
     <div class="row">
         <div class="container-fluid">
-
-
             <form id="contactFrm">
                 <h1><i class="fa fa-envelope" aria-hidden="true"></i> Contact Clincy</h1>
                 <div class="row">
@@ -156,7 +154,7 @@
                                             <div class="form-group">
                                                 <label for="name">
                                                     Name</label>
-                                                <input type="text" class="form-control" id="name"
+                                                <input type="text" class="form-control" id="name" name="name"
                                                        placeholder="Enter name" required="required"/>
                                             </div>
                                             <div class="form-group">
@@ -227,14 +225,16 @@
 </section>
 <section id="preview">
     <div class="container">
-        <div class="img p-2"><img src="/images/tn/thinking_tn.jpg" width="100" height="100"
-                                  alt="Brian Clincy Stuff on his mind" title="life out loud">
-            Brian Clincy, I'm a work in process. Everyday my goal is to be collectively be better than I was yesterday.
-            Today at the intersection of knowledge and wisdom meet is where you'll find me. As I share my journey and
-            status of everyday lessons my dream is to help other avoid my pitfalls, and connect my history with my
-            future.
+        <div class="row hrblockish">
+            <div class="img p-2"><img src="/images/tn/thinking_tn.jpg" width="100" height="100"
+                                      alt="Brian Clincy Stuff on his mind" title="life out loud">
+                Brian Clincy, I'm a work in process. Everyday my goal is to be collectively be better than I was yesterday.
+                Today at the intersection of knowledge and wisdom meet is where you'll find me. As I share my journey and
+                status of everyday lessons my dream is to help other avoid my pitfalls, and connect my history with my
+                future.
+            </div>
+            <div><a href="goals#continue" class="btn btn-outline-secondary">Read more...</a></div>
         </div>
-        <div><a href="about/goals#continue" class="btn btn-outline-secondary">Read more...</a></div>
     </div>
 </section>
 <footer>
@@ -245,8 +245,8 @@
     <div class="nav m-4">
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="/about">About</a></li>
-            <li><a href="/nnuts">NNUtS :: Podcast</a></li>
+            <li><a href="/about/">About</a></li>
+            <li><a href="/NNUTS">NNUtS :: Podcast</a></li>
             <li>Hire me :: App Dev</li>
         </ul>
     </div>
@@ -260,7 +260,11 @@
     </div>
     <div><h3>Network</h3>
         <ul>
+            <li><a href="http://13lack.net">13lack Network</a></li>
+            <li><a href="http://daonlinebiz.com">DaOnlineBiz</a></li>
+            <li><a href="http://iplaysports.club ">Iplaysports Club</a></li>
             <li><a href="http://muskegonareasports.com">Muskegon Area Sports</a></li>
+            <li><a href="http://http://www.usaoassn.com/">USA Officials Associations</a></li>
             <li>http://muskegonareasports.com</li>
         </ul>
     </div>
@@ -274,21 +278,25 @@
     document.getElementById('frmnews').addEventListener('submit', signup);
     document.getElementById('contactFrm').addEventListener('submit', sendContact);
 
-
     //  Todo: make this function for all request could change to fetch
     function calls(data) {
         const xhr = new XMLHttpRequest();
+        const resp = {};
         xhr.open(data.meth, data.endpoint, true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onload = function (data) {
             if (this.status === 200) {
-                const resp = JSON.parse(this.responseText);
+                resp.result = JSON.parse(this.responseText);
+            } else {
+                resp.error = this.status;
             }
         };
-        if (typeof (data.method) !== undefined && data.method === 'POST') {
+        if (typeof (data.method) !== 'undefined' && data.method === 'POST') {
             const postData = JSON.stringify(data.pdata);
         } else { const postData = '';}
         xhr.send(postData);
+
+        return resp;
 
     }
 
@@ -345,24 +353,35 @@
 
     function sendContact(e) {
         e.preventDefault();
+        const xhr = new XMLHttpRequest();
         var frmData = toJSONString(this);
-        console.log(frmData);
+        const contactdiv = document.getElementById('contact');
         xhr.open('POST', '/api/contact/', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onload = function (data) {
             if (this.status === 200) {
-//                    var resp = JSON.parse(this.responseText);
-                console.log(this.responseText);
+                console.log(data);
+                var resp = JSON.parse(this.responseText);
+                if (typeof resp.status !== 'undefined' && parseInt(resp.status) === 200 ) {
+                    contactdiv.innerHTML = '<div class="container animated bounceInDown">' +
+                        '<h1><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i> ' + resp.name + ' your message was sent!</h1>' +
+                        '<p>Thank you your feedback is important to us please give us 24 hours to respond to your message.</p>';
+                } else {
+                    contactdiv.innerHTML = '<h3><i class="fa fa-exclamation fa-2x" aria-hidden="true"></i> Error!</h3><p>There was a problem with your message please try again' +
+                        'later a support ticket has been created</p>' + contactdiv.innerHTML;
+                }
+            } else {
+                contactdiv.innerHTML = '<h3>System Down</h3><p>This is embarrassing but our system is down please try again later </p>'
+                + contactdiv.innerHTML;
             }
-            console.log(data);
         };
         xhr.send(frmData);
     }
 
     function toJSONString(form) {
         var obj = {};
-        var elements = form.querySelectorAll("input, select, textarea, number, email, .email");
-        for (var i = 0; i < elements.length; ++i) {
+        var elements = form.querySelectorAll("input, select, textarea, number, email, text, .email");
+        for (i = 0; i < elements.length; i++) {
             var element = elements[i];
             var name = element.name;
             var value = element.value;

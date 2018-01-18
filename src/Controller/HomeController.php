@@ -216,7 +216,13 @@ class HomeController
         //This is direct contact link
         $title = stristr($title, '_') ? $title : $this->addUnderScore($title);
 
-        return '/pages/'.$title;
+        return '/'.$title;
+    }
+
+    public function show (Request $request, Response $response)
+    {
+        die($request->getAttribute('slug'));
+
     }
 
     public function nnutsById(Request $request, Response $response)
@@ -224,6 +230,7 @@ class HomeController
         $data = $this->postFrom('/nnuts/'.$request->getAttribute('id'));
         echo '<pre>'. print_r($data, true);
     }
+
     private function postFrom($resource)
     {
         $client = new Client();

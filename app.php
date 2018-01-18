@@ -11,6 +11,8 @@ use Psr\Http\Message\ResponseInterface as Response;
 use Psr7Middlewares\Middleware;
 use Slim\Views\Twig;
 use app\Content\youtubeListing as yt;
+use app\Authorization\Encryptor as encrypt;
+use app\Authorization\GoogleToken;
 
 require_once 'config/slimConfig.php';
 
@@ -66,20 +68,27 @@ $app->get('/home', function (Request $request, Response $response){
 $app->get('/resume', function (Request $request, Response $response) {
     return $this->view->render($response, 'resume.html', [$request]);
 });
+
+
 $app->get('/testme', function (Request $request, Response $response) {
 
     $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
-    die('<pre>'. var_dump($youtube->init()));
+    $youtube = $youtube->init();
+    $str = encrypt::decryptStr($youtube['hash']);
+    $fight = new App\Authorization\GoogleToken();
+    $fight->init();
+    die('hello');
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
-
-$app->get('/contact', function (Request $request, Response $response) {
-    return $this->view->render($response, 'contact.html.twig', [$request]);
-});
-$app->post('/contact', 'HomeController:Contact');
-//$app->get('/about', 'HomeController:indexAction');
-
-$app->get('/{category}/{title}', 'HomeController:category' );
+$app->get('/{slug}', 'HomeController:show');
 $app->get('/{category}/', 'HomeController:category' );
-$app->get('/{title}', 'HomeController:pageAction' );
+//
+//$app->get('/contact', function (Request $request, Response $response) {
+//    return $this->view->render($response, 'contact.html.twig', [$request]);
+//});
+//$app->post('/contact', 'HomeController:Contact');
+////$app->get('/about', 'HomeController:indexAction');
+//
+//$app->get('/{category}/{title}', 'HomeController:category' );
+//$app->get('/{title}', 'HomeController:pageAction' );
 $app->run();

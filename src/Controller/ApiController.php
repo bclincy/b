@@ -21,41 +21,54 @@ class ApiController
      * @var ContainerInterface
      */
     protected $container;
-    /**
-     * @var mixed|\PDO
-     */
+    /** @var mixed|\PDO */
     protected $pdo;
-
-    protected $view;
-
+    /** @var array $error */
     protected $error;
+    /** @var \Monolog\Logger */
+    protected $logger;
+    /** @var array $apiMsgs */
+    protected $apiMsgs;
+    /** @var array $required */
+    protected $required = [
+        'mothersday' => ['fname|string|2', 'lname|string|2', 'email|string'],
+        'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5', 'status|int|3']
+    ];
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
         $this->pdo = $this->container->pdo;
+        $this->logger = $this->container->logger;
+        $this->apiMsgs = $this->container->apiStatus['code'];
     }
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param $args
-     * @return mixed
-     */
+
+
     public function contactFrm (Request $request, Response $response, $args)
     {
         $data = $request->getParsedBody();
+        if ($data !== null) {
+            array_walk($this->required['contact'], [$this, 'meetsRequirements'], $data);
+            if ($this->error !== null) {
+                $data = $this->apiMsgs[400];
+                $data['status'] = 'Error';
+            } else {
+                list($fname, $lname)  = explode(' ', $request->getAttribute('name'));
+                $sql = 'INSERT INTO ';
+                $data['status'] = 200;
+                $data['msg'] = 'Success';
+            }
+        } else {
+            $data = $this->restErrors(500);
+            $data['status'] = 'error';
+        }
+
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
     }
 
     public function contact (Request $request, Response $response)
     {
         if( $data = $request->getParsedBody() ) {
-            $required = ['name', 'emailCnt', 'message'];
-            array_walk($required, function($val) {
-                if (!isset($data[$val]) && strlen($data[$val])){
-                    $error[] = ucwords($val) . ' is a required field';
-                }
-            });
             if (isset($error) && is_array($error)) {
                 $msg['details'] = implode("\n", $error);
                 $msg['code'] = 400;
@@ -125,9 +138,14 @@ class ApiController
 
     }
 
-    public function nnutsById(Response $response, Request $request)
+    public function genericForm (Response $response, Request $request)
     {
-        die('hello world');
+        $name = $request->getAttribute('frmName');
+
+    }
+
+    public function nnutsById(Request $request, Response $response)
+    {
         try {
             $id = $request->getAttribute('id');
             $stmt = $this->pdo->prepare('SELECT * FROM podcast WHERE id = :id');
@@ -135,11 +153,76 @@ class ApiController
             $data = $stmt->fetchAll();
             $data = $data[0] !== null ? $data[0] : [];
         } catch (\Exception $e) {
-            $this->logger->ERROR('NNUTS by ID' . print_r($request, true));
+            $this->logger->addError('NNUTS by ID' . print_r($request, true));
             $data = $this->restErrors(400);
         }
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
 
+    }
+
+    private function validate()
+    {
+        $form = $this->form['name'];
+        if ($this->required[$form] !== null ) {
+
+        } else {
+            $return = false;
+        }
+
+
+    }
+
+
+    private function meetsRequirements ($details, $key, $data)
+    {
+        list($name, $type, $length) = explode('|', $details);
+        if ($data[$name] === null) {
+            $error[$data->verify][] = $name . ' Was Empty';
+        }
+        switch ($type) {
+            case 'int':
+                if ( $data[$name] < $length ) {
+                    $error[$name][] = ucwords($name) . ' number smaller than min';
+                }
+                break;
+            case 'string':
+                if (strlen($data[$name]) < $length) {
+                    $error[$name][] = $key .' is string smaller than min';
+                }
+                break;
+            case 'date':
+                if (!$this->validateDate($data[$name], $length)) {
+                    $error[$name][] = $key . ' is not a date';
+                } else {
+                    $this->logger->adderror('ContactFrm API error ' . print_r($data, true));
+                }
+                break;
+        }
+        if (is_array($error)) {
+            $this->error[$data->verify] = $error;
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isValidToken()
+    {
+        $token = $_SERVER['PHP_AUTH_USER'];
+        if ($token === null) {
+            $valid = false;
+        } else {
+            $user = base64_decode($_SERVER['PHP_AUTH_USER']);
+            $valid = true;
+        }
+
+        return $valid;
+    }
+
+    private function validateDate($date, $format = 'Y-m-d')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
     }
 
 }

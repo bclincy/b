@@ -25,7 +25,7 @@ class NotFoundErrors extends NotFound
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response) {
         parent::__invoke($request, $response);
 
-        $this->view->render($response, '404.twig');
+        $this->view->render($response, '404.html');
 
         return $response->withStatus(404);
     }

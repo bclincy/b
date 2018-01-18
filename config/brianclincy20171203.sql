@@ -27,7 +27,7 @@ CREATE TABLE `Shoutouts` (
   `name` varchar(200) DEFAULT NULL,
   `shoutout` mediumtext NOT NULL,
   `website` varchar(200) NOT NULL COMMENT '	',
-  `tags` json NOT NULL,
+  `tags` VARCHAR (255) NOT NULL,
   `created` datetime DEFAULT NULL,
   `location` varchar(255) NOT NULL,
   PRIMARY KEY (`idShoutouts`)
@@ -90,7 +90,7 @@ CREATE TABLE `docs` (
   `authorID` tinyint(2) unsigned NOT NULL DEFAULT '1',
   `active` smallint(6) NOT NULL DEFAULT '0',
   `docName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
-  `category` json DEFAULT NULL,
+  `category` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `title_UNIQUE` (`title`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

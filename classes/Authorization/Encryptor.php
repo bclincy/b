@@ -8,6 +8,8 @@ namespace app\Authorization;
 
 class Encryptor
 {
+    public $method = 'AES-128-ECB';
+    protected $key;
     /**
      * @param int $length
      * @return string
@@ -36,23 +38,14 @@ class Encryptor
     }
 
     /**
-     * @param string $str
+     * @param string $data
      * @param string $key
-     * @param string $mac_algorithm
-     * @param string $enc_algorithm
-     * @param string $enc_mode
+     * @param string $method
      * @return string/boolean
      */
-    private static function decrypt ($str, $key, $mac_algorithm = 'sha1', $enc_algorithm = MCRYPT_RIJNDAEL_256, $enc_mode = MCRYPT_MODE_CBC)
+    private static function decrypt ($data, $key, $method = 'AES-128-ECB')
     {
-        $str = base64_decode($str);
-        $iv_size = mcrypt_get_iv_size($enc_algorithm, $enc_mode);
-        $iv_dec = substr($str, 0, $iv_size);
-        $str = substr($str, $iv_size);
-        $str = mcrypt_decrypt($enc_algorithm, $key, $str, $enc_mode, $iv_dec);
-        $mac_block_size = ceil(self::getMacAlgoBlockSize($mac_algorithm) / 8);
-        $mac_dec = substr($str, 0, $mac_block_size);
-        $str = substr($str, $mac_block_size);
+        $str = openssl_decrypt($data, $method, $key);
         if (empty($str)) {
             $str = false;
         }
@@ -63,21 +56,14 @@ class Encryptor
     /**
      * @param string $str
      * @param string $key
-     * @param string $mac_algorithm
-     * @param string $enc_algorithm
-     * @param string $enc_mode
+     * @param string $method
      * @return string
      */
-    private static function encrypt ($str, $key, $mac_algorithm = 'sha1', $enc_algorithm = MCRYPT_RIJNDAEL_256, $enc_mode = MCRYPT_MODE_CBC)
+    private static function encrypt ($str, $key, $method = 'AES-128-ECB')
     {
-        $mac = hash_hmac($mac_algorithm, $str, $key, true);
-        $mac = substr($mac, 0, ceil(self::getMacAlgoBlockSize($mac_algorithm) / 8));
-        $str = $mac . $str;
-        $iv_size = mcrypt_get_iv_size($enc_algorithm, $enc_mode);
-        $iv = mcrypt_create_iv($iv_size, MCRYPT_RAND);
-        $ciphertext = mcrypt_encrypt($enc_algorithm, $key, $str, $enc_mode, $iv);
+        $encrypt = openssl_encrypt($str, $method, $key, 0, '');
 
-        return base64_encode($iv . $ciphertext);
+        return base64_encode($encrypt);
     }
 
     /**
@@ -99,11 +85,13 @@ class Encryptor
      */
     public static function decryptStr ($encodedStr)
     {
+        if ($encodedStr !== null) {
+
+        }
         $unencodeStr = base64_decode($encodedStr);
         if (is_string($unencodeStr)) {
             $strandKey= explode(':', $unencodeStr);
-            //backwards compatable with passwords that weren't encypted by the service
-            count($strandKey) == 1 ? $decrypted = $unencodeStr : $decrypted = static::decrypt(trim($strandKey[0]), trim($strandKey[1]));
+            $decrypted = static::decrypt(trim($strandKey[0]), trim($strandKey[1]));
         } else {
             $decrypted = $encodedStr;
         }
