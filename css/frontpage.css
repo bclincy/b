@@ -228,3 +228,22 @@ footer img {
     border: none;
     border-radius: 5px;
 }
+.loadspinner {
+    display:    none;
+    position:   fixed;
+    z-index:    1000;
+    top:        0;
+    left:       0;
+    height:     100%;
+    width:      100%;
+    background: rgba( 255, 255, 255, .8 )
+    url('/images/loadingSpinner.gif')
+    50% 50%
+    no-repeat;
+}
+.loadspinner img {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}

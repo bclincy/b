@@ -13,6 +13,7 @@ use Slim\Views\Twig;
 use app\Content\youtubeListing as yt;
 use app\Authorization\Encryptor as encrypt;
 use app\Authorization\GoogleToken;
+use app\Repository\Shoutouts as shoutout;
 
 require_once 'config/slimConfig.php';
 
@@ -52,10 +53,13 @@ $app->get('/nnuts/episode/{name}', function (Request $request, Response $respons
     return $response;
 });
 $app->get('/shoutouts', function (Request $request, Response $response) {
+    $shoutout = new shoutout($this->pdo);
+    $results = print_r($shoutout->select(), true);
     $name = '%' . $request->getAttribute('name') . '%';
-    $query = $this->pdo->prepare('SELECT * FROM podcast where title like :name');
-    $query->execute([':name' => $name]);
-    $results = $query->fetchall();
+//    $query = $this->pdo->prepare('SELECT * FROM Shoutouts where title like :name');
+//    $query->execute([':name' => $name]);
+//    $results = $query->fetchall()[0];
+    die('<pre>' . print_r($results, true));
     $response->getBody()->write('');
 
     return $response;
@@ -69,14 +73,19 @@ $app->get('/resume', function (Request $request, Response $response) {
     return $this->view->render($response, 'resume.html', [$request]);
 });
 
+$app->get('/callback/{service}/{key}', function (Request $request, Response $response) {
 
+    die('hello');
+    return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
+});
 $app->get('/testme', function (Request $request, Response $response) {
 
-    $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
-    $youtube = $youtube->init();
-    $str = encrypt::decryptStr($youtube['hash']);
-    $fight = new App\Authorization\GoogleToken();
-    $fight->init();
+
+//    $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
+//    $youtube = $youtube->init();
+//    $str = encrypt::decryptStr($youtube['hash']);
+//    $fight = new GoogleToken();
+//    $fight->init();
     die('hello');
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });

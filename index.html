@@ -86,7 +86,7 @@
                 </div>
             </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        <form class="form-inline my-2 my-lg-0 m-2 pr-3">
             <input class="form-control mr-sm-2" type="text" placeholder="Search">
             <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
         </form>
@@ -138,9 +138,10 @@
         </div>
     </div>
 </section>
-<section id="contact" class="bg-inverse p-3">
+<section class="bg-inverse p-3">
     <a name="contactus"></a>
-    <div class="row">
+    <div id="contactError"></div>
+    <div class="row" id="contact">
         <div class="container-fluid">
             <form id="contactFrm">
                 <h1><i class="fa fa-envelope" aria-hidden="true"></i> Contact Clincy</h1>
@@ -178,7 +179,7 @@
                                                 <select id="subject" name="subject" class="form-control"
                                                         required="required">
                                                     <option value="" selected="">Select a Subject:</option>
-                                                    <option value="service">Hit Brian Up</option>
+                                                    <option value="Talk to me">Hit Brian Up</option>
                                                     <option value="suggestions">Suggestions</option>
                                                     <option value="product">Product Support</option>
                                                     <option value="webIssues">Web Problems</option>
@@ -195,7 +196,7 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <button type="submit" class="btn btn-primary pull-right" id="btnContactUs">
+                                            <button type="submit" class="btn btn-secondary pull-right" id="btnContactUs">
                                                 Send Message
                                             </button>
                                         </div>
@@ -247,7 +248,7 @@
             <li><a href="/">Home</a></li>
             <li><a href="/about/">About</a></li>
             <li><a href="/NNUTS">NNUtS :: Podcast</a></li>
-            <li>Hire me :: App Dev</li>
+            <li><a href="/resume">Hire Me :: Resume</a></li>
         </ul>
     </div>
     <div class="m-4">
@@ -269,6 +270,7 @@
         </ul>
     </div>
 </footer>
+<div class="loadspinner"><img src="/images/loadingSpinner.gif"></div>
 </body>
 <script src="https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js"></script>
 <script src="vendor/components/jquery/dist/jquery.min.js"></script>
@@ -277,6 +279,7 @@
     document.getElementById('displayemail').innerHTML = 'brian@brianclincy.com';
     document.getElementById('frmnews').addEventListener('submit', signup);
     document.getElementById('contactFrm').addEventListener('submit', sendContact);
+
 
     //  Todo: make this function for all request could change to fetch
     function calls(data) {
@@ -341,38 +344,46 @@
             return false;
         });
 
-        // Animate
-        function animate(element, animation) {
-            $(element).addClass('animated ' + animation);
-            var wait = setTimeout(function () {
-                $(element).removeClass('animated ' + animation);
-            }, 1000);
-        }
+
 
     });
 
+    // Animate
+    function animate(element, animation) {
+        console.log(element);
+        // document.getElementById(element).className += 'animated ' + animation;
+        // var wait = setTimeout(function () {
+        //     $(element).removeClass('animated ' + animation);
+        // }, 1000);
+    }
     function sendContact(e) {
         e.preventDefault();
         const xhr = new XMLHttpRequest();
         var frmData = toJSONString(this);
         const contactdiv = document.getElementById('contact');
+        const showError = document.getElementById('contactError');
+        animate(showError, 'BounceOutLeft');
         xhr.open('POST', '/api/contact/', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-        xhr.onload = function (data) {
-            if (this.status === 200) {
-                console.log(data);
-                var resp = JSON.parse(this.responseText);
+        xhr.onprogress = function(pe) {
+            console.log('WHAT THE BOOYA');
+        }
+        xhr.onreadystatechange = function (data) {
+            console.log(data);
+            if (this.readyState === 4 && this.status === 200) {
+                const resp = JSON.parse(this.responseText);
+                console.table(resp);
                 if (typeof resp.status !== 'undefined' && parseInt(resp.status) === 200 ) {
-                    contactdiv.innerHTML = '<div class="container animated bounceInDown">' +
-                        '<h1><i class="fa fa-thumbs-o-up fa-2x" aria-hidden="true"></i> ' + resp.name + ' your message was sent!</h1>' +
-                        '<p>Thank you your feedback is important to us please give us 24 hours to respond to your message.</p>';
+                    contactdiv.innerHTML = resp.content;
+                    animate(contactdiv, 'BounceInLeft');
+                    animate(showError, 'BounceOutLeft');
                 } else {
-                    contactdiv.innerHTML = '<h3><i class="fa fa-exclamation fa-2x" aria-hidden="true"></i> Error!</h3><p>There was a problem with your message please try again' +
-                        'later a support ticket has been created</p>' + contactdiv.innerHTML;
+                    showError.innerHTML = resp.content;
+                    animate(showError, 'bounceInDown');
                 }
             } else {
-                contactdiv.innerHTML = '<h3>System Down</h3><p>This is embarrassing but our system is down please try again later </p>'
-                + contactdiv.innerHTML;
+                showError.innerHTML = '<h3>System Down</h3><p>This is embarrassing but our system is down please try again later </p>';
+                animate(showError, 'lightSpeedIn');
             }
         };
         xhr.send(frmData);

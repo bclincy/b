@@ -32,38 +32,64 @@ class ApiController
     /** @var array $required */
     protected $required = [
         'mothersday' => ['fname|string|2', 'lname|string|2', 'email|string'],
-        'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5', 'status|int|3']
+        'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5']
     ];
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->pdo = $this->container->pdo;
-        $this->logger = $this->container->logger;
-        $this->apiMsgs = $this->container->apiStatus['code'];
+        $this->pdo = $container->pdo;
+        $this->logger = $container->logger;
+        $this->apiMsgs = $container->get('apiStatus');
     }
 
 
-    public function contactFrm (Request $request, Response $response, $args)
+    public function contactFrm (Request $request, Response $response)
     {
         $data = $request->getParsedBody();
         if ($data !== null) {
             array_walk($this->required['contact'], [$this, 'meetsRequirements'], $data);
+            $data['email'] = $data['emailCnt'];
             if ($this->error !== null) {
-                $data = $this->apiMsgs[400];
-                $data['status'] = 'Error';
+                $return = $this->apiMsgs['codes'][400];
+                $return['status'] = 'Failure';
+                $error = ucwords(implode(' <br />', $this->error[0]));
+                $return['content'] = '<h2>Please Fill All Required Fields</h2><p>' . $error . '</p>';
             } else {
-                list($fname, $lname)  = explode(' ', $request->getAttribute('name'));
-                $sql = 'INSERT INTO ';
-                $data['status'] = 200;
-                $data['msg'] = 'Success';
+                list($firstName, $lastName) = $this->nameSplits($data['name']);
+                try {
+                    $name = $data['name'];
+                    $dbdata = [
+                        ':fname' => $firstName,
+                        ':lname' => $lastName,
+                        ':email' => $data['emailCnt'],
+                        ':subject' => $data['subject'],
+                        ':message' => $data['message'],
+                    ];
+                    $sql = 'INSERT INTO contact (fname, lname, email, subject, message, isReturned, recievedOn) VALUES (
+                             :fname, :lname, :email, :subject, :message, 0, now() )';
+                    $stmt = $this->pdo->prepare($sql);
+                    $stmt->execute($dbdata);
+                    $return['id'] = $this->pdo->lastInsertId();
+                    $mail = $this->sendmail($data);
+                    $return['sent'] = $mail;
+                    $return['status'] = 200;
+                    $return['msg'] = 'Success';
+                    $return['content'] = '<div><h1><i class="fa fa-thumbs-o-up fa-2x"'
+                        . 'aria-hidden="true"></i> ' . $name . ' your message was sent!</h1>' . '<p>Thank you your ' .
+                        'feedback is important to us please give us 24 hours to respond to your message.</p>';
+                } catch (\Exception $e) {
+                    $return = $this->restErrors(500);
+                    $return['content'] = $e->getMessage();
+                    return $response->withJson($return)->withHeader('Content-Type', 'application/json');
+                }
             }
         } else {
-            $data = $this->restErrors(500);
-            $data['status'] = 'error';
+            $return = $this->restErrors(500);
+            $return['status'] = 'error';
         }
 
-        return $response->withJson($data)->withHeader('Content-Type', 'application/json');
+        return $response->withJson($return)->withHeader('Content-Type', 'application/json');
     }
 
     public function contact (Request $request, Response $response)
@@ -160,46 +186,42 @@ class ApiController
 
     }
 
-    private function validate()
-    {
-        $form = $this->form['name'];
-        if ($this->required[$form] !== null ) {
-
-        } else {
-            $return = false;
-        }
-
-
-    }
 
 
     private function meetsRequirements ($details, $key, $data)
     {
         list($name, $type, $length) = explode('|', $details);
-        if ($data[$name] === null) {
-            $error[$data->verify][] = $name . ' Was Empty';
+        if (isset($name) && !isset($data[$name])) {
+            $error[] = ucwords(strtolower($name)) . ' Was Empty';
+        } else {
+
+            switch ($type) {
+                case 'int':
+                    if ( $data[$name] < $length ) {
+                        $error[] = ucwords($name) . ' number smaller than min';
+                    }
+                    break;
+                case 'string':
+                    if (strlen($data[$name]) < $length) {
+                        $error[] = $key .' is string smaller than min';
+                    }
+                    break;
+                case 'email':
+                    if (!filter_var($data[$name], FILTER_VALIDATE_EMAIL)) {
+                        $error[] = $data[$name] . ' has an invalid email format';
+                    }
+                    break;
+                case 'date':
+                    if (!$this->validateDate($data[$name], $length)) {
+                        $error[] = $key . ' is not a date';
+                    }
+                    break;
+            }
         }
-        switch ($type) {
-            case 'int':
-                if ( $data[$name] < $length ) {
-                    $error[$name][] = ucwords($name) . ' number smaller than min';
-                }
-                break;
-            case 'string':
-                if (strlen($data[$name]) < $length) {
-                    $error[$name][] = $key .' is string smaller than min';
-                }
-                break;
-            case 'date':
-                if (!$this->validateDate($data[$name], $length)) {
-                    $error[$name][] = $key . ' is not a date';
-                } else {
-                    $this->logger->adderror('ContactFrm API error ' . print_r($data, true));
-                }
-                break;
-        }
-        if (is_array($error)) {
-            $this->error[$data->verify] = $error;
+        if (isset($error) && is_array($error)) {
+            $dd = print_r($_SERVER, true) . "\n" . print_r($data, true);
+            $this->logger->addInfo('Bad contact form data dump: '.$dd );
+            $this->error[] = $error;
             return false;
         }
 
@@ -224,5 +246,36 @@ class ApiController
         $d = DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
+
+    private function nameSplits ($name)
+    {
+        $name = ucwords(strtolower($name));
+        list($firstName, $lastName)  = explode(' ', $name);
+        if ($firstName === null || $lastName === null) {
+            $firstName = ucwords(strtolower($name));
+            $lastName = $firstName;
+        }
+
+        return [$firstName, $lastName];
+
+    }
+
+    private function sendmail($data)
+    {
+        // Create the Mailer using your created Transport
+        $mailer = new \Swift_Mailer($this->container->transport);
+        $data['message'] = strip_tags($data['message'], '<br><p><div>');
+        // Create a message
+        $message = (new \Swift_Message($data['subject']))
+            ->setFrom(['info@brianclincy.com' => 'Brian'])
+            ->setTo(['bclincy@gmail.com', 'info@brianclincy.com' => 'Brian Clincy'])
+            ->setBody($data['message'], 'text/html')
+            ->addPart(strip_tags($data['message']), 'text/plain');
+
+        // Send the message
+        return $mailer->send($message);
+
+    }
+
 
 }

@@ -19,7 +19,7 @@ class GoogleToken
     {
 
         // specify the path to your application credentials
-        putenv(__DIR__ . '/mykeyya.json');
+        putenv(__DIR__ . '/googleaipcoauthcreds.json');
 
         // define the scopes for your API call
         $scopes = ['https://www.googleapis.com/auth/drive.readonly'];

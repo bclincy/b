@@ -6,5 +6,6 @@
 /vendor/
 /logs/
 /node_modules/
-/conf/slimConfig.php
+/config/slimConfig.php
 /.idea
+/classes/Authorization/*.json

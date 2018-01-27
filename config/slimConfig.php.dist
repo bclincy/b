@@ -32,5 +32,16 @@ $container['pdo'] = function ($container) {
     $pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
     return $pdo;
 };
+$container['transport'] = function ($c) {
+    $transport = (new Swift_SmtpTransport('mail.brianclincy.com', 587))
+        ->setUsername('email@home.com')
+        ->setPassword('your password');
+    return $transport;
+};
+$container['gtoken'] = function ($container) {
+    $client = new Google_Client();
+    $client->setApplicationName("Client_Library_Examples");
+    $client->setDeveloperKey("YOUR_APP_KEY");
+};
 $container['apiUrl'] = 'http://' . $_SERVER['HTTP_HOST'] . '/api';
 $container['gApiKey'] = 'Rand0m$t4ingKey';
