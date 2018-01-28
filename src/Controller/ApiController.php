@@ -32,7 +32,8 @@ class ApiController
     /** @var array $required */
     protected $required = [
         'mothersday' => ['fname|string|2', 'lname|string|2', 'email|string'],
-        'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5']
+        'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5'],
+        'shoutout' => ['name|string|5', 'shoutout|string|15', 'slug|string|3'],
     ];
 
     public function __construct(ContainerInterface $container)
@@ -277,5 +278,16 @@ class ApiController
 
     }
 
+    private function addShoutout(Request $request, Response $response)
+    {
+        $shoutout = $request->getParsedBody();
+        if ($shoutout !== null) {
+
+
+        }
+
+        return false;
+
+    }
 
 }
