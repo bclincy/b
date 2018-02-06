@@ -46,7 +46,14 @@ class Shoutouts
         $sql = 'INSERT INTO Shoutouts (name, shoutout, website, slugs, created, location) VALUE
                  (:name, :shoutout, :website, :slugs, now(), :location)';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute($data);
+        array_walk($data,function ($a, $b) use (&$stmt){
+           if ($a === '' || $a === null){
+               $stmt->bindValue($b, NULL, \PDO::PARAM_NULL);
+           } else {
+               $stmt->bindValue($b, $a);
+           }
+        });
+        $stmt->execute();
         $id = $this->pdo->lastInsertId();
 
         return isset($id) && $id !== null ? $id : false;

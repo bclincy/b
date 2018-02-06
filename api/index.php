@@ -24,6 +24,7 @@ $container['hasAccess'] = function (\Slim\Container $container) {
 };
 $app->get('/nnuts/{id}', 'ApiController:nnutsById');
 $app->post('/contact/', 'ApiController:contactFrm');
+$app->post('/shoutout/add', 'ApiController:addShoutout');
 $app->get('/test/', function (Request $request, Response $response) {
     $attr = $request->getAttributes();
     $attr = is_array($attr) ? true : false;

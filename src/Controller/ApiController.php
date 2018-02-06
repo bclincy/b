@@ -12,6 +12,7 @@ namespace app\Controller;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
+use app\Repository\Shoutouts as Shout;
 
 class ApiController
 {
@@ -33,17 +34,48 @@ class ApiController
     protected $required = [
         'mothersday' => ['fname|string|2', 'lname|string|2', 'email|string'],
         'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5'],
-        'shoutout' => ['name|string|5', 'shoutout|string|15', 'slug|string|3'],
+        'shoutout' => ['name|string|5', 'shoutout|string|15', 'slugs|string|3'],
     ];
 
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
-        $this->pdo = $container->pdo;
-        $this->logger = $container->logger;
+        $this->pdo = $container->get('pdo');
+        $this->logger = $container->get('logger');
         $this->apiMsgs = $container->get('apiStatus');
     }
 
+    public function addShoutout(Request $request, Response $response)
+    {
+        $shoutout = $request->getParsedBody();
+        if ($shoutout !== null) {
+            array_walk($this->required['shoutout'], [$this, 'meetsRequirements'], $shoutout);
+            if (!isset($this->error)) {
+                //build the array;
+                $update = $this->shoutoutDataSet($shoutout);
+                $upShoutOut =new Shout($this->pdo);
+
+                $id = $upShoutOut->add($update);
+                $data = $id > 0 ? [
+                                'status' => 'success',
+                                'code' => 200,
+                                'id'=> $id,
+                                'msg' => 'Create a Shoutout id '.$id
+                                ] :
+                    ['status' => 'Failed', 'code' => 200, 'msg' => 'Did not create update'];
+            } else {
+              $data = $this->restErrors(['code'=>400]);
+            }
+        } else {
+            $msg = ['code'=>400, 'error'=>'No data'];
+            $data = $this->restErrors($msg);
+        }
+
+        return $response->withJson($data)->withHeader('Content-Type', 'application/json')
+            ->withHeader('Accept-Language', 'en-US')
+            ->withHeader('Authorization', 'Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==');
+
+    }
 
     public function contactFrm (Request $request, Response $response)
     {
@@ -120,11 +152,7 @@ class ApiController
         die('hello');
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @return mixed
-     */
+
     public function newsSignup(Request $request, Response $response)
     {
         $body = $request->getBody();
@@ -137,7 +165,7 @@ class ApiController
     {
         switch ($msg['code']) {
             case 400:
-                $data = ['msg' => 'Bad Request, check data', 'code' => 400];
+                $data = ['msg' => 'Bad Request, check data'];
                 break;
             case 401:
                 $data = ['msg' => 'Unauthorized please check your credentials', 'code' => 401];
@@ -165,6 +193,14 @@ class ApiController
 
     }
 
+    public function restSuccessful($msg, $id = null)
+    {
+        $data = [ 'status' => 'Success',
+                'details' => $msg,
+                ];
+        $data['id'] = $id > 0 ? $id : null;
+
+    }
     public function genericForm (Response $response, Request $request)
     {
         $name = $request->getAttribute('frmName');
@@ -278,16 +314,38 @@ class ApiController
 
     }
 
-    private function addShoutout(Request $request, Response $response)
+    private function shoutoutDataSet(array $shoutout)
     {
-        $shoutout = $request->getParsedBody();
-        if ($shoutout !== null) {
-
-
+        $shoutout['website'] = !isset($shoutout['website'])  ? null : $shoutout['website'];
+        // Format Slugs
+        if (isset($shoutout['slugs'])) {
+            $isJson = json_decode($shoutout['slugs'], true);
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                if (substr_count($shoutout['slugs'], ',') > 0) {
+                    $slugs = json_encode(explode(',', $shoutout['slugs']));
+                } else {
+                    $slugs = json_encode($shoutout['slugs']);
+                }
+            } else {
+                $slugs = $shoutout['slugs'];
+            }
+            $shoutout['slugs'] = $slugs;
+        } else {
+            $shoutout['slug'] = null;
         }
 
-        return false;
+        if (isset($shoutout['location'])){
+            $locationData = new \app\Content\LocationDetails();
+            $data = $locationData->getLocation('Muskegon, MI');
+            print_r($data);
+        } else {
+            $shoutout['location'] = null;
+        }
+        $db = [];
 
+        array_walk($shoutout,function ($a, $b) use (&$db){ $db[':'.$b] = $a; });
+
+        return $db;
     }
 
 }
