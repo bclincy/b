@@ -185,12 +185,11 @@ class ApiController
             default:
                 $data['msg'] = 'System is currently down please try again later';
         }
-
         $data['error'] = $msg['error'];
         $data['status'] = 'Failed';
         $data['details'] = $this->error;
-        return array_filter($data);
 
+        return array_filter($data);
     }
 
     public function restSuccessful($msg, $id = null)
@@ -200,7 +199,9 @@ class ApiController
                 ];
         $data['id'] = $id > 0 ? $id : null;
 
+        return $data;
     }
+
     public function genericForm (Response $response, Request $request)
     {
         $name = $request->getAttribute('frmName');
@@ -219,11 +220,9 @@ class ApiController
             $this->logger->addError('NNUTS by ID' . print_r($request, true));
             $data = $this->restErrors(400);
         }
+
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
-
     }
-
-
 
     private function meetsRequirements ($details, $key, $data)
     {
@@ -280,7 +279,7 @@ class ApiController
 
     private function validateDate($date, $format = 'Y-m-d')
     {
-        $d = DateTime::createFromFormat($format, $date);
+        $d = \DateTime::createFromFormat($format, $date);
         return $d && $d->format($format) == $date;
     }
 
@@ -342,7 +341,7 @@ class ApiController
             $shoutout['location'] = null;
         }
         $db = [];
-
+        //add the key for databinding
         array_walk($shoutout,function ($a, $b) use (&$db){ $db[':'.$b] = $a; });
 
         return $db;

@@ -86,18 +86,9 @@ $app->get('/testme', function (Request $request, Response $response) {
 //    $str = encrypt::decryptStr($youtube['hash']);
 //    $fight = new GoogleToken();
 //    $fight->init();
-    die('hello');
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
+$app->get('/gallery/','HomeController:gallery');
 $app->get('/{slug}', 'HomeController:show');
 $app->get('/{category}/', 'HomeController:category' );
-//
-//$app->get('/contact', function (Request $request, Response $response) {
-//    return $this->view->render($response, 'contact.html.twig', [$request]);
-//});
-//$app->post('/contact', 'HomeController:Contact');
-////$app->get('/about', 'HomeController:indexAction');
-//
-//$app->get('/{category}/{title}', 'HomeController:category' );
-//$app->get('/{title}', 'HomeController:pageAction' );
 $app->run();

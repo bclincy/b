@@ -83,11 +83,11 @@ class imageProcess
     public function scandirs($dir)
     {
         $name = str_ireplace($this->siteRoot, '', $dir);
-        $this->images[$name] = $this->scanImgdir($dir);
+        $this->images[] = ['dir' => $name,  'images' => $this->scanImgdir($dir)];
         if ($this->recursive === true) {
-            $subdir = $this->recursiveDir($this->currentDir);
-            if (is_array($subdir) && is_array($this->images)) {
-                $this->images = array_merge($this->images, $subdir);
+            $subDirectory = $this->recursiveDir($this->currentDir);
+            if (is_array($subDirectory) && is_array($this->images)) {
+                $this->images = array_merge($this->images, $subDirectory);
             }
         }
 
@@ -101,17 +101,15 @@ class imageProcess
      */
     private function recursiveDir ($dir)
     {
-        $fileSystemIterator = new FilesystemIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
+        $fileSystemIterator = new \FilesystemIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
         foreach ($fileSystemIterator as $fileInfo){
             if ($fileInfo->isDir() && $fileInfo->getFilename() !== 'thumbnails') { //Thumbnails we generated
-                $subdir[$fileInfo->getFilename()] = $this->scanImgdir($fileInfo->getPathname());
+                $subDirectory[] = ['dir' => $fileInfo->getFilename(), 'images' => $this->scanImgdir($fileInfo->getPathname())];
             }
         }
-        if (!isset($subdir)) {
-            $subdir = [];
-        }
+        $subDirectory = !isset($subDirectory) ? [] : $subDirectory;
 
-        return $subdir;
+        return $subDirectory;
 
     }
 
@@ -122,15 +120,23 @@ class imageProcess
      */
     public function scanImgdir($dir)
     {
-        $iterator = new FilesystemIterator($dir, RecursiveDirectoryIterator::SKIP_DOTS);
-        $filter = new RegexIterator($iterator, '/.(jpg|jpeg|png)$/');
-        $filelist = array();
+        $iterator = new \FilesystemIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
+        $filter = new \RegexIterator($iterator, '/.(jpg|jpeg|png)$/');
+        $fileList = [];
+        $thumbnail = substr($this->currentDir,-1,1) === '/' ? 'thumbnail/' : '/thumbnail/';
         foreach($filter as $entry) {
+            $meta = exif_read_data($entry->getPathname());
             $altText = $this->nameAltText($entry->getFilename());
-            $filelist[] = [$entry->getPathname(), $entry->getFilename(), $altText, $this->currentDir . '/thumbnail/' . $entry->getFilename()];
+            $fileList[] = [
+                $entry->getPathname(),
+                $entry->getFilename(),
+                $altText,
+                $this->currentDir . $thumbnail . $entry->getFilename(),
+                print_r($meta, true)
+            ];
         }
 
-        return $filelist;
+        return $fileList;
     }
 
     private function nameAltText ($filename)
@@ -214,6 +220,7 @@ class imageProcess
         } else {
             $result = false; //'Failed|Image file does not exist.';
         }
+
         return $result;
     }
 
