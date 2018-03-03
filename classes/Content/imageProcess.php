@@ -9,6 +9,10 @@
 namespace app\Content;
 
 
+/**
+ * Class imageProcess
+ * @package app\Content
+ */
 class imageProcess
 {
 
@@ -54,18 +58,29 @@ class imageProcess
      */
     public $images;
 
+    /** @var int  */
+    private $maxWidth = 1200;
+
+    /** @var bool  */
+    private $resize = true;
+
     /**
+     * imageProcess constructor.
      * @param $siteRoot
      * @param $imageRoot
-     * @param bool|false $recursive
+     * @param bool $recursive
      */
-    public function __construct($siteRoot, $imageRoot, $recursive = false)
+    public function __construct($siteRoot, $imageRoot, $recursive = false, $resize = false)
     {
         $this->siteRoot = $siteRoot;
         $this->imageRoot = $imageRoot;
         $this->recursive = $recursive;
+        $this->resize = $resize;
     }
 
+    /**
+     * @return bool
+     */
     public function createImgList()
     {
         $this->currentDir = $this->siteRoot . $this->imageRoot;
@@ -80,6 +95,10 @@ class imageProcess
         return true;
     }
 
+    /**
+     * @param string $dir
+     * @return array
+     */
     public function scandirs($dir)
     {
         $name = str_ireplace($this->siteRoot, '', $dir);
@@ -115,10 +134,10 @@ class imageProcess
 
     /**
      * scan dir for images and filter results
-     * @param $dir
+     * @param array $dir
      * @return array
      */
-    public function scanImgdir($dir)
+    public function scanImgdir( $dir)
     {
         $iterator = new \FilesystemIterator($dir, \RecursiveDirectoryIterator::SKIP_DOTS);
         $filter = new \RegexIterator($iterator, '/.(jpg|jpeg|png)$/');
@@ -126,19 +145,27 @@ class imageProcess
         $thumbnail = substr($this->currentDir,-1,1) === '/' ? 'thumbnail/' : '/thumbnail/';
         foreach($filter as $entry) {
             $meta = exif_read_data($entry->getPathname());
+            if ($this->resize === true || $meta['XResolution'] === '300/1') {
+                //resize it to the maxim width
+                $newPath = $this->resizeImg($entry->getPathname(),'git fetch');
+            }
             $altText = $this->nameAltText($entry->getFilename());
             $fileList[] = [
-                $entry->getPathname(),
-                $entry->getFilename(),
-                $altText,
-                $this->currentDir . $thumbnail . $entry->getFilename(),
-                print_r($meta, true)
+                'fullpath' => $entry->getPathname(),
+                'filename' => $entry->getFilename(),
+                'altText'  => $altText,
+                'thumbnail' => $this->currentDir . $thumbnail . $entry->getFilename(),
+                'html' => $meta['COMPUTED']['html']
             ];
         }
 
         return $fileList;
     }
 
+    /**
+     * @param $filename
+     * @return null|string|string[]
+     */
     private function nameAltText ($filename)
     {
         $altText = preg_replace('/\\.[^.\\s]{3,4}$/', '', $filename);
@@ -148,6 +175,9 @@ class imageProcess
         return $altText;
     }
 
+    /**
+     * @param array $images
+     */
     private function createThumbnails(array $images)
     {
         echo '<pre>';
@@ -156,45 +186,48 @@ class imageProcess
         }
     }
 
+    /**
+     * @param array $images
+     */
     private function createHTML(array $images)
     {
 
     }
 
     /**
-     * @param $pathToImage string
+     * @param $imagePath string
      * @param $dest string
      * @param $thumbWidth int
      * @param $rewrite bool
      * @return bool
      */
-    private function make_thumb($pathToImage, $dest, $thumbWidth, $rewrite = false) {
+    private function makeThumb($imagePath, $dest, $thumbWidth, $rewrite = false) {
         if (is_file($dest) && $rewrite === false) { //don't rewrite unless need be
             $this->thumbnails[] = $dest;
             return true;
         }
-        $result = false;
-        if (is_file($pathToImage)) {
-            $info = pathinfo($pathToImage);
+
+        if (is_file($imagePath)) {
+            $info = pathinfo($imagePath);
 
             $extension = strtolower($info['extension']);
             if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
 
                 switch ($extension) {
                     case 'jpg':
-                        $img = imagecreatefromjpeg("{$pathToImage}");
+                        $img = imagecreatefromjpeg("{$imagePath}");
                         break;
                     case 'jpeg':
-                        $img = imagecreatefromjpeg("{$pathToImage}");
+                        $img = imagecreatefromjpeg("{$imagePath}");
                         break;
                     case 'png':
-                        $img = imagecreatefrompng("{$pathToImage}");
+                        $img = imagecreatefrompng("{$imagePath}");
                         break;
                     case 'gif':
-                        $img = imagecreatefromgif("{$pathToImage}");
+                        $img = imagecreatefromgif("{$imagePath}");
                         break;
                     default:
-                        $img = imagecreatefromjpeg("{$pathToImage}");
+                        $img = imagecreatefromjpeg("{$imagePath}");
                 }
                 // load image and get image size
 
@@ -221,7 +254,67 @@ class imageProcess
             $result = false; //'Failed|Image file does not exist.';
         }
 
+        $result = !isset($result) ? false : $result;
+
         return $result;
+    }
+
+    /**
+     * @param $image
+     * @param $copyto
+     * @param int $width
+     * @param bool $rewrite
+     * @return bool
+     */
+    private function resizeImg($image, $copyto, $width = 500, $rewrite = false)
+    {
+        if (is_file($image)) {
+            $info = pathinfo($image);
+
+            $extension = strtolower($info['extension']);
+            if (in_array($extension, array('jpg', 'jpeg', 'png', 'gif'))) {
+
+                switch ($extension) {
+                    case 'jpg':
+                        $img = imagecreatefromjpeg("{$image}");
+                        break;
+                    case 'jpeg':
+                        $img = imagecreatefromjpeg("{$image}");
+                        break;
+                    case 'png':
+                        $img = imagecreatefrompng("{$image}");
+                        break;
+                    case 'gif':
+                        $img = imagecreatefromgif("{$image}");
+                        break;
+                    default:
+                        $img = imagecreatefromjpeg("{$image}");
+                }
+                // load image and get image size
+
+                $currentWidth = imagesx($img);
+                $currentHeight = imagesy($img);
+
+                // calculate thumbnail size
+                $height = floor($currentHeight * ( $width / $currentWidth ));
+
+                // create a new temporary image
+                $tmpImage = imagecreatetruecolor($width, $height);
+
+                // copy and resize old image into new image
+                imagecopyresized($tmpImage, $img, 0, 0, 0, 0, $width, $height);
+                // save thumbnail into a file
+                imagejpeg($tmpImage, $copyto);
+                $result = $copyto;
+            } else {
+                $result = false; //'Failed|Not an accepted image type (JPG, PNG, GIF).';
+            }
+        } else {
+            $result = false; //'Failed|Image file does not exist.';
+        }
+
+        return $result;
+
     }
 
 }

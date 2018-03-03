@@ -75,7 +75,7 @@ $app->get('/resume', function (Request $request, Response $response) {
 
 $app->get('/callback/{service}/{key}', function (Request $request, Response $response) {
 
-    die('hello');
+    die('<pre>' . print_r($request, true));
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
 $app->get('/testme', function (Request $request, Response $response) {
