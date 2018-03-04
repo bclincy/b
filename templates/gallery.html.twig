@@ -1,0 +1,24 @@
+{% extends "layout.html.twig" %}
+{% block content %}
+
+    <section id="gallery" class="main-img">
+        <div class="main-img">
+        <img src="https://preview.ibb.co/gxVppG/img1.jpg" id="current" title="First" alt="First one" class="animated">
+        </div>
+
+        <div class="rows imgs">
+            <img src="https://preview.ibb.co/iZ3Lww/img2.jpg" width="30%" alt="word" title="sweet day">
+            <img src="https://preview.ibb.co/iQsPOb/img3.jpg" width="30%" alt="Iwish" title="Works great day">
+            <img src="https://preview.ibb.co/gFFdib/img4.jpg" width="30%" alt="work with ya" title="today great day">
+            <img src="https://preview.ibb.co/hS5ppG/img5.jpg" width="30%" alt="Zulooo" title="hypes great day">
+            <img src="https://preview.ibb.co/goKtGw/img6.jpg" width="30%" alt="beef wone" title="nall great day">
+            <img src="https://preview.ibb.co/bSWjOb/img7.jpg" width="30%" alt="Wale to" title="Smooth it's">
+            <img src="https://preview.ibb.co/i2o9pG/img8.jpg" width="30%" alt="Hypzeee" title="Damn hope">
+        </div>
+    </section>
+{% endblock %}
+{% block javascript %}
+    <script  src="/js/gallery.js">
+    </script>
+    {{ parent() }}
+{% endblock %}

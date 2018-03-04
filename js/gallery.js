@@ -1,4 +1,4 @@
-const current = document.querySelector("#main");
+const current = document.querySelector("#current");
 const images = document.querySelectorAll(".imgs img");
 const opacity = 0.6;
 
@@ -15,13 +15,15 @@ function imgClick(e) {
     // Change current image to src of clicked image
     current.src = e.target.src;
     current.alt = e.target.alt;
-    current.alt = e.target.title;
+    current.title = e.target.title;
 
     // Add fade in class
+
     current.classList.add("fadeInRightBig");
 
     // Remove fade-in class after .5 seconds
-    setTimeout(() => current.classList.remove("fade-in"), 500);
+    setTimeout(() => current.classList.remove("fadeOutRightBig"), 500);
+    setTimeout(() => current.classList.add("fadeInLeftBig"), 500);
 
     // Change the opacity to opacity var
     e.target.style.opacity = opacity;
