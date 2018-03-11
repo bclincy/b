@@ -2,47 +2,42 @@
 
 namespace app\Controller;
 
+use app\Content\imageProcess;
 use Exception;
 use Interop\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as view;
 use GuzzleHttp\Client as Client;
+use app\Content\imageProcess as img;
 
 /**
  * Class HomeController
  * @package app\Controller
  */
-class HomeController
+class HomeController extends Controller
 {
-    /**
-     * @var ContainerInterface
-     */
-    protected $container;
-    /**
-     * @var string title
-     */
+    /** @var string title */
     protected $title;
-    /**
-     * @var string cat
-     */
+
+    /** @var string cat */
     protected $cat;
-    /**
-     * @var \PDO
-     */
-    protected $pdo;
-    /**
-     * @var array
-     */
+
+    /** @var array */
     protected $valid = ['title', 'content'];
-    /**
-     * @var
-     */
+
+    /** @var string */
     protected $content;
-    /**
-     * @var
-     */
+
+    /** @var string */
+    protected $meta ='';
+
+    /** @var array */
     protected $image;
+
+    /** @var view */
+    protected $view;
+
 
     /**
      * HomeController constructor.
@@ -52,9 +47,7 @@ class HomeController
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-        $this->view = $container->get('view');
-        $this->pdo = $container->get('pdo');
+        parent::__construct($container);
     }
 
 
@@ -148,6 +141,14 @@ class HomeController
         );
     }
 
+    public function gallery (Request $req)
+    {
+        $root = $_SERVER['DOCUMENT_ROOT'];
+        $images = new imageProcess($root, '/images/gallery/', true );
+        $img = $images->createImgList();
+        die('<pre>' . print_r($images->images, true));
+    }
+
     /**
      * @param Request $request
      * @param Response $response
@@ -180,11 +181,13 @@ class HomeController
     /**
      * @param $data
      */
-    private function buildContent($data)
+    private function metadata($data)
     {
-        $this->content['url'] = isset($this->content['title']) ? $this->createCanonicalUrl($this->content['title']) :
+        $url = isset($this->content['title']) ?
+            $this->createCanonicalUrl($this->content['title']) :
             null;
-        $this->content['image'] = $this->openGraphImage();
+        $this->meta .= '<meta property="og:link" content="' . $url . '" />';
+        $this->meta .= '<meta property="og:image" content="' . $this->openGraphImage() . '" />';
 
     }
 

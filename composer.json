@@ -10,7 +10,11 @@
         "doctrine/orm": "^2.5",
         "pfbc/pfbc": "^3.1",
         "google/apiclient": "^2.0",
-        "phpseclib/phpseclib": "^2.0"
+        "phpseclib/phpseclib": "^2.0",
+        "symfony/event-dispatcher": "^4.0",
+        "symfony/lock": "^4.0",
+        "symfony/process": "^4.0",
+        "symfony/yaml": "^4.0"
     },
     "autoload": {
       "classmap": [
