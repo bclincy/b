@@ -16,8 +16,8 @@ $settings = [
         'driver'   => 'pdo_mysql',
         'host'     => 'localhost',
         'dbname'   => 'brianclincy',
-        'user'     => 'root',
-        'password' => 'root',
+        'user'     => 'bclincy',
+        'password' => 'klincy1',
     ]
 ];
 

@@ -79,8 +79,6 @@ $app->get('/callback/{service}/{key}', function (Request $request, Response $res
     return $this->view->render($response, 'advisorySignup.html.twig', ['title'=> 'Advisory Board', 'data' => $request]);
 });
 $app->get('/testme', function (Request $request, Response $response) {
-
-
 //    $youtube = new yt('youngbmale', new \GuzzleHttp\Client(), $this->gApiKey);
 //    $youtube = $youtube->init();
 //    $str = encrypt::decryptStr($youtube['hash']);

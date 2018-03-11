@@ -29,6 +29,7 @@ body {
     background-color: #001f3f;
     color: white;
     width: 15%;
+    min-width: 15vw;
     padding: 2rem 1rem 3rem 1rem;
 }
 
@@ -43,7 +44,8 @@ body {
 
 #resumeBody {
     padding: 10px;
-    width: 85%;
+    min-width: 80vw;
+    border: 2px solid black;
 }
 
 #resumeBody section {

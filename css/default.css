@@ -35,3 +35,7 @@ i.scroll:hover {
 #contact {
     min-height: 30rem;
 }
+
+.btn {
+    margin-top: 1em;
+}

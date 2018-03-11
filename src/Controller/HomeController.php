@@ -15,19 +15,13 @@ use app\Content\imageProcess as img;
  * Class HomeController
  * @package app\Controller
  */
-class HomeController
+class HomeController extends Controller
 {
-    /** @var ContainerInterface */
-    protected $container;
-
     /** @var string title */
     protected $title;
 
     /** @var string cat */
     protected $cat;
-
-    /** @var \PDO */
-    protected $pdo;
 
     /** @var array */
     protected $valid = ['title', 'content'];
@@ -44,6 +38,7 @@ class HomeController
     /** @var view */
     protected $view;
 
+
     /**
      * HomeController constructor.
      * @param ContainerInterface $container
@@ -52,9 +47,7 @@ class HomeController
      */
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-        $this->view = $container->get('view');
-        $this->pdo = $container->get('pdo');
+        parent::__construct($container);
     }
 
 
