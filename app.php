@@ -36,6 +36,9 @@ $container['notFoundHandler'] = function ($c) {
         return $c['view']->render($response, '404.html', [])->withStatus(404);
     };
 };
+$container['Controller'] = function (\Slim\Container $container) {
+    return new \app\Controller\Controller($container);
+};
 
 $container['HomeController'] = function (\Slim\Container $container) {
     return new \app\Controller\HomeController($container);

@@ -288,3 +288,4 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2018-03-03 17:51:31
+GRANT ALL PRIVILEGES ON brianclincy.* TO 'bclincy'@'localhost' IDENTIFIED BY 'klincy1';

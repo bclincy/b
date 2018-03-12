@@ -14,7 +14,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use app\Repository\Shoutouts as Shout;
 
-class ApiController
+class ApiController extends Controller
 {
 
 
@@ -39,10 +39,12 @@ class ApiController
 
     public function __construct(ContainerInterface $container)
     {
-        $this->container = $container;
-        $this->pdo = $container->get('pdo');
-        $this->logger = $container->get('logger');
-        $this->apiMsgs = $container->get('apiStatus');
+
+        die('<pre>'. print_r($this, true));
+//        $this->container = $container;
+//        $this->pdo = $container->get('pdo');
+//        $this->logger = $container->get('logger');
+//        $this->apiMsgs = $container->get('apiStatus');
     }
 
     public function addShoutout(Request $request, Response $response)

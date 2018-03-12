@@ -30,13 +30,7 @@ class Controller
     public $logger;
 
     /** @var \Slim\Views\Twig */
-    public $views;
-
-    /** @var \Slim\Http\Response */
-    public $resp;
-
-    /** @var \Slim\Http\Request */
-    public $req;
+    public $twig;
 
 
     /**
@@ -53,10 +47,7 @@ class Controller
             /** services that are needed through out the controllers */
             $this->pdo = $container->get('pdo');
             $this->logger = $container->logger;
-            $this->views = $container->get('view');
-            $this->req = $container->request;
-            $this->resp = $container->response;
-
+            $this->twig = $container->get('view');
         } catch (\Exception $e) {
             echo 'Message: ' .$e->getMessage();
         }

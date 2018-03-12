@@ -13,7 +13,7 @@ $container['apiStatus'] = [
     500 => ['title'=> 'Server Error', 'msg' => 'Internal Server error our side is down' ]
     ]
 ];
-$container['ApiController'] = function (\Slim\Container $container) {
+$container['ApiController'] = function ($container) {
     return new \app\Controller\ApiController($container);
 };
 
@@ -27,6 +27,7 @@ $app->post('/contact/', 'ApiController:contactFrm');
 $app->post('/shoutout/add', 'ApiController:addShoutout');
 $app->get('/test/', function (Request $request, Response $response) {
     $attr = $request->getAttributes();
+    die('hello');
     $attr = is_array($attr) ? true : false;
     return $response->withHeader('content-type', 'application/JSON')
         ->withHeader('content-length', '8');

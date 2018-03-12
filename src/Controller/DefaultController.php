@@ -24,17 +24,6 @@ class DefaultController extends Controller
 
 
     /**
-     * DefaultController constructor.
-     * @param ContainerInterface $container
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-    }
-
-    /**
      * @param Request $request
      * @param Response $response
      * @return string

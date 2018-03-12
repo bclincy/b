@@ -7,7 +7,7 @@ use Exception;
 use Interop\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use Slim\Views\Twig as view;
+use Slim\Views\Twig as twig;
 use GuzzleHttp\Client as Client;
 use app\Content\imageProcess as img;
 
@@ -35,21 +35,6 @@ class HomeController extends Controller
     /** @var array */
     protected $image;
 
-    /** @var view */
-    protected $view;
-
-
-    /**
-     * HomeController constructor.
-     * @param ContainerInterface $container
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        parent::__construct($container);
-    }
-
 
     /**
      * @return string
@@ -67,7 +52,7 @@ class HomeController extends Controller
      */
     public function indexAction (Request $request, Response $response)
     {
-        return $this->view->render($response, 'contact.html.twig', ['title' => 'Home again']);
+        return $this->twig->render($response, 'contact.html.twig', ['title' => 'Home again']);
     }
 
     /**
@@ -108,7 +93,7 @@ class HomeController extends Controller
         $this->buildContent($this->content);
 
 
-        return $this->view->render($response, 'default.html.twig', $content);
+        return $this->twig->render($response, 'default.html.twig', $content);
     }
 
     /**
@@ -121,7 +106,6 @@ class HomeController extends Controller
      */
     public function category (Request $request, Response $response, $args)
     {
-        $pdo = $this->container->get('pdo');
         $this->cat= ucwords(str_replace('_', ' ', $request->getAttribute('category')));
         $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/'.$this->cat.'/'];
         $this->title = $request->getAttribute('title') !== null ? ucwords($request->getAttribute('title')) : null;
@@ -129,15 +113,16 @@ class HomeController extends Controller
             // Not an index page
             return $this->pageAction($request, $response, $data);
         }
-        $sql = 'SELECT * FROM docs WHERE JSON_SEARCH(category, \'all\', :cat) IS NOT NULL';
-        $stmt = $pdo->prepare($sql);
-        $stmt->execute(['cat' => $this->cat]);
+        $cat = "%{$this->cat}%";
+        $sql = 'SELECT * FROM docs WHERE category like :cat';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['cat' =>$cat]);
         $result = $stmt->fetchAll();
 
-        return $this->view->render(
+        return $this->twig->render(
             $response,
-            'index.html.twig',
-            ['title' => $this->cat, 'data' => $result]
+            'category.html.twig',
+            ['title' => $this->cat, 'data' => $result, 'breadcrum' => '']
         );
     }
 
@@ -157,7 +142,7 @@ class HomeController extends Controller
      */
     public function aboutIndex (Request $request, Response $response, $args)
     {
-        return $this->view->render($response, 'goals.html.twig', ['title' => 'My Goals', 'data' => $args]);
+        return $this->twig->render($response, 'goals.html.twig', ['title' => 'My Goals', 'data' => $args]);
     }
 
     /**
