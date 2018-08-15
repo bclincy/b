@@ -4,14 +4,13 @@
 }
 
 body {
-    font-family: Georgia sans-serif;
+    font-family: 'Lekton', Georgia, sans-serif;
     font-size: 15px;
     line-height: 1.2em;
 }
 
 .container {
-    width: 90%;
-    margin: auto;
+    width: 100vw;
 }
 
 .flexer {
@@ -28,8 +27,8 @@ body {
 #skills {
     background-color: #001f3f;
     color: white;
-    width: 15%;
-    min-width: 15vw;
+    width: 25%;
+    min-width: 25vw;
     padding: 2rem 1rem 3rem 1rem;
 }
 
@@ -95,6 +94,22 @@ body {
     text-shadow: 2px 2px #000000;
 }
 
-section {
+.flex-container  {
+    display:-ms-flex;
+    display:-webkit-flex;
+    display:flex;
+}
+.flex-container > .skill {
+    width: 25vw;
+    background-color: #001f3f;
+    padding: 3rem 2rem;
+    color: #F7F7F7;
+}
+.flex-container > .body {
+    padding: 3rem 2rem;
+    width: 75vw;
+}
+
+.flex-container > .body > div {
     padding: 10px;
 }
