@@ -23,8 +23,14 @@
     <section class="skill">
         <h2>Brian Clincy</h2>
         <img src="images/clincy.jpg" class="rounded-circle" width="200" height="200" />
-        <a href="mailto:bclincy@gmail.com" id="bcontact">brian</a>
-        <address>Orlando, FL 32801</address>
+        <div>
+            <h2>Contact Info</h2>
+            <div>email: <a href="/contact" id="bcontact">brian</a></div>
+            <div>Phone: <phone>231-343-9638</phone></div>
+            <div>LinkedIn: <a href="https://www.linkedin.com/in/bclincy/">Brian Clincy</a></div>
+            <div>Current: <address>Orlando, FL 32801</address></div>
+            <div><a href="/clincy.vcf" download="clincy.vcf"></a></div>
+        </div>
         <p>Skills Legend</p>
         <ul>
             <li><b>Skillsets A:</b> Linux, Apache, MySQL, PHP (LAMP), NGINX, Postgres, AWS, cmd git/Bash, Node JS, Docker,
@@ -39,26 +45,26 @@
         </ul>
         <div id="technology">
             <div class="tech">
-                <div class="name">AngularJS</div>
+                <div class="name" title="4 out of 10">AngularJS</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <i class="fa fa-circle gold" aria-hidden="true"></i>
-                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
-                <div class="name">Angular 2 - 5</div>
+                <div class="name" title="3 out of 10">Angular 2 - 5</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
-                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
@@ -71,20 +77,52 @@
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
-                <div class="name">JavaScript</div>
+                <div class="name" title="8.5 out of 10">JavaScript</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
                 <div class="name">Mongo</div>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+            </div>
+            <div class="tech">
+                <div class="name">MySQL</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
@@ -95,6 +133,12 @@
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
                 <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
                 <div class="name">OOPS</div>
@@ -102,7 +146,13 @@
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
                 <div class="name">PHP</div>
@@ -110,23 +160,54 @@
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o gold" aria-hidden="true"></i>
+                <i class="fa fa-circle" aria-hidden="true"></i>
             </div>
             <div class="tech">
                 <div class="name">React</div>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
-                <i class="fa fa-circle gold" aria-hidden="true"></i>
-                <i class="fa fa-circle-o gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
-                <div class="name">REST API</div>
+                <div class="name">REST API (build and Consume)</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+            </div>
+            <div class="tech">
+                <div class="name">SQL</div>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
             <div class="tech">
                 <div class="name">Symfony</div>
@@ -134,7 +215,13 @@
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
+                <i class="fa fa-circle gold" aria-hidden="true"></i>
                 <i class="fa fa-circle-o gold" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
+                <i class="fa fa-circle-o" aria-hidden="true"></i>
             </div>
         </div>
     </section>
@@ -243,9 +330,13 @@
 </body>
 <script>
     const elink = document.getElementById('bcontact');
-    elink.innerText += '(@)gmail.com';
-    const skillData = [];
-    document.querySelectorAll('.skill > ul li').forEach(function (li) { skillData.push(li.innerText); });
+    elink.innerText += '(@)brianclincy.com';
+    const skillData = {};
+    document.querySelectorAll('.skill > ul li').forEach(function (li ,i) {
+        const alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        skillData[alpha[i]] = li.innerHTML;
+        i++;
+    });
     console.log(skillData);
 </script>
 </html>
