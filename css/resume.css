@@ -32,12 +32,12 @@ body {
     padding: 2rem 1rem 3rem 1rem;
 }
 
-#skills ul li {
+#skills, .skill ul li {
     list-style: none;
     padding: 5px;
 }
 
-#skills span {
+#skills, .skill span {
     line-height: 1.5em;
 }
 
@@ -112,4 +112,12 @@ body {
 
 .flex-container > .body > div {
     padding: 10px;
+}
+
+.skill > img {
+    padding: 1rem;
+    border-radius: 15%;
+}
+.volunteer {
+    margin: 1rem 0;
 }
