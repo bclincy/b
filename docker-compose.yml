@@ -1,43 +1,18 @@
-version: '3'
+version: '2'
+
+volumes:
+    logs:
+        driver: local
 
 services:
-
-  mysql:
-    image: mysql:8.0.2
-    environment:
-      MYSQL_ROOT_PASSWORD:  pa55w0rd5
-      MYSQL_DATABASE: bclincy
-    ports:
-      - "3308:3306"
-    volumes:
-      - ./data:/var/lib/mysql:rw
-      - ./config/bclincy.sql:/data/dump.sql:ro
-    command:
-      "mysql -uroot -ppa55w0rd5 < /data/dump.sql"
-
-  web:
-    image: nginx
-    environment:
-      DB_HOST: mysql:3308
-      DB_USER: root
-      DB_PASSWORD: pa55w0rd5
-      DB_DATABASE: bclincy
-    ports:
-      - "8080:80"
-    volumes:
-      - ./:/usr/share/nginx/html
-      - ./config/nginx.conf:/etc/nginx/conf.d/default.conf
-      - ./data/tmp:/tmp/
-  php:
-    image: php:7-fpm
-    environment:
-      DB_HOST: mysql:3306
-      DB_USER: root
-      DB_PASSWORD: pa55w0rd5
-      XDEBUG_CONFIG: "remote_host=172.17.0.1"
-      PHP_IDE_CONFIG: "PHPSTORM"
-
-  admin:
-    image: adminer
-    ports:
-      - "8181:8080"
+    slim:
+        image: php:7-alpine
+        working_dir: /var/www
+        command: php -S 0.0.0.0:8080 -t public
+        environment:
+            docker: "true"
+        ports:
+            - 8080:8080
+        volumes:
+            - .:/var/www
+            - logs:/var/www/logs

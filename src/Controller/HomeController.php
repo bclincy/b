@@ -35,6 +35,10 @@ class HomeController extends Controller
     /** @var array */
     protected $image;
 
+    public function index (Request $req, Response $resp)
+    {
+        return $this->container->view->render($resp, 'homepage.html.twig', ['title' => 'Hello']);
+    }
 
     /**
      * @return string

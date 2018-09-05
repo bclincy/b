@@ -21,15 +21,7 @@ class ApiController extends Controller
     /**
      * @var ContainerInterface
      */
-    protected $container;
-    /** @var mixed|\PDO */
-    protected $pdo;
-    /** @var array $error */
-    protected $error;
-    /** @var \Monolog\Logger */
-    protected $logger;
-    /** @var array $apiMsgs */
-    protected $apiMsgs;
+
     /** @var array $required */
     protected $required = [
         'mothersday' => ['fname|string|2', 'lname|string|2', 'email|string'],
@@ -39,12 +31,8 @@ class ApiController extends Controller
 
     public function __construct(ContainerInterface $container)
     {
+        parent::__construct($container);
 
-        die('<pre>'. print_r($this, true));
-//        $this->container = $container;
-//        $this->pdo = $container->get('pdo');
-//        $this->logger = $container->get('logger');
-//        $this->apiMsgs = $container->get('apiStatus');
     }
 
     public function addShoutout(Request $request, Response $response)
@@ -336,7 +324,7 @@ class ApiController extends Controller
         }
 
         if (isset($shoutout['location'])){
-            $locationData = new \app\Content\LocationDetails();
+            $locationData = new LocationDetails();
             $data = $locationData->getLocation('Muskegon, MI');
             print_r($data);
         } else {

@@ -4,10 +4,13 @@
     <meta charset="utf-8">
     <title>{{ title }}</title>
     {% block css %}
-        <link rel="stylesheet" href="http://localhost/vendor/components/bootstrap/dist/css/bootstrap.min.css"/>
-        <link rel="stylesheet" href="http://localhost/css/animate.css"/>
-        <link rel="stylesheet" href="http://localhost/css/default.css"/>
-        <link href="/vendor/components/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+        <meta charset="utf-8">
+        <title>{% block title %}{% if title %}{{ title }}{% else %}Brian Clincy a work in Progress{% endif %}{% endblock %}</title>
+        <link href="{{ base_url() }}/css/bootstrap.min.css" rel="stylesheet"/>
+        <link href="{{ base_url() }}/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{{ base_url() }}/css/default.css">
+        <meta property="og:title"
+              content="{% if title %}{{ title }}{% else %}Brian Clincy a work in Progress{% endif %}"/>
     {% endblock %}
     {% block metadata %}
         <meta property="og:title" content="{{ title }}"/>
@@ -24,30 +27,13 @@
     {% endblock %}
 </head>
 <body>
-<nav class="navbar navbar-toggleable-md navbar-light bg-faded">
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
-            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
-            aria-label="Toggle navigation">
+<nav class="navbar navbar-toggleable-md navbar-dark bg-faded">
+    <button class="navbar-toggler navbar-toggler-right" id="navHamburger" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="#">
         <!-- Xbox B icon by Icons8 -->
-        <img class="icon icons8-Xbox-B" width="50" height="50" alt="Brian Clincy is here"
-             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEG0lEQVRoQ92ai7FMQRCG+0aACBABIkA
-             EiAARIAJEgAi4ESACRIAIEAEioL6t+bd6z2u658w+6k7Vqd1765ye/vvv1/TZM7sg6+yC4LCeQC6b2W0zu2lmd8zsWrm8rX6aGddnM/tmZl
-             /M7E8PY/YA8tDM7perRacPZsZ13vKwnlkD5LmZPRpYHQtjbS4sjdX9gi2YgzEuGNSCqddm9qYFUAsQFHjrAHwvCmDVrJsACjafmtmNAgBAj
-             4sxwpiyQF6VTdkAACiA9XssDAQjAsT3Z1HBUSBY7lMJ5L9m9qJsGt0ncx/GQf6l4pp3I0xHgODXuBKfsEBcDH0/o2jkXvZ6V9hhL1xtcc8a
-             EM8EIKA/GwcRxafuYW/cFlcDxCIzNSBfHROHBCFgQzC35qyyBIRge1Lc6RggpsCQmomh0ZoDguIEN4HN933HRM39iBncjASAi40y5RyQH6V
-             OkP5g5hQWTJD+qTPXhwpNASH1UbUJbixxSgvPIPhHBp4CIjYmKVxAJXesAUcZugD8PZsBtceIlSEQagQ1o4WNKBABRRmMxWdmiRVqC7Vms4
-             ZAsNS9UoC2NwV38UDoZIfP09bjqhiLoGURtIDJLBn7o++4PRBy9u8i8coK2hHxsrQZUwqyDywIDLUhkxUn9fRA6ELfl8MO1s0uz8gSEOQqo
-             fB9x0WCm8IkR4AHJd52XEvCa0rM7ZUBIqMhK5tUvCG2unpGhLJFMMIzQNQ1UHCJm2zAj7zHA1HazfqsGIoC4WisRNDKPuDpA4mtTf/lgfyb
-             yWRBt91hRMdd/6wfSPQ40+zouy8gNfC0G5zvM9lqKPMgQH4t+L0fOBAruFe2wgPqIECWfJ/CSIYkVlizrXmF1lkgZI6rJXhaKI8Gu/RTluR
-             vutlM5lKwb1upY6XfYVHMpnwZjTjbFG8P5JAFcW11H+l6rBYFIJxA1QplGVlsUQ7ZNHJw09mbDEcCiK5q04igXm38VEHU3FefUnzb+AWRVN
-             t45OimbekPCh/2WpHHqO7sh/EySyOqxYMVApWGs36LpSODCr0byQLwxhq549SZXdOKFlYylm25V2yEhg+elVMcB00mh9qAjh4IF2up9C0W
-             n3sGtyVdk7FSAzoE6vBTHSD31HhClh+kp0emkqfRy7HADN8GzA4Ma9P41Gi/MzOpVxo1IOiWfunSAVD65VIECHp5ZkgANG1Nb18DIHmVgXz
-             2DL9cigLR/koA/E3ckJ57vgxl2q44SB24skBUXZmCcAgTIAAywsweWbE6I1qKsABQJ2hdUgZqASJ22JxLgPi/mkU+6aWmfjDAqFQ/GPATTQ
-             BgkEibM/LQNUAkDOsxMMOyLQsm6buyQ/OdvXoAkUD9NMP/qMazxX0EL+6nxlE/9WgxwN6ArFZmjYCejKzRY/Wz/wEM9SNCAy/gMAAAAABJR
-             U5ErkJggg==">
+        <img src="{{ asset('images/brianclincy-type.png') }} ">
     </a>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
@@ -58,11 +44,10 @@
                 <a class="nav-link" href="/about">About</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/Community/" id="communityItem" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="/Community" id="communityItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Community
                 </a>
-                <div class="dropdown-menu" aria-labelledby="community/">
+                <div class="dropdown-menu" aria-labelledby="community">
                     <a class="dropdown-item" href="/community/ACHIEVE">ACHIEVE</a>
                     <a class="dropdown-item" href="/community/Love_Community_Garden">Love Community Garden</a>
                     <a class="dropdown-item" href="/community/Muskegon_area_sports">Muskegon area Sports</a>
@@ -71,11 +56,10 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="/gallery/">Gallery</a>
+                <a class="nav-link" href="/gallary">Gallary</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/services/" id="servicesItem" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="/services" id="servicesItem" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Services
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -93,7 +77,8 @@
         </form>
     </div>
 </nav>
-<div class="container content">
+<div class="container">
+
     {% block breadcrum %}
         <nav class="breadcrumb" id="breadcrumb">
             <a class="breadcrumb-item" href="/">Home</a>
@@ -118,21 +103,21 @@
         </div>
     </div>
     <div class="container text-center">
-    <div class="col-md-6 offset-md-3">
-        <ul class="list-inline">
-            <li class="list-inline-item"><i class="fa fa-facebook fa-3x"></i>
-            </li>
-            <li class="list-inline-item"><i class="fa fa-twitter fa-3x"></i>
-            </li>
-            <li class="list-inline-item"><i class="fa fa-dribbble fa-3x"></i>
-            </li>
-        </ul>
-        <div class="top-scroll">
-            <a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
+        <div class="col-md-6 offset-md-3">
+            <ul class="list-inline">
+                <li class="list-inline-item"><i class="fa fa-facebook fa-3x"></i>
+                </li>
+                <li class="list-inline-item"><i class="fa fa-twitter fa-3x"></i>
+                </li>
+                <li class="list-inline-item"><i class="fa fa-dribbble fa-3x"></i>
+                </li>
+            </ul>
+            <div class="top-scroll">
+                <a href="#top"><i class="fa fa-circle-arrow-up scroll fa-4x"></i></a>
+            </div>
+            <hr>
+            <p>Copyright &copy; BrianClincy.com {{ "now"|date("Y") }} All rights reserved </p>
         </div>
-        <hr>
-        <p>Copyright &copy;  BrianClincy.com {{ "now"|date("Y") }} All rights reserved </p>
-    </div>
     </div>
     <div class="footer-bottom">
     </div>
@@ -144,9 +129,9 @@
 {% block modal %}
 {% endblock %}
 {% block javascript %}
-    <script src="/vendor/components/tether/dist/js/tether.min.js"></script>
-    <script src="/vendor/components/jquery/dist/jquery.min.js"></script>
-    <script src="/vendor/components/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="/js/tether.min.js"></script>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
 {% endblock %}
 </body>
 </html>

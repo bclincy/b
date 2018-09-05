@@ -1,30 +1,51 @@
 {
+    "name": "slim/slim-skeleton",
+    "description": "A Slim Framework skeleton application for rapid development",
+    "keywords": ["microframework", "rest", "router", "psr7"],
+    "homepage": "http://github.com/slimphp/Slim-Skeleton",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Josh Lockhart",
+            "email": "info@joshlockhart.com",
+            "homepage": "http://www.joshlockhart.com/"
+        }
+    ],
     "require": {
-        "slim/slim-skeleton": "^3.1",
-        "monolog/monolog": "^1.23",
-        "slim/twig-view": "^2.3",
-        "swiftmailer/swiftmailer": "^5.4",
-        "pimple/pimple": "~3.0",
-        "oscarotero/psr7-middlewares": "^3.21",
-        "guzzlehttp/guzzle": "^6.3",
-        "doctrine/orm": "^2.5",
-        "pfbc/pfbc": "^3.1",
-        "google/apiclient": "^2.0",
-        "phpseclib/phpseclib": "^2.0",
-        "symfony/event-dispatcher": "^4.0",
-        "symfony/lock": "^4.0",
-        "symfony/process": "^4.0",
-        "symfony/yaml": "^4.0"
+        "php": ">=5.5.0",
+        "slim/slim": "^3.1",
+        "slim/php-view": "^2.0",
+        "monolog/monolog": "^1.17",
+        "slim/twig-view": "^2.4",
+        "swiftmailer/swiftmailer": "^6.1",
+        "google/apiclient": "^2.2",
+        "doctrine/orm": "^2.6",
+        "egulias/email-validator": "^2.1",
+        "symfony/event-dispatcher": "^4.1",
+        "symfony/lock": "^4.1",
+        "symfony/process": "^4.1",
+        "symfony/twig-bridge": "^4.1"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.8 < 6.0"
     },
     "autoload": {
       "classmap": [
         "src/Controller",
-        "classes"
+        "services"
       ]
     },
     "autoload-dev": {
-    "psr-4": {
-      "app\\Controller\\Tests\\": "tests/Controller"
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "process-timeout" : 0
+    },
+    "scripts": {
+        "start": "php -S localhost:8080 -t public",
+        "test": "phpunit"
     }
-  }
+
 }
