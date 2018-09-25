@@ -1,0 +1,7 @@
+{% extends "layout.html.twig" %}
+
+{% block content %}
+    {% if content is defined %}
+        {{ content | raw }}
+        {% endif %}
+{% endblock %}

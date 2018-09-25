@@ -1,0 +1,73 @@
+<?php
+
+use Slim\Http\Request;
+use Slim\Http\Response;
+use App\Content\Podcast;
+
+// Routes
+
+$app->get('/', 'HomeController:index')->setName('home');
+$app->group('/contact', function () {
+    $this->get('[/]', 'HomeController:contact')->setName('contact');
+    $this->post('[/]', 'HomeController:contactPost');
+})->add(new \App\Middleware\Csfr($container));
+
+$app->group('/nnuts', function () {
+    $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
+    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutspcast')->setName('nnutsids');
+});
+
+$app->get('/shoutouts', function (Request $request, Response $response) {
+    $response->getBody()->write('I get busy over here');
+    return $response;
+});
+
+$app->get('/home', function (Request $request, Response $response) {
+    return $this->view->render($response, 'home/index.html.twig', ['title' => 'Home again']);
+});
+
+$app->group('/resume', function () {
+    $this->get('/{id}', 'HomeController:resumeFrm')->setName('resumeFrm');
+    $this->get('[/]', 'HomeController:resumeFrm')->setName('resume');
+})->add(new App\Middleware\Csfr($container));
+
+/** API */
+$app->group('/api', function () {
+    $this->post('/resume/new', 'ApiController:resume')->setName('newResumeFrm');
+    $this->get('/nnuts/{id}', 'ApiController:nnutsById');
+    $this->get('/podcasts', function (Request $req, Response $resp) {
+        $new = new Podcast($this->EntityManger);
+        return $resp->withJson($new->displayPodcast());
+    });
+    $this->post('/contact/', 'ApiController:contactFrm')->setName('apiContact');
+    $this->post('/shoutout/add', 'ApiController:addShoutout')->setName('addShoutout');
+})->add(new App\Middleware\Csfr($container));
+
+
+$app->get('/callback/{service}/{key}', function (Request $request, Response $response) {
+    die('<pre>' . print_r($request, true));
+    return $this->view->render($response, 'advisorySignup.html.twig',
+      ['title' => 'Advisory Board', 'data' => $request]);
+});
+
+$app->get('/test[/{data}]', 'HomeController:gallery');
+$app->get('/message[/{data}]', 'HomeController:displayMessage');
+
+$app->get('/testme', function (Request $request, Response $response) {
+    $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
+    $youtube = $youtube->init();
+    echo '<pre>' . print_r($youtube, true);
+//    $str = encrypt::decryptStr($youtube['hash']);
+//    $fight = new \App\Authorization\GoogleToken();
+//    $fight->init();
+    return $this->view->render($response, 'advisorySignup.html.twig',
+      ['title' => 'Advisory Board', 'data' => $request]);
+});
+
+
+$app->get('/gallery[/]', '\App\Controller\HomeController:gallery');
+//$app->get('/gallery/', function (Request $req, Response $resp) {
+//    die('<pre>'. print_r($this, true));
+//});
+$app->get('/{slug}', 'HomeController:show')->setName('pages');
+$app->get('/{category}/', 'HomeController:category');

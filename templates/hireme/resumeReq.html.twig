@@ -1,0 +1,119 @@
+{% extends 'layout.html.twig' %}
+
+{% block content %}
+<div class="alert-warning m-2" role="alert">
+    {% if error %} {{ error }} {% endif %}
+</div>
+    <h1>Intros</h1>
+    <p>I would like to know more about someone interested in my resume. Please fill out a quick form for direct access
+    to my resume. Rest assured I promise I won't spam you, but I might write could write you for feedback. In
+    agreement with my site terms your email will never be shared with any third parties. It is nice to meet you.
+    </p>
+    <form id="frmResume">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label text-right">Name:</label>
+            <div class="col-sm-10">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Jon Doe" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label text-right">LinkedIn URL:</label>
+            <div class="col-sm-10">
+                <input type="url" name="linkedin" class="form-control" id="linkedIn" placeholder="https://www.linkedin.com/in/brianclincy">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label text-right">Email:</label>
+            <div class="col-sm-10">
+                <input type="email" name="email" class="form-control" id="email" placeholder="somebody@home.com" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="agency" class="col-sm-2 col-form-label text-right">Agency:</label>
+            <div class="col-sm-10">
+                <input type="text" name="agency" class="form-control" id="agency" placeholder="Employment Agency 3">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="developer" class="col-sm-2 col-form-label text-right">Developer Type:</label>
+            <div class="col-sm-10">
+                <select name="developer" class="form-control" required>
+                    <option value="">Select One</option>
+                    <option value="php">PHP</option>
+                    <option value="drupal">Drupal</option>
+                    <option value="UI">UI</option>
+                    <option value="frontend">Front-end</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group form-inline">
+            <label for="message" class="col-sm-2 col-form-label text-left">Questions/Comments</label>
+            <textarea class="form-control col-sm-10" name="message" id="message" rows="3" placeholder="Anything you would like to add"></textarea>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-2">
+                <div class="g-recaptcha" style="margin-left: 10px;" data-sitekey="6Lc6GnAUAAAAAAf7Fi90AkCP6KB53hwqGSHQ05eo"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-2"><button class="m-2 btn btn-outline-primary btn-lg">Continue</button></div>
+        </div>
+        {%  if (token)  %}{{  token | raw }} {% endif %}
+    </form>
+{% endblock %}
+{% block javascript %}
+{{ parent() }}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        document.getElementById('frmResume').addEventListener('submit', resume);
+        function resume (e) {
+            e.preventDefault();
+            const frmElement = {};
+            const elements = this.querySelectorAll("input, select, textarea, number, email, text, .email");
+            for (i = 0; i < elements.length; i++) {
+                if (typeof elements[i].name !== 'undefined') {
+                    frmElement[elements[i].name] = elements[i].value;
+                }
+            }
+            frmElement['captcha'] = grecaptcha.getResponse();
+            const resp = {};
+            postData('/api/resume/new', frmElement)
+                .then(function (data){ resp.data = data; process(data); return JSON.stringify(data);} )
+                .catch(function (error){ console.error(error)});
+        }
+
+        function process(data) {
+            if (data.status === 'Failed') {
+                const warning =  document.querySelector('.alert-warning');
+                warning.classList.add('displayError');
+                let dispErrs = '';
+                for (const field in data.form) {
+                    dispErrs += '<div><em>'+ field + '</em> ' + data.form[field] + '</div>';
+                }
+                warning.innerHTML = dispErrs;
+                window.scroll({top: warning.offsetTop, left: 0, behavior: 'smooth' });
+            } else if (typeof (data.key) !== 'undefined') {
+                window.location.href = "/resume/" + data.key;
+            }
+
+            console.log(data);
+        }
+        function postData(url, data) {
+            // Default options are marked with *
+            return fetch(url, {
+                method: "POST", // *GET, POST, PUT, DELETE, etc.
+                mode: "same-origin", // no-cors, cors, *same-origin
+                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: "same-origin", // include, same-origin, *omit
+                headers: {
+                    "Content-Type": "application/json; charset=utf-8",
+                    // "Content-Type": "application/x-www-form-urlencoded",
+                },
+                redirect: "follow", // manual, *follow, error
+                referrer: "no-referrer", // no-referrer, *client
+                body: JSON.stringify(data), // body data type must match "Content-Type" header
+            })
+                .then(function (response){ return response.json() }); // parses response to JSON
+        }
+    </script>
+{% endblock %}

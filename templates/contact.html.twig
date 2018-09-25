@@ -1,0 +1,82 @@
+{% extends "layout.html.twig" %}
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/css/login.css">
+{% endblock %}
+{% block content %}
+    <h1>Contacting Brian Clincy</h1>
+    <p>Your feedback is very important to and the goal is to make sure everyone is not only listen to but act
+    auctually heard. Everyone who submits a request will hear back it's just the respect that comes along with
+    being an Michigander.</p>
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        <h3 class="text-center">Error!</h3>
+        {% for key, error in errors %}
+            <div class="text-center"><span class="fieldError">{{ key | capitalize }}</span>
+                {% if error is iterable %}
+                    {% for details in error %}
+                        {{ details }}<br />
+                    {% endfor %}
+                {% else %}
+                    {{ error }}!
+                {% endif %}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    <form id="contactFrm" action="/contact" method="post">
+        <div class="form-group row">
+            <label for="name" class="col-sm-2 col-form-label text-right">Name:</label>
+            <div class="col-sm-5">
+                <input type="text" name="fname" class="form-control" id="fname" placeholder="First Name" value="{% if request.fname %}{{ request.fname }}{% endif %}"required>
+            </div>
+            <div class="col-sm-5">
+                <input type="text" name="lname" class="form-control" id="lname" placeholder="Last Name" value="{% if request.lname %}{{ request.lname }}{% endif %}" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="email" class="col-sm-2 col-form-label text-right">Email:</label>
+            <div class="col-sm-10">
+                <input type="email" name="email" class="form-control" id="email" placeholder="somebody@home.com" value="{% if request.email %}{{ request.email }}{% endif %}" required>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="reason" class="col-sm-2 col-form-label text-right">Reason:</label>
+            <div class="col-sm-10">
+                <select name="subject" class="form-control" required>
+                    <option value="">Select One</option>
+                    <option value="work" {{ request.subject == 'work' ? 'selected="selected': '' }}>Business</option>
+                    <option value="general" {{ request.subject == 'general' ? 'selected="selected': '' }}>General Information</option>
+                    <option value="suggestion" {{ request.subject =='suggestion' ? 'selected="selected': '' }}>Suggestions</option>
+                    <option value="Webproblems"{{ request.subject == 'Webproblems' ? 'selected="selected': '' }}>Web Site Problems</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group form-inline">
+            <label for="message" class="col-sm-2 col-form-label text-left">Message:</label>
+            <textarea class="form-control col-sm-10" name="message" id="message" rows="10"
+                      placeholder="Love your work man keep up the good vibes" required>{% if request.message %}{{ request.message }} {% endif %}</textarea>
+        </div>
+        <div class="row form-group">
+            <div class="offset-sm-2">
+                <div class="g-recaptcha" style="margin-left: 10px;" data-sitekey="6Lc6GnAUAAAAAAf7Fi90AkCP6KB53hwqGSHQ05eo"></div>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-2"><button class="m-2 btn btn-primary btn-lg">Continue</button></div>
+        </div>
+        {%  if (token)  %}{{  token | raw }} {% endif %}
+    </form>
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script src='https://www.google.com/recaptcha/api.js'></script>
+    <script>
+        document.getElementById('contactFrm').addEventListener('submit', resume);
+        function resume (e) {
+            if (grecaptcha.getResponse() == '') {
+                alert ('Please verify you\'re human with the recaptcha' );
+                e.preventDefault();
+            }
+        }
+    </script>
+{% endblock %}
