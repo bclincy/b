@@ -33,13 +33,14 @@ $app->group('/resume', function () {
 
 /** API */
 $app->group('/api', function () {
-    $this->post('/resume/new', 'ApiController:resume')->setName('newResumeFrm');
     $this->get('/nnuts/{id}', 'ApiController:nnutsById');
     $this->get('/podcasts', function (Request $req, Response $resp) {
         $new = new Podcast($this->EntityManger);
         return $resp->withJson($new->displayPodcast());
     });
     $this->post('/contact/', 'ApiController:contactFrm')->setName('apiContact');
+    $this->post('/newsletter/{email}', 'ApiController:newsSignup')->setName('newsletter');
+    $this->post('/resume/new', 'ApiController:resume')->setName('newResumeFrm');
     $this->post('/shoutout/add', 'ApiController:addShoutout')->setName('addShoutout');
 })->add(new App\Middleware\Csfr($container));
 

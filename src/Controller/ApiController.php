@@ -173,9 +173,9 @@ class ApiController extends Controller
 
     }
 
-    public function newsSignup(Request $request, Response $response)
+    public function newsSignup(Request $request, Response $response, $args)
     {
-        $body = $request->getBody();
+        $body = $request->getParsedBody();
         $data = ['fname'=>'Brian', 'lname'=>'clincy'];
 
         return $response->withJson($data)->withHeader('Content-Type', 'application/json');
