@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/animate.css"/>
     <link rel="stylesheet" href="/css/frontpage.css"/>
+    <link rel="stylesheet" href="js/sweetalert2.css">
     <meta property="og:type" content="Home Page"/>
     <meta property="og:url" content="http://brianclincy.com"/>
     <meta property="og:title" content="Brian Clincy a working in process guy"/>
@@ -274,6 +275,7 @@
 <script src="/js/tether.min.js"></script>
 <script src="/js/jquery.min.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="js/sweetalert2.js"></script>
 <script type="text/javascript">
     document.getElementById('displayemail').innerHTML = 'brian@brianclincy.com';
     document.getElementById('frmnews').addEventListener('submit', signup);
@@ -328,7 +330,11 @@
     }
 
     $(document).ready(function () {
-
+        swal(
+            'Good job!',
+            'You clicked the button!',
+            'success'
+        )
         $('#animateBtn').click(function () {
             animate('#anim-head', 'bounce');
             animate('#anim-body', 'rubberBand');
@@ -399,5 +405,6 @@
 
         return JSON.stringify(obj);
     }
+
 </script>
 </html>
