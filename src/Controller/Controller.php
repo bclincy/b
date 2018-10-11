@@ -58,7 +58,7 @@ class Controller
             $this->em = $container->EntityManger;
             $this->validator = $container->validator;
         } catch (\Exception $e) {
-            $this->logger->addAlert('fail to setup Controller');
+            $container->logger->error('Controller not register ' . $e);
             echo 'Message: ' .$e->getMessage();
         }
     }
