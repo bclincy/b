@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use app\Content\imageProcess;
+use App\Content\Display;
 use App\Models\Message;
 use Exception;
 use Interop\Container\ContainerInterface;
@@ -40,6 +40,9 @@ class HomeController extends Controller
 
     /** @var array */
     protected $image;
+
+    /** @var  Display */
+    protected $displaySrvs;
 
     public function index (Request $req, Response $resp)
     {
@@ -105,7 +108,7 @@ class HomeController extends Controller
             $return['form'] = $validate->getErrors();
             $return['form']['captcha'] = $gvalid['captcha'][0];
         }
-        if ($contact->id > 0){
+        if (isset($contact) && $contact->id > 0){
             $_SESSION['person'] = $contact;
 
             return $response->withStatus(302)->withHeader('Location', '/message');
@@ -142,10 +145,10 @@ class HomeController extends Controller
                     $this->content['breadcrum'] = $data['breadcrum'] !== null ? $data['breadcrum'] : null;
                 }
             } catch (\Exception $e) {
-                $notFoundHandler = $this->container->get('notFoundHandler');
+                $notFoundHandler = $this->container->notFoundHandler;
             }
         } else {
-            $notFoundHandler = $this->container->get('notFoundHandler');
+            $notFoundHandler = $this->container->notFoundHandler;
         }
         if (isset($notFoundHandler)) {
             return $notFoundHandler($request, $response);
@@ -250,18 +253,6 @@ class HomeController extends Controller
         return str_replace(' ', '_', $str);
     }
 
-    /**
-     * @param $data
-     */
-    private function metadata($data)
-    {
-        $url = isset($this->content['title']) ?
-            $this->createCanonicalUrl($this->content['title']) :
-            null;
-        $this->meta .= '<meta property="og:link" content="' . $url . '" />';
-        $this->meta .= '<meta property="og:image" content="' . $this->openGraphImage() . '" />';
-
-    }
 
     /**
      * @return bool
@@ -282,22 +273,10 @@ class HomeController extends Controller
         return $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png' == $this->image ? false: true;
     }
 
-    /**
-     * @param $title
-     * @return string
-     */
-    private function createCanonicalUrl ($title)
-    {
-        //This is direct contact link
-        $title = stristr($title, '_') ? $title : $this->addUnderScore($title);
-
-        return '/'.$title;
-    }
-
     public function show (Request $request, Response $response)
     {
-        die($request->getAttribute('slug'));
-
+        $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
+        die(var_dump($content));
     }
 
     public function nnutsById(Request $request, Response $response)

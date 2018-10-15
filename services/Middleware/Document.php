@@ -45,4 +45,13 @@ class Document
 
     }
 
+    /**
+     * @param $string
+     * @return mixed
+     */
+    private function removeUnderScore($string)
+    {
+        return str_replace('_', ' ', $string);
+    }
+
 }

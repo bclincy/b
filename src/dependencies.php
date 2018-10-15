@@ -110,10 +110,6 @@ $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
 
-$container['Models'] = function (\Slim\Container $container) {
-    return new \App\Content\Model($container, $container['pdo']);
-};
-
 $container['hasAccess'] = function (\Slim\Container $container) {
     $container->environment;
     // Todo: This authenticate users of the API for now return true
@@ -130,6 +126,10 @@ $container['ApiController'] = function (\Slim\Container $container) {
 
 $container['HomeController'] = function (\Slim\Container $container) {
     return new \App\Controller\HomeController($container);
+};
+
+$container['Display'] = function (\Slim\Container $container) {
+    return new \App\Content\Display($container, $container->pdo);
 };
 
 $container['State'] = function (\Slim\Container $container)

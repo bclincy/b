@@ -31,7 +31,7 @@
     </button>
     <a class="navbar-brand" href="#">
         <!-- Xbox B icon by Icons8 -->
-        <img class="icon icons8-Xbox-B" width="50" height="50" alt="Brian Clincy is here"
+        <img class="icon icons8-Xbox-B" width="50" height="50" alt="been tagged: Brian Clincy is here!"
              src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAEG0lEQVRoQ92ai7FMQRCG+0aACBABIkA
              EiAARIAJEgAi4ESACRIAIEAEioL6t+bd6z2u658w+6k7Vqd1765ye/vvv1/TZM7sg6+yC4LCeQC6b2W0zu2lmd8zsWrm8rX6aGddnM/tmZl
              /M7E8PY/YA8tDM7perRacPZsZ13vKwnlkD5LmZPRpYHQtjbS4sjdX9gi2YgzEuGNSCqddm9qYFUAsQFHjrAHwvCmDVrJsACjafmtmNAgBAj
@@ -306,9 +306,9 @@
 
     function signup(e) {
         e.preventDefault();
-        var xhr = new XMLHttpRequest();
-        const email = document.getElementById('email').value;
-        if (ValidateEmail(email) === true) {
+        const xhr = new XMLHttpRequest();
+        const email = document.getElementById('email');
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email.value)) {
             xhr.open('POST', '/api/newsletter/' + email, true);
             xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
             xhr.onload = function (data) {
@@ -318,23 +318,20 @@
                 }
             };
             xhr.send(JSON.stringify({email: email}));
-        }
-    }
+        } else {
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'You have entered an invalid email address!',
+                footer: 'Press OK and enter valid email',
+                customClass: 'animated tada',
+            }).then(function () { email.select(); email.focus()});
 
-    function ValidateEmail(email) {
-        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-            return (true)
+
         }
-        alert("You have entered an invalid email address!");
-        return (false)
     }
 
     $(document).ready(function () {
-        swal(
-            'Good job!',
-            'You clicked the button!',
-            'success'
-        )
         $('#animateBtn').click(function () {
             animate('#anim-head', 'bounce');
             animate('#anim-body', 'rubberBand');
@@ -364,14 +361,14 @@
     function sendContact(e) {
         e.preventDefault();
         const xhr = new XMLHttpRequest();
-        var frmData = toJSONString(this);
+        const frmData = toJSONString(this);
         const contactdiv = document.getElementById('contact');
         const showError = document.getElementById('contactError');
         animate(showError, 'BounceOutLeft');
         xhr.open('POST', '/api/contact/', true);
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onprogress = function(pe) {
-            console.log('WHAT THE BOOYA');
+            console.log({pe,jk:'Hola'});
         };
         xhr.onreadystatechange = function (data) {
             console.log(data);

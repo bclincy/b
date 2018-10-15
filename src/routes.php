@@ -66,9 +66,6 @@ $app->get('/testme', function (Request $request, Response $response) {
 });
 
 
-$app->get('/gallery[/]', '\App\Controller\HomeController:gallery');
-//$app->get('/gallery/', function (Request $req, Response $resp) {
-//    die('<pre>'. print_r($this, true));
-//});
+$app->get('/gallery[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
+$app->get('/{category}/', 'HomeController:category')->setName('category');
 $app->get('/{slug}', 'HomeController:show')->setName('pages');
-$app->get('/{category}/', 'HomeController:category');

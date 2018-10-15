@@ -13,7 +13,6 @@ use App\Authorization\Encryptor;
 use Psr\Container\ContainerInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Slim\Http\Response;
-use Slim\Views\Twig;
 
 class Csfr
 {
@@ -30,6 +29,7 @@ class Csfr
 
     /** @var  ContainerInterface */
     private $container;
+
     /** @var array Post */
     private $req;
 

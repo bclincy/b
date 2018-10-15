@@ -39,6 +39,13 @@ class Controller
     /** @var  \App\Validation\Validator $validator */
     protected $validator;
 
+    protected $breadcrum = [
+      'about' =>
+        ['vision'=>
+          ['Home' => '<a href="/">Home</a>', 'vision' => 'Vision']
+        ]
+    ];
+
 
     /**
      * Controller constructor.
@@ -58,14 +65,14 @@ class Controller
             $this->em = $container->EntityManger;
             $this->validator = $container->validator;
         } catch (\Exception $e) {
-            $this->logger->addAlert('fail to setup Controller');
+            $this->container->logger->addError('fail to setup Controller');
             echo 'Message: ' .$e->getMessage();
         }
     }
 
     public function error($msg)
     {
-        return $this->views->render($this->resp, '404.html', [])->withStatus(404);
+        return $this->twig->render('404.html', ['msg'=> $msg])->withStatus(404);
     }
 
     /**
@@ -86,6 +93,11 @@ class Controller
 
         // Send the message
         return $mailer->send($message);
+
+    }
+
+    public function ucfuture(Request $request, Response $response)
+    {
 
     }
 
