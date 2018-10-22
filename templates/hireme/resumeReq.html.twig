@@ -13,25 +13,30 @@
         <div class="form-group row">
             <label for="name" class="col-sm-2 col-form-label text-right">Name:</label>
             <div class="col-sm-10">
-                <input type="text" name="name" class="form-control" id="name" placeholder="Jon Doe" required>
+                <input type="text" name="name" class="form-control" id="name" placeholder="Jon Doe"
+                        {% if name %} value="{{ name }}" {% endif %} required />
             </div>
         </div>
         <div class="form-group row">
             <label for="name" class="col-sm-2 col-form-label text-right">LinkedIn URL:</label>
             <div class="col-sm-10">
-                <input type="url" name="linkedin" class="form-control" id="linkedIn" placeholder="https://www.linkedin.com/in/brianclincy">
+                <input type="url" name="linkedin" class="form-control" id="linkedIn"
+                        {% if name %} value="{{ url }}" {% endif %}
+                       placeholder="https://www.linkedin.com/in/brianclincy" />
             </div>
         </div>
         <div class="form-group row">
             <label for="email" class="col-sm-2 col-form-label text-right">Email:</label>
             <div class="col-sm-10">
-                <input type="email" name="email" class="form-control" id="email" placeholder="somebody@home.com" required>
+                <input type="email" name="email" class="form-control" id="email"
+                        {% if email %} value="{{ email }}" {% endif %} placeholder="somebody@home.com" required />
             </div>
         </div>
         <div class="form-group row">
             <label for="agency" class="col-sm-2 col-form-label text-right">Agency:</label>
             <div class="col-sm-10">
-                <input type="text" name="agency" class="form-control" id="agency" placeholder="Employment Agency 3">
+                <input type="text" name="agency" class="form-control" id="agency"
+                        {% if agency %} value="{{ agency }}" {% endif %}placeholder="Employment Agency 3" />
             </div>
         </div>
         <div class="form-group row">
@@ -48,7 +53,8 @@
         </div>
         <div class="form-group form-inline">
             <label for="message" class="col-sm-2 col-form-label text-left">Questions/Comments</label>
-            <textarea class="form-control col-sm-10" name="message" id="message" rows="3" placeholder="Anything you would like to add"></textarea>
+            <textarea class="form-control col-sm-10" name="message" id="message" rows="3"
+                    {% if message %} value="{{ message }}" {% endif %} placeholder="Anything you would like to add"></textarea>
         </div>
         <div class="row form-group">
             <div class="offset-sm-2">
@@ -96,24 +102,34 @@
                 window.location.href = "/resume/" + data.key;
             }
 
-            console.log(data);
         }
         function postData(url, data) {
             // Default options are marked with *
             return fetch(url, {
-                method: "POST", // *GET, POST, PUT, DELETE, etc.
-                mode: "same-origin", // no-cors, cors, *same-origin
-                cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: "same-origin", // include, same-origin, *omit
+                method: "POST",
+                mode: "same-origin",
+                cache: "no-cache",
+                credentials: "same-origin",
                 headers: {
                     "Content-Type": "application/json; charset=utf-8",
-                    // "Content-Type": "application/x-www-form-urlencoded",
                 },
-                redirect: "follow", // manual, *follow, error
-                referrer: "no-referrer", // no-referrer, *client
-                body: JSON.stringify(data), // body data type must match "Content-Type" header
+                redirect: "follow",
+                referrer: "no-referrer",
+                body: JSON.stringify(data),
             })
-                .then(function (response){ return response.json() }); // parses response to JSON
+                .then(function (response){ return response.json() });
         }
     </script>
+    {% if error %}
+        <link rel="stylesheet" href="{{ asset('/js/sweetalert2.css') }}">
+        {% include 'partials/sweetalerts.html.twig' %}
+        <script>
+            swal({
+                type: 'error',
+                title: 'Incomplete Form',
+                text: 'Please Complete the form',
+                footer: 'Small issue easily fixed',
+            });
+        </script>
+    {% endif %}
 {% endblock %}

@@ -8,6 +8,9 @@
 
 namespace App\Content;
 
+use Egulias\EmailValidator\Warning\IPV6MaxGroups;
+use \Gumlet\ImageResize;
+
 
 /**
  * Class imageProcess
@@ -79,9 +82,10 @@ class imageProcess
     }
 
     /**
+     * @param bool $thumbnails
      * @return bool
      */
-    public function createImgList()
+    public function createImgList($thumbnails = false)
     {
         $this->currentDir = $this->siteRoot . $this->imageRoot;
         $images = array_filter($this->scandirs($this->currentDir));
@@ -154,6 +158,18 @@ class imageProcess
 
         return $fileList;
     }
+
+    public function maxWebImg (array $images)
+    {//todo: this does not work
+        foreach ($images as $key => $image) {
+            $img = new ImageResize($image['fullpath']);
+            $img->resizeToWidth(1200);
+            $return = $img->save($image['fullpath']);
+        }
+
+        return $return;
+    }
+
     /**
      * @param $filename
      * @return null|string|string[]
@@ -189,6 +205,7 @@ class imageProcess
 
     /**
      * @param array $images
+     * @return string
      */
     private function createThumbnails(array $images)
     {
@@ -196,6 +213,8 @@ class imageProcess
         foreach($images as $img) {
             print_r($img);
         }
+
+        return 'nothing';
     }
 
     /**

@@ -3,7 +3,7 @@
     <h1>Image Gallery</h1>
     <p>My random pieces of image that get from my image hosting spots around the Internet from Flick, Pexel,
         <a href="https://unsplash.com/@bclincy">Unsplash</a></p>
-    {{ dump(img.0.images) }}
+        <a href="https://pexel.com/@bclincy">Unsplash</a></p>
     <section id="carousel" >
         <div id="carouselImgs" class="carousel slide" data-ride="carousel">
             <ol class="carousel-indicators">
@@ -47,13 +47,16 @@
         </div>
 
         <div class="rows imgs d-flex justify-content-between flex-wrap">
-            <img src="https://preview.ibb.co/iZ3Lww/img2.jpg" width="30%" alt="word" title="sweet day">
-            <img src="https://preview.ibb.co/iQsPOb/img3.jpg" width="30%" alt="Iwish" title="Works great day">
-            <img src="https://preview.ibb.co/gFFdib/img4.jpg" width="30%" alt="work with ya" title="today great day">
-            <img src="https://preview.ibb.co/hS5ppG/img5.jpg" width="30%" alt="Zulooo" title="hypes great day">
-            <img src="https://preview.ibb.co/goKtGw/img6.jpg" width="30%" alt="beef wone" title="nall great day">
-            <img src="https://preview.ibb.co/bSWjOb/img7.jpg" width="30%" alt="Wale to" title="Smooth it's">
-            <img src="https://preview.ibb.co/i2o9pG/img8.jpg" width="30%" alt="Hypzeee" title="Damn hope">
+        {% for image in  img.0.images %}
+            <img src="{{ base_url() }}{{ image.imgUrl }}" alt="{{ image.altText }}" data-content="{{ image.imgUrl }}" />
+        {% endfor %}
+            <img src="https://preview.ibb.co/iZ3Lww/img2.jpg" width="30%" height="30%" alt="word" title="sweet day">
+            <img src="https://preview.ibb.co/iQsPOb/img3.jpg" width="30%" height="30%" alt="Iwish" title="Works great day">
+            <img src="https://preview.ibb.co/gFFdib/img4.jpg" width="30%" height="30%" alt="work with ya" title="today great day">
+            <img src="https://preview.ibb.co/hS5ppG/img5.jpg" width="30%" height="30%" alt="Zulooo" title="hypes great day">
+            <img src="https://preview.ibb.co/goKtGw/img6.jpg" width="30%" height="30%" alt="beef wone" title="nall great day">
+            <img src="https://preview.ibb.co/bSWjOb/img7.jpg" width="30%" height="30%" alt="Wale to" title="Smooth it's">
+            <img src="https://preview.ibb.co/i2o9pG/img8.jpg" width="30%" height="30%" alt="Hypzeee" title="Damn hope">
         </div>
     </section>
 {% endblock %}

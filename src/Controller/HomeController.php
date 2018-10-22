@@ -192,11 +192,19 @@ class HomeController extends Controller
     public function gallery (Request $req, Response $res)
     {
         $root = $_SERVER['DOCUMENT_ROOT'];
+        $galleries = [
+          'clincy' => '/images/gallery/clincy',
+          'gallery' => '/images/gallery',
+          'images' => '/images',
+        ];
+        $display = $req->getAttribute('gallery');
+        $gallery = in_array($display, $galleries) ? $galleries[$display] : '/images/gallery/';
         $images = new Img($root, '/images/gallery/', true );
         $img = $images->createImgList();
 
-        $images->createResize();
-        die('<pre>' . print_r($images, true));
+        if ($req->getAttribute('rewrite') === $_ENV['rewrite'] ) {
+            $images->maxWebImg($images->images[0]['images']);
+        }
         return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images->images]);
     }
 
@@ -225,8 +233,17 @@ class HomeController extends Controller
     public function resumeFrm (Request $req, Response $resp, $args)
     {
         if (isset($args['id'])) {
-            $data = ['title' => 'Brian Clincy Resume'];
-            $template ='hireme/resume.html.twig';
+            if ($this->container->Display->authorize($args['id']) === false) {
+                $this->container->flash->addMessage('EnterForm', 'Please first fill out the form');
+                $data = [
+                  'title' => 'Please Complete form',
+                  'error' => 'Please fill out the form to continue',
+                  'breadcrum' => ['<a href="/resume">Hire Me</a>']];
+                $template = 'hireme/resumeReq.html.twig';
+            } else {
+                $data = ['title' => 'Brian Clincy Resume'];
+                $template ='hireme/resume.html.twig';
+            }
         } else {
             $data = ['title' => 'Resume Request', 'breadcrum' => ['Hire Me', 'Resume Request']];
             $template = 'hireme/resumeReq.html.twig';
@@ -253,25 +270,6 @@ class HomeController extends Controller
         return str_replace(' ', '_', $str);
     }
 
-
-    /**
-     * @return bool
-     */
-    private function openGraphImage ()
-    {
-        if ($this->content['content'] !== null) {
-            $images = preg_match_all(
-                '|<img.*?src=[\'"](.*?)[\'"].*?>|i',
-                $this->content['content'],
-                $matches
-            );
-            $imgurl = $_SERVER['HTTP_HOST'] . $matches[ 1 ][ 0 ];
-            $this->image = strlen($imgurl) !== null ? $imgurl : $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png';
-        }
-
-        //Return false if use the default image
-        return $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png' == $this->image ? false: true;
-    }
 
     public function show (Request $request, Response $response)
     {

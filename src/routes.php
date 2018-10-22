@@ -22,10 +22,6 @@ $app->get('/shoutouts', function (Request $request, Response $response) {
     return $response;
 });
 
-$app->get('/home', function (Request $request, Response $response) {
-    return $this->view->render($response, 'home/index.html.twig', ['title' => 'Home again']);
-});
-
 $app->group('/resume', function () {
     $this->get('/{id}', 'HomeController:resumeFrm')->setName('resumeFrm');
     $this->get('[/]', 'HomeController:resumeFrm')->setName('resume');

@@ -44,6 +44,6 @@ return [
                 'user' => isset($_ENV['dbuser']) ? $_ENV['dbuser'] : 'root',
                 'password' => isset($_ENV['dbpass']) ? $_ENV['dbpass'] : 'root',
             ]
-        ]
+        ],
     ],
 ];

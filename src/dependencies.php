@@ -30,8 +30,8 @@ $container['pdo'] = function ($c) {
 
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('../templates/', [
-        'cache' => false,
-        'debug'=> true
+        'cache' => $_ENV['APP_ENV'] === 'dev' ? false : true,
+        'debug'=> $_ENV['APP_ENV'] === 'dev',
     ]);
     $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
     $view->addExtension(new \Slim\Views\TwigExtension(
@@ -137,5 +137,12 @@ $container['State'] = function (\Slim\Container $container)
     return new \App\Entity\StateRepository($container);
 };
 
+$container['baseUrl'] = function () {
+    return sprintf(
+      "%s://%s",
+      isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+      $_SERVER['SERVER_NAME']
+    );
+};
 
 return $container;

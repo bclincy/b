@@ -8,18 +8,19 @@
         <link href="{{ asset('/css/font-awesome.min.css') }}" rel="stylesheet">
         <link rel="stylesheet" href="{{ asset('/css/default.css') }}">
         <meta property="og:title"
-              content="{% if title %}{{ title }}{% else %}Brian Clincy a work in Progress{% endif %}"/>
+              content="{% if title %}{{ title }}{% else %}Brian Clincy the mission for greatness!{% endif %}"/>
     {% endblock %}
     {% block metadata %}
         <meta property="og:title" content="{{ title }}"/>
+        <meta property="og:site_name" content="Brian Clincy From brianclincy.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         {% if keywords %}
             <meta name="keywords" content="{{ keywords }}">
         {% endif %}
-        {% if image %}
-            <meta name="og:image" content="{{ image }}">
+        {% if meta %}
+            <meta name="og:image" content="{{ meta.image }}">
         {% endif %}
-        {% if description %}
+        {% if op.description %}
             <meta name="description" content="{{ description }}">
         {% endif %}
     {% endblock %}
