@@ -13,3 +13,4 @@
 /data/db/mysql/
 var/doctrine/
 public/podcast/
+token.json

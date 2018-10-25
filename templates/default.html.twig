@@ -1,7 +1,13 @@
 {% extends "layout.html.twig" %}
 
 {% block content %}
+    {% if imgtop is defined %}
+        {%  include 'partials/carousel.html.twig' %}
+    {% endif %}
     {% if content is defined %}
         {{ content | raw }}
-        {% endif %}
+    {% endif %}
+    {% if not imgtop is defined %}
+        {%  include 'partials/carousel.html.twig' %}
+    {% endif %}
 {% endblock %}

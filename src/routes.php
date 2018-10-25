@@ -53,7 +53,8 @@ $app->get('/message[/{data}]', 'HomeController:displayMessage');
 $app->get('/testme', function (Request $request, Response $response) {
     $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
     $youtube = $youtube->init();
-    echo '<pre>' . print_r($youtube, true);
+    echo '<pre>' . print_r($youtube, true) . '</pre>';
+
 //    $str = encrypt::decryptStr($youtube['hash']);
 //    $fight = new \App\Authorization\GoogleToken();
 //    $fight->init();
@@ -62,6 +63,9 @@ $app->get('/testme', function (Request $request, Response $response) {
 });
 
 
-$app->get('/gallery[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
+$app->group('/gallery', function() {
+ $this->get('[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
+ $this->get('/{rewrite}', '\App\Controller\HomeController:gallery')->setName('Imgrewrite');
+});
 $app->get('/{category}/', 'HomeController:category')->setName('category');
 $app->get('/{slug}', 'HomeController:show')->setName('pages');

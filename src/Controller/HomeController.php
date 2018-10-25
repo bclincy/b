@@ -42,7 +42,7 @@ class HomeController extends Controller
     protected $image;
 
     /** @var  Display */
-    protected $displaySrvs;
+    protected $displaySvc;
 
     public function index (Request $req, Response $resp)
     {
@@ -191,21 +191,9 @@ class HomeController extends Controller
 
     public function gallery (Request $req, Response $res)
     {
-        $root = $_SERVER['DOCUMENT_ROOT'];
-        $galleries = [
-          'clincy' => '/images/gallery/clincy',
-          'gallery' => '/images/gallery',
-          'images' => '/images',
-        ];
-        $display = $req->getAttribute('gallery');
-        $gallery = in_array($display, $galleries) ? $galleries[$display] : '/images/gallery/';
-        $images = new Img($root, '/images/gallery/', true );
-        $img = $images->createImgList();
-
-        if ($req->getAttribute('rewrite') === $_ENV['rewrite'] ) {
-            $images->maxWebImg($images->images[0]['images']);
-        }
-        return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images->images]);
+        $this->displaySvc = $this->container->Display;
+        $images = $this->displaySvc->galleryOptions('gallery',$_SERVER['DOCUMENT_ROOT'], $req->getAttribute('rewrite') );
+        return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images]);
     }
 
     /**
@@ -274,7 +262,8 @@ class HomeController extends Controller
     public function show (Request $request, Response $response)
     {
         $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
-        die(var_dump($content));
+
+        return $this->twig->render($response, 'default.html.twig', $content);
     }
 
     public function nnutsById(Request $request, Response $response)

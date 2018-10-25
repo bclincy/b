@@ -109,18 +109,21 @@ class Display extends Model
         return $return;
     }
 
-    public function galleryOptions (string $gal = null, $root, $rewrite, $e)
+
+    public function galleryOptions (string $gal = null, $root, $rewrite)
     {
         $galleries = [
           'clincy' => '/images/gallery/clincy',
-          'gallery' => '/images/gallery',
-          'images' => '/images',
+          'gallery' => '/images/gallery/',
+          'images' => '/images/',
         ];
         $gallery = in_array($gal, $galleries) ? $galleries[$gal] : '/images/gallery/';
-        $images = new Img($root, '/images/gallery/', true );
+        $images = new Img($root, $gallery, true );
         if ($rewrite === $_ENV['rewrite_key'] ) {
             $images->maxWebImg($images->images[0]['images']);
         }
+
+        return $images->images;
 
     }
     /**
