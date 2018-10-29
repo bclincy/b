@@ -82,10 +82,14 @@ class Display extends Model
      */
     public function openGraphImage ($img = null)
     {
-        $img = $img ?? $this->media;
-        $key = array_search(true, array_column($img, 'displayOg'));
-        $path = $key === false ? $img[0]['relpath'] : $img[$key]['relpath'];
-        $type = $key === false ? $img[0]['ogType'] : !isset($img[$key]['ogType']) ? 'image' : $img[$key]['ogType'];
+        if (!is_array($img)) {
+            $path = '/images/images/handed.jpg';
+        } else {
+            $img = $img ?? $this->media;
+            $key = array_search(true, array_column($img, 'displayOg'));
+            $path = $key === false ? $img[0]['relpath'] : $img[$key]['relpath'];
+            $type = $key === false ? $img[0]['ogType'] : !isset($img[$key]['ogType']) ? 'image' : $img[$key]['ogType'];
+        }
 
         return '<meta property="og:'. $type . '" content="'. $this->container['baseUrl'] . $path .'" />';
     }
