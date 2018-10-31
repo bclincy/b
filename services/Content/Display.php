@@ -84,6 +84,7 @@ class Display extends Model
     {
         if (!is_array($img)) {
             $path = '/images/images/handed.jpg';
+            $type = 'image';
         } else {
             $img = $img ?? $this->media;
             $key = array_search(true, array_column($img, 'displayOg'));
