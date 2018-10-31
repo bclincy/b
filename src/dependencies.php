@@ -30,7 +30,7 @@ $container['pdo'] = function ($c) {
 
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('../templates/', [
-        'cache' => $_ENV['APP_ENV'] === 'dev' ? 'true' : 'false',
+        'cache' => $_ENV['APP_ENV'] === 'dev' ? false : '../var/twig',
         'debug'=> $_ENV['APP_ENV'] === 'dev',
     ]);
     $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
