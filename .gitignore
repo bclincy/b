@@ -14,3 +14,4 @@
 var/doctrine/
 public/podcast/
 token.json
+phinx.yml
