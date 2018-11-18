@@ -1,51 +1,36 @@
-version: '3'
+version: "3"
 volumes:
   logs:
-      driver: local
+    driver: local
 services:
   web:
-      image: nginx:latest
-      restart: always
-      working_dir: /var/www/html
-      ports:
-          - "80:80"
-      volumes:
-          - ./:/var/www/html
-          - ./etc/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-          - ./logs:/var/www/logs
-          - ./logs:/var/logs/nginx
-      links:
-          - php
-          - mysql
+    image: nginx:latest
+    restart: always
+    working_dir: /var/www/html
+    ports:
+      - "80:80"
+    volumes:
+      - ./:/var/www/html
+      - ./etc/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./logs:/var/www/logs
+      - ./logs:/var/logs/nginx
+    links:
+      - php
+      - mysql
   php:
-      image: nanoninja/php-fpm:${PHP_VERSION}
-      restart: always
-      volumes:
-          - ./:/var/www/html
+    image: nanoninja/php-fpm:${PHP_VERSION}
+    restart: always
+    volumes:
+      - ./:/var/www/html
   mysql:
-      image: mysql:5.7
-      restart: always
-      environment:
-        - MYSQL_DATABASE=${dbname}
-        - MYSQL_ROOT_PASSWORD=${dbrootuser}
-        - MYSQL_USER=${dbuser}
-        - MYSQL_PASSWORD=${dbpass}
-      ports:
-        - "3306:3306"
-      volumes:
-        - "./data/db/mysql:/var/lib/mysql"
-#  mysqldb:
-#      image: mysql:5.7
-#      container_name: ${MYSQL_HOST}
-#      restart: always
-#      env_file:
-#          - ".env"
-#      environment:
-#          - MYSQL_DATABASE=${dbname}
-#          - MYSQL_ROOT_PASSWORD=${dbrootuser}
-#          - MYSQL_USER=${dbuser}
-#          - MYSQL_PASSWORD=${dbpass}
-#      ports:
-#          - "8989:3306"
-#      volumes:
-#          - "./data/db/mysql:/var/lib/mysql"
+    image: mysql:5.7
+    restart: always
+    environment:
+      - MYSQL_DATABASE=${dbname}
+      - MYSQL_ROOT_PASSWORD=${dbrootuser}
+      - MYSQL_USER=${dbuser}
+      - MYSQL_PASSWORD=${dbpass}
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./data/db/mysql:/var/lib/mysql"
