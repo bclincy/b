@@ -266,7 +266,12 @@ class HomeController extends Controller
         return $this->twig->render($response, 'default.html.twig', $content);
     }
 
-    public function nnutsById(Request $request, Response $response)
+    public function nnuts (Request $req, Response $resp)
+    {
+        die('here world');
+    }
+
+    public function nnutsById (Request $request, Response $response)
     {
         $data = $this->postFrom('/nnuts/'.$request->getAttribute('id'));
         echo '<pre>'. print_r($data, true);
@@ -279,6 +284,11 @@ class HomeController extends Controller
         $resp = $client->request('GET', $this->container->apiUrl . $resource);
         $data = json_decode($resp->getBody(), true);
 
+    }
+
+    public function nnutsIndex (Request $request, Response $response)
+    {
+        return $this->twig->render('default.html.twig', ['content' => 'NNUTS podcast']);
     }
 
 }

@@ -2,6 +2,7 @@
 
 
 use Phinx\Migration\AbstractMigration;
+use \Phinx\Util\Literal;
 
 class FirstMigration extends AbstractMigration
 {
@@ -30,22 +31,27 @@ class FirstMigration extends AbstractMigration
      * Remember to call "create()" or "update()" and NOT "save()" when working
      * with the Table class.
      */
-    public function change()
+    public function up()
     {
-        $sql = 'CREATE TABLE media (
-          id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-          relpath VARCHAR(255) NOT NULL,
-          filepath VARCHAR(255) NOT NULL,
-          opDisplay VARCHAR(20) DEFAULT "image" NULL,
-          displayOg TINYINT(1) DEFAULT 0 NULL,
-          savefile BLOB,
-          docID INT,
-          postId INT,
-          createdOn DATETIME,
-           modifiedOn TIMESTAMP DEFAULT NOW()
-        );';
 
-        $this->execute($sql);
+        $exists = $this->hasTable('media');
+        if ($exists === false) {
+            $table = $this->tables('media');
+            $table->addColumn('relpath', 'string', ['null' => false])
+              ->addColumn('filepath', 'string', ['null'=> false])
+              ->addColumn('opDisplay', 'string', ['limit' => 20, 'default' => 'image'])
+              ->addColumn('displayOg', 'smallinteger', ['default' => 0])
+              ->addColumn('savefile', 'blob')
+              ->addColumn('docID')
+              ->addColumn('createdOn', 'timestamp', ['default' => Literal::from('now()')])
+              ->addColumn('modifiedOn', 'timestamp', ['default' => Literal::from('now()')])
+              ->save();
+        }
 
+    }
+
+    public function down()
+    {
+        $this->table('media')->drop()->save();
     }
 }

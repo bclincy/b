@@ -70,8 +70,13 @@ class Display extends Model
             }
         }
         $data = $data[0];
-        $data['media'] = $this->media;
-        $data['meta'] = $this->openData($data);
+        try {
+            $data['media'] = $this->media;
+            $data['meta'] = $this->openData($data);
+        } catch (\Exception $e) {
+            $this->container->logger->error('Open Graph media is not available and errored');
+            $data = [];
+        }
 
         return $data;
     }
@@ -131,6 +136,7 @@ class Display extends Model
         return $images->images;
 
     }
+
     /**
      * @param $title
      * @return string
@@ -148,8 +154,9 @@ class Display extends Model
      * @param $data
      * @return mixed
      */
-    private function openData ($data)
+    private function openData (array $data)
     {
+        $data['title'] = isset($data['title']) ? $data['title'] : $_SERVER['REDIRECT_URL'];
         $type = $data['docType'] === 'Video' ? 'video.movie' : $data['docType'] === 'Podcast' ? 'podcast' : 'website';
         $meta['oURL'] = '<meta property="og:url" content="' . $this->container['baseUrl']
           . $this->createCanonicalUrl($data['title']) . '" />';
@@ -162,12 +169,21 @@ class Display extends Model
         return $meta;
 
     }
+
     private function sum_num_in_str (string $str)
     {
         $numbers = str_split(preg_replace('/\D/', '', $str));
         $num2arr = array_map('intval', $numbers);
 
         return array_sum($num2arr);
+    }
+
+    private function nl2p(string $str)
+    {
+        return '<p>' . preg_replace(['/([\n|\r]+)/i'],
+            ['</p>\n<p>', '</p>\n<p>', '$1 $2'],
+            strip_tags(trim($str), '<div><li><ol>')) . '</p>';
+
     }
 
 }

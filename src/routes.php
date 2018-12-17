@@ -13,6 +13,7 @@ $app->group('/contact', function () {
 })->add(new \App\Middleware\Csfr($container));
 
 $app->group('/nnuts', function () {
+    $this->get('[/]', 'HomeController:nnutsIndex')->setName('podcast');
     $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
     $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutspcast')->setName('nnutsids');
 });
