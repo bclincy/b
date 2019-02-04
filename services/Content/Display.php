@@ -12,6 +12,10 @@ use App\Content\imageProcess as Img;
 class Display extends Model
 {
     protected $media;
+    protected $default = [
+      'image' => 'images/opendefault.jpg',
+      'description' => 'Brian Clincy in the making is putting together all his understanding, experience and wisdom 
+      into making a man. '];
 
     public function newResume()
     {
@@ -62,20 +66,20 @@ class Display extends Model
     {
         if (!empty($data) && count($data) > 1) {
             $medkeys = ['relpath', 'filepath', 'savefile', 'createdOn', 'ogType', 'displayOg'];
-            foreach($data as $key => $row) {
+            foreach ($data as $key => $row) {
                 foreach ($medkeys as $index => $medkey) {
                     $this->media[$key][$medkey] = $row[$medkey];
                 }
                 $data[$key] = array_diff_key($data[$key], array_flip($medkeys));
             }
-        }
-        $data = $data[0];
-        try {
-            $data['media'] = $this->media;
-            $data['meta'] = $this->openData($data);
-        } catch (\Exception $e) {
-            $this->container->logger->error('Open Graph media is not available and errored');
-            $data = [];
+            $data = $data[0];
+            try {
+                $data['media'] = $this->media;
+                $data['meta'] = $this->openData($data);
+            } catch (\Exception $e) {
+                $this->container->logger->error('Open Graph media is not available and errored');
+                $data = [];
+            }
         }
 
         return $data;
@@ -156,7 +160,7 @@ class Display extends Model
      */
     private function openData (array $data)
     {
-        $data['title'] = isset($data['title']) ? $data['title'] : $_SERVER['REDIRECT_URL'];
+        $data['title'] = isset($data['title']) ? $data['title'] : $_SERVER['PHP_SELF'];
         $type = $data['docType'] === 'Video' ? 'video.movie' : $data['docType'] === 'Podcast' ? 'podcast' : 'website';
         $meta['oURL'] = '<meta property="og:url" content="' . $this->container['baseUrl']
           . $this->createCanonicalUrl($data['title']) . '" />';
