@@ -43,7 +43,7 @@ $app->group('/api', function () {
 
 
 $app->get('/callback/{service}/{key}', function (Request $request, Response $response) {
-    die('<pre>' . print_r($request, true));
+//    die('<pre>' . print_r($request, true));
     return $this->view->render($response, 'advisorySignup.html.twig',
       ['title' => 'Advisory Board', 'data' => $request]);
 });
@@ -55,6 +55,7 @@ $app->get('/testme', function (Request $request, Response $response) {
     $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
     $youtube = $youtube->init();
     echo '<pre>' . print_r($youtube, true) . '</pre>';
+    die('hello');
 
 //    $str = encrypt::decryptStr($youtube['hash']);
 //    $fight = new \App\Authorization\GoogleToken();

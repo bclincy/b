@@ -24,7 +24,7 @@ $dotenv = new \Symfony\Component\Dotenv\Dotenv();
 $dotenv->load(APP_ROOT .'/.env');
 // Instantiate the app
 $settings = require __DIR__ . '/../src/settings.php';
-
+define('APP_SETTINGS', \Symfony\Component\Yaml\Yaml::parseFile(__DIR__ . '/../config/service.yml'));
 $capsule = new \Illuminate\Database\Capsule\Manager();
 $capsule->addConnection($settings["settings"]["db"]);
 $capsule->setAsGlobal();

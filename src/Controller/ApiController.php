@@ -15,6 +15,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 use Psr\Http\Message\ResponseInterface as Response;
 use App\Repository\Shoutouts as Shout;
 use Respect\Validation\Validator as v;
+use Symfony\Component\Yaml\Yaml;
 
 class ApiController extends Controller
 {
@@ -30,6 +31,8 @@ class ApiController extends Controller
         'contact' => ['name|string|5', 'emailCnt|email|', 'message|string|5'],
         'shoutout' => ['name|string|5', 'shoutout|string|15', 'slugs|string|3'],
     ];
+
+    protected $restCodes;
 
 
     public function addShoutout(Request $request, Response $response)
@@ -353,6 +356,30 @@ class ApiController extends Controller
         array_walk($shoutout,function ($a, $b) use (&$db){ $db[':'.$b] = $a; });
 
         return $db;
+    }
+
+    /**
+     *
+     * Default output for REST with statuses and codes
+     * @param int $code
+     * @param null $msg
+     * @param null $status
+     * @param null $data
+     * @return array
+     */
+    public function apiStandardResponse($code = 200, $msg = null, $status = null, $data = null)
+    {
+        $status = $status === null ? ($code > 250 ? 'failed' : 'Success') : $status;
+        $response = [
+          'code' => $code,
+          'status' => $status,
+          'message' => $msg !== null ? $msg : APP_SETTINGS['rest'][$code]
+        ];
+        $response['data'] = $data !== null ? $data : null;
+        $this->apiResponseData = $response;
+        $this->setDataFromApiResponse();
+
+        return $response;
     }
 
 }
