@@ -55,29 +55,32 @@ class UserLookup
           'headers' => ['user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'],
           'timeout' => 60,
           'verify' => false,
+          'exceptions' => false,
         ]);
     }
 
 
     public function searchNames(string $fname, string $lname)
     {
-        $lookup = $this->client->request('GET', 'http://www.peoplebyname.com/people/Castaneda/Cecilia/Muskegon/MI');
-        if ($lookup->getStatusCode() === 200 ){
+        $lookup = $this->client->request('GET', 'http://www.peoplebyname.com/people/Clincy/Brian/Muskegon/MI');
+        if ($lookup->getStatusCode() === 200) {
             $new = $lookup->getBody()->getContents();
-            echo $new;
             $crawler = new Crawler($new);
             $hope = $crawler->filter('#hdr_middle > div > ul')->children();
 
-            foreach($hope as $value)
-            {
+            foreach ($hope as $value) {
+                echo '<pre>' . var_dump($value->childNodes->length) . '</pre>';
+                var_dump($value->childNodes->item(1)->nodeValue);
                 var_dump($value->childNodes->item(3)->nodeValue);
+                var_dump($value->childNodes->item(5)->nodeValue);
             }
-//            echo var_dump($hope->each('node'));
+            //            echo var_dump($hope->each('node'));
             $i = 0;
         }
 //        foreach ($this->baseUrls as $url) {
 //
 //        }
+
     }
 
 
@@ -91,10 +94,10 @@ class UserLookup
         $client->followRedirects();
 
         $guzzleClient = new \GuzzleHttp\Client(array(
-            'curl' => array(
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ),
+          'curl' => array(
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_SSL_VERIFYPEER => false,
+          ),
         ));
         $client->setClient($guzzleClient);
 
@@ -119,7 +122,7 @@ class UserLookup
      * Display output on a page
      * @return html
      */
-    public function displaySample ()
+    public function displaySample()
     {
         if (count($this->links) < 1) {
             return 'No Links';
@@ -151,10 +154,10 @@ class UserLookup
                     </script>
                     <div class="row">
             <div class="fb-post" data-href="https://www.facebook.com/lovecommunitygarden/posts/1174744925878700"></div></div>';
-                    foreach ($this->links as $value) {
-                        $str.= '<div class="row"> <div class="fb-post" data-href="'. $value . '"></div></div>'."\n";
-                    }
-                    $str .='</div></body></html>';
+        foreach ($this->links as $value) {
+            $str .= '<div class="row"> <div class="fb-post" data-href="' . $value . '"></div></div>' . "\n";
+        }
+        $str .= '</div></body></html>';
         return $str;
     }
 
