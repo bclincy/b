@@ -48,7 +48,7 @@ $app->get('/callback/{service}/{key}', function (Request $request, Response $res
       ['title' => 'Advisory Board', 'data' => $request]);
 });
 
-$app->get('/test[/{data}]', 'HomeController:gallery');
+$app->get('/test[/{data}]', 'HomeController:test');
 $app->get('/message[/{data}]', 'HomeController:displayMessage');
 
 $app->get('/testme', function (Request $request, Response $response) {

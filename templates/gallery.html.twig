@@ -17,7 +17,7 @@
 
         <div class="rows imgs d-flex justify-content-between flex-wrap">
         {% for image in  img.0.images %}
-                <img src="{{ base_url() }}{% if image.webpath  %}{{  image.webpath }} {% endif %}" alt="{{ image.altText }}" data-content="{{ image.imgUrl }}" {{ image.html |raw}} />
+                <img src="{{ base_url() }}{% if image.webpath  %}{{  image.webpath }} {% endif %}" alt="{{ image.altText }}" data-content="{{ image.imgUrl }}" class="response" />
         {% endfor %}
         </div>
     </section>

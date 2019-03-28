@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Content\Display;
+use App\Content\FbCrawler;
+use App\Content\UserLookup;
 use App\Models\Message;
 use Exception;
 use Interop\Container\ContainerInterface;
@@ -65,6 +67,10 @@ class HomeController extends Controller
     public function test() {
         // your code here
         // use $this->view to render the HTML
+        $fb = new FbCrawler('https://www.facebook.com/clincy', new Client());
+        $grab = new UserLookup();
+        $grab->searchNames('cecilia', 'Castaneda');
+
         return 'sike';
     }
 
