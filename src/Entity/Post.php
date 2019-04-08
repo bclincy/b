@@ -7,16 +7,20 @@
  */
 
 namespace App\Entity;
+use App\Entity\Traits\TimeStamping;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The docs class simple Doctrine Entity.
  *
- * @ORM\Table(name="docs")
+ * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
+ * @ORM\Table(name="Post")
  */
 
-class Docs
+class Post
 {
+    use TimeStamping;
+
     /**
      * @var int
      *
@@ -36,23 +40,18 @@ class Docs
      * @var string
      * @ORM\Column(type="string", nullable=false)
      */
-    private $keywords;
+    private $tags;
 
     /**
      * @var string
      * @ORM\Column(type="string",nullable=false)
      */
-    private $content;
+    private $body;
 
-    /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime")
-     */
-    private $createdDate;
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean", name="active")
+     * @ORM\Column(type="boolean", name="active", options={default:0})
      */
     private $isActive;
 
@@ -60,19 +59,13 @@ class Docs
      * @var  string
      * @ORM\Column(type="string", length=25)
      */
-    private $docType;
+    private $slug;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="integer", length=3)
      */
-    private $docName;
-
-    /**
-     * @var integer
-     * @ORM\Column(type="integer")
-     */
-    private $category;
+    private $weight;
 
     /**
      * @return int
@@ -81,7 +74,6 @@ class Docs
     {
         return $this->id;
     }
-
 
     /**
      * @return string
@@ -102,34 +94,34 @@ class Docs
     /**
      * @return string
      */
-    public function getKeywords(): string
+    public function getTags(): string
     {
-        return $this->keywords;
+        return $this->tags;
     }
 
     /**
-     * @param string $keywords
+     * @param string $tags
      */
-    public function setKeywords(string $keywords)
+    public function setTags(string $tags)
     {
-        $this->keywords = $keywords;
+        $this->tags = $tags;
     }
 
     /**
      * @return string
      */
-    public function getContent(): string
+    public function getBody(): string
     {
-        return $this->content;
+        return $this->body;
     }
 
     /**
-     * @param string $content
+     * @param string $body
      * @return $this
      */
-    public function setContent(string $content): self
+    public function setBody(string $body): self
     {
-        $this->content = $content;
+        $this->body = $body;
         return $this;
     }
 
@@ -171,18 +163,18 @@ class Docs
     /**
      * @return string
      */
-    public function getDocType(): string
+    public function getSlug(): string
     {
-        return $this->docType;
+        return $this->slug;
     }
 
     /**
-     * @param string $docType
+     * @param string $slug
      * @return $this
      */
-    public function setDocType(string $docType): self
+    public function setSlug(string $slug): self
     {
-        $this->docType = $docType;
+        $this->slug = $slug;
 
         return $this;
     }
@@ -190,37 +182,18 @@ class Docs
     /**
      * @return string
      */
-    public function getDocName(): string
+    public function getWeight(): string
     {
-        return $this->docName;
+        return $this->weight;
     }
 
     /**
-     * @param string $docName
+     * @param string $weight
      * @return $this
      */
-    public function setDocName(string $docName): self
+    public function setWeight(string $weight): self
     {
-        $this->docName = $docName;
-
-        return $this;
-    }
-
-    /**
-     * @return int
-     */
-    public function getCategory(): int
-    {
-        return $this->category;
-    }
-
-    /**
-     * @param int $category
-     * @return $this
-     */
-    public function setCategory(int $category): self
-    {
-        $this->category = $category;
+        $this->weight = $weight;
 
         return $this;
     }

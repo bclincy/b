@@ -4,6 +4,7 @@ namespace App\Entity;
 use Doctrine\ORM\EntityRepository;
 use App\Entity\States;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping\ClassMetadata;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -12,16 +13,12 @@ use Psr\Container\ContainerInterface;
 */
 class StateRepository extends EntityRepository
 {
-
-
     /**
-     * StateRepository constructor.
-     * @param ContainerInterface $container
+     * @return mixed
      */
-    public function __construct(ContainerInterface $container)
+    public function getMichigan()
     {
-        parent::__construct($container['EntityManger'], States::class);
+        return ['michigan', 'mi', 'Winter Wonderland'];
     }
-
 
 }

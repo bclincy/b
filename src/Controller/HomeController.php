@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Content\Display;
 use App\Content\FbCrawler;
 use App\Content\UserLookup;
+use App\Entity\Docs;
 use App\Models\Message;
+use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Interop\Container\ContainerInterface;
 use Slim\Http\Request;
@@ -38,7 +40,7 @@ class HomeController extends Controller
     protected $content;
 
     /** @var string */
-    protected $meta ='';
+    protected $meta = '';
 
     /** @var array */
     protected $image;
@@ -46,7 +48,16 @@ class HomeController extends Controller
     /** @var  Display */
     protected $displaySvc;
 
-    public function index (Request $req, Response $resp)
+    /**
+     * HomeController constructor.
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+    }
+
+
+    public function index(Request $req, Response $resp)
     {
         return $this->container->view->render($resp, 'homepage.html.twig', ['title' => 'Hello']);
     }
@@ -61,10 +72,12 @@ class HomeController extends Controller
 
         return $this->twig->render($res, 'default.html.twig', $data);
     }
+
     /**
      * @return string
      */
-    public function test() {
+    public function test()
+    {
         // your code here
         // use $this->view to render the HTML
         $fb = new FbCrawler('https://www.facebook.com/clincy', new Client());
@@ -79,7 +92,7 @@ class HomeController extends Controller
      * @param Response $response
      * @return mixed
      */
-    public function contact (Request $request, Response $response)
+    public function contact(Request $request, Response $response)
     {
         $data = ['title' => 'Contact Clincy', 'breadcrum' => ['Contact']];
         return $this->twig->render($response, 'contact.html.twig', $data);
@@ -90,15 +103,15 @@ class HomeController extends Controller
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface|static
      */
-    public function contactPost (Request $request, Response $response)
+    public function contactPost(Request $request, Response $response)
     {
         $gvalid = $this->container->flash->getMessages();
         $required = [
-            'fname' => v::length(3)->notEmpty(),
-            'lname' => v::length(3)->notEmpty(),
-            'email'=> v::notEmpty()->noWhitespace()->email(),
-            'subject' => v::notEmpty()->noWhitespace()->length(3),
-            'message' => v::notEmpty()->length(3)
+          'fname' => v::length(3)->notEmpty(),
+          'lname' => v::length(3)->notEmpty(),
+          'email' => v::notEmpty()->noWhitespace()->email(),
+          'subject' => v::notEmpty()->noWhitespace()->length(3),
+          'message' => v::notEmpty()->length(3)
         ];
         $validate = $this->container->validator->validate($request, $required);
         if (!$validate->failed() && !isset($gvalid['captcha'][0])) {
@@ -106,7 +119,7 @@ class HomeController extends Controller
               'fname' => ucwords($request->getParam('fname')),
               'lname' => ucwords($request->getParam('lname')),
               'subject' => $request->getParam('subject'),
-              'message'=> $request->getParam('message'),
+              'message' => $request->getParam('message'),
               'email' => $request->getParam('email'),
               'recievedOn' => time()
             ]);
@@ -114,7 +127,7 @@ class HomeController extends Controller
             $return['form'] = $validate->getErrors();
             $return['form']['captcha'] = $gvalid['captcha'][0];
         }
-        if (isset($contact) && $contact->id > 0){
+        if (isset($contact) && $contact->id > 0) {
             $_SESSION['person'] = $contact;
 
             return $response->withStatus(302)->withHeader('Location', '/message');
@@ -132,7 +145,7 @@ class HomeController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function pageAction (Request $request, Response $response, $data = null)
+    public function pageAction(Request $request, Response $response, $data = null)
     {
         if ($request->getAttribute('title') !== null || !$this->title) {
             try {
@@ -141,7 +154,7 @@ class HomeController extends Controller
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([':title' => '%' . $title . '%']);
                 $content = $stmt->fetchAll();
-                if (isset($content[0])){
+                if (isset($content[0])) {
                     $content = $content[0];
                 } else {
                     $notFoundHandler = $this->container->get('notFoundHandler');
@@ -173,10 +186,10 @@ class HomeController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function category (Request $request, Response $response, $args)
+    public function category(Request $request, Response $response, $args)
     {
-        $this->cat= ucwords(str_replace('_', ' ', $request->getAttribute('category')));
-        $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/'.$this->cat.'/'];
+        $this->cat = ucwords(str_replace('_', ' ', $request->getAttribute('category')));
+        $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/' . $this->cat . '/'];
         $this->title = $request->getAttribute('title') !== null ? ucwords($request->getAttribute('title')) : null;
         if ($this->title !== null) {
             // Not an index page
@@ -185,20 +198,21 @@ class HomeController extends Controller
         $cat = "%{$this->cat}%";
         $sql = 'SELECT * FROM docs WHERE category like :cat';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['cat' =>$cat]);
+        $stmt->execute(['cat' => $cat]);
         $result = $stmt->fetchAll();
 
         return $this->twig->render(
-            $response,
-            'category.html.twig',
-            ['title' => $this->cat, 'data' => $result, 'breadcrum' => '']
+          $response,
+          'category.html.twig',
+          ['title' => $this->cat, 'data' => $result, 'breadcrum' => '']
         );
     }
 
-    public function gallery (Request $req, Response $res)
+    public function gallery(Request $req, Response $res)
     {
         $this->displaySvc = $this->container->Display;
-        $images = $this->displaySvc->galleryOptions('gallery',$_SERVER['DOCUMENT_ROOT'], $req->getAttribute('rewrite') );
+        $images = $this->displaySvc->galleryOptions('gallery', $_SERVER['DOCUMENT_ROOT'],
+          $req->getAttribute('rewrite'));
         return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images]);
     }
 
@@ -208,12 +222,13 @@ class HomeController extends Controller
      * @param $args
      * @return mixed
      */
-    public function aboutIndex (Request $request, Response $response, $args)
+    public function aboutIndex(Request $request, Response $response, $args)
     {
         return $this->twig->render($response, 'goals.html.twig', ['title' => 'My Goals', 'data' => $args]);
     }
 
-    public function nnutsByName (Request $request, Response $response) {
+    public function nnutsByName(Request $request, Response $response)
+    {
 
 
         return $response;
@@ -224,7 +239,7 @@ class HomeController extends Controller
      * @param Response $resp
      * @return object
      */
-    public function resumeFrm (Request $req, Response $resp, $args)
+    public function resumeFrm(Request $req, Response $resp, $args)
     {
         if (isset($args['id'])) {
             if ($this->container->Display->authorize($args['id']) === false) {
@@ -232,11 +247,12 @@ class HomeController extends Controller
                 $data = [
                   'title' => 'Please Complete form',
                   'error' => 'Please fill out the form to continue',
-                  'breadcrum' => ['<a href="/resume">Hire Me</a>']];
+                  'breadcrum' => ['<a href="/resume">Hire Me</a>']
+                ];
                 $template = 'hireme/resumeReq.html.twig';
             } else {
                 $data = ['title' => 'Brian Clincy Resume'];
-                $template ='hireme/resume.html.twig';
+                $template = 'hireme/resume.html.twig';
             }
         } else {
             $data = ['title' => 'Resume Request', 'breadcrum' => ['Hire Me', 'Resume Request']];
@@ -265,22 +281,22 @@ class HomeController extends Controller
     }
 
 
-    public function show (Request $request, Response $response)
+    public function show(Request $request, Response $response)
     {
         $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
 
         return $this->twig->render($response, 'default.html.twig', $content);
     }
 
-    public function nnuts (Request $req, Response $resp)
+    public function nnuts(Request $req, Response $resp)
     {
         die('here world');
     }
 
-    public function nnutsById (Request $request, Response $response)
+    public function nnutsById(Request $request, Response $response)
     {
-        $data = $this->postFrom('/nnuts/'.$request->getAttribute('id'));
-        echo '<pre>'. print_r($data, true);
+        $data = $this->postFrom('/nnuts/' . $request->getAttribute('id'));
+        echo '<pre>' . print_r($data, true);
     }
 
     private function postFrom($resource)
@@ -292,9 +308,19 @@ class HomeController extends Controller
 
     }
 
-    public function nnutsIndex (Request $request, Response $response)
+    public function nnutsIndex(Request $request, Response $response)
     {
-        return $this->twig->render('default.html.twig', ['content' => 'NNUTS podcast']);
+//        $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
+//        $youtube = $youtube->init();
+//        $state = $this->em->getRepository(\App\Entity\States::class)->findAll();
+        $state = $this->em->getRepository(App\Entity\Docs::class)->findAll();
+        die('<pre>' . print_r($state, true));
+        return $this->twig->render($response, 'home/new.html.twig', ['content' => 'NNUTS podcast']);
+    }
+
+    public function advisoryBoard()
+    {
+
     }
 
 }

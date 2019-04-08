@@ -128,13 +128,21 @@ $container['HomeController'] = function (\Slim\Container $container) {
     return new \App\Controller\HomeController($container);
 };
 
+$container['AdminController'] = function (\Slim\Container $container) {
+    return new \App\Controllers\AdminController($container);
+};
+
 $container['Display'] = function (\Slim\Container $container) {
     return new \App\Content\Display($container, $container->pdo);
 };
 
 $container['State'] = function (\Slim\Container $container)
 {
-    return new \App\Entity\StateRepository($container);
+    return new \App\Entity\States($container);
+};
+
+$container['docs'] = function ($container) {
+    return new \App\Entity\Docs($container);
 };
 
 $container['baseUrl'] = function () {

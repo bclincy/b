@@ -13,9 +13,13 @@ $app->group('/contact', function () {
 })->add(new \App\Middleware\Csfr($container));
 
 $app->group('/nnuts', function () {
+//    $this->get('', 'HomeController:nnutsIndex')->setName('plist');
     $this->get('[/]', 'HomeController:nnutsIndex')->setName('podcast');
     $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
     $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutspcast')->setName('nnutsids');
+});
+$app->group('/admin', function() {
+    $this->get('[/]', 'AdminController:indexAction')->setName('admin');
 });
 
 $app->get('/shoutouts', function (Request $request, Response $response) {
@@ -63,7 +67,7 @@ $app->get('/testme', function (Request $request, Response $response) {
       ['title' => 'Advisory Board', 'data' => $request]);
 });
 
-
+$app->get('/advisoryBoard', 'homeController:advisor')->setName('advisory');
 $app->group('/gallery', function() {
  $this->get('[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
  $this->get('/{rewrite}', '\App\Controller\HomeController:gallery')->setName('Imgrewrite');
