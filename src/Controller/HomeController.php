@@ -6,10 +6,12 @@ use App\Content\Display;
 use App\Content\FbCrawler;
 use App\Content\UserLookup;
 use App\Entity\Docs;
+use App\Entity\Podcast;
 use App\Models\Message;
 use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Interop\Container\ContainerInterface;
+use Slim\Http\Body;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as twig;
@@ -48,8 +50,10 @@ class HomeController extends Controller
     /** @var  Display */
     protected $displaySvc;
 
+
     /**
      * HomeController constructor.
+     * @param ContainerInterface $container
      */
     public function __construct(ContainerInterface $container)
     {
@@ -310,11 +314,11 @@ class HomeController extends Controller
 
     public function nnutsIndex(Request $request, Response $response)
     {
-//        $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
-//        $youtube = $youtube->init();
-//        $state = $this->em->getRepository(\App\Entity\States::class)->findAll();
-        $state = $this->em->getRepository(App\Entity\Docs::class)->findAll();
-        die('<pre>' . print_r($state, true));
+        $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
+        $youtube = $youtube->init();
+        $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $data = [];
+        die('<pre>' . print_r($podcasts, true));
         return $this->twig->render($response, 'home/new.html.twig', ['content' => 'NNUTS podcast']);
     }
 
@@ -323,4 +327,15 @@ class HomeController extends Controller
 
     }
 
+    public function nnutsRssFeeds(Request $req, Response $res)
+    {
+        $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $content = new \App\Content\Podcast($this->em);
+        $xml = $content->rssFeed($podcasts);
+        $body = new Body(fopen('php://temp', 'r+'));
+        $body->write($xml->asXML());
+
+        return $res->withHeader('Content-type', 'application/xml')
+          ->withBody($body);
+    }
 }

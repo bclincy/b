@@ -7,7 +7,9 @@
  */
 
 namespace App\Content;
+
 use Doctrine\ORM\EntityManager;
+use App\Entity\Podcast as Podcasts;
 
 
 /**
@@ -40,7 +42,7 @@ class Podcast extends Model
         $this->em = $em;
     }
 
-    public function totalPodcast ()
+    public function totalPodcast()
     {
         $stmt = $this->em->getConnection()->prepare('SELECT count(id) FROM podcast');
         $stmt->execute();
@@ -49,7 +51,7 @@ class Podcast extends Model
         return $result;
     }
 
-    public function getByName (string $name): array
+    public function getByName(string $name): array
     {
         $name = '%' . $name . '%';
         $query = $this->em->prepare('SELECT * FROM podcast where title like :name');
@@ -58,7 +60,8 @@ class Podcast extends Model
 
         return $results[0];
     }
-    public function displayPodcast ()
+
+    public function displayPodcast()
     {
         $stmt = $this->em->getConnection()->prepare('SELECT * FROM podcast ORDER BY id DESC');
         $stmt->execute();
@@ -67,14 +70,57 @@ class Podcast extends Model
         return $result;
     }
 
-    private static function savePodcast (array $formData, \PDO $pdo)
+    /**
+     * @param array $podcasts
+     * @return \SimpleXMLElement
+     */
+    public function rssFeed(array $podcasts): \SimpleXMLElement
     {
+        $xml = new \SimpleXMLElement('<rss/>');
+        $xml->addAttribute('version', '2.0');
+        $xml->addAttribute('xmlns:content', 'http://purl.org/rss/1.0/modules/content/');
+        $channel = $xml->addChild('channel');
+        $this->createChannel($channel);
+        foreach ($podcasts as $podcast) {
+            $item = $channel->addChild('item');
+            array_walk_recursive($podcast->toArray(), [$this, 'addItems'], $item);
+        }
 
+        return $xml;
 
     }
 
-    private function validateFrm (array $mustHaves)
+    /**
+     * @param string|\DateTime $value
+     * @param string $key
+     * @param \SimpleXMLElement $xml
+     */
+    private function addItems($value, string $key, \SimpleXMLElement &$xml): void
     {
+        if ($value instanceof \DateTime) {
+            $value = $value->format(DATE_ATOM);
+        }
+        $xml->addChild($key, $value);
+    }
 
+    /**
+     * @param \SimpleXMLElement $xml
+     * @return \SimpleXMLElement
+     */
+    private function createChannel(\SimpleXMLElement &$xml): \SimpleXMLElement
+    {
+        // RSS channel properties
+        $channel = [
+          'title' => 'Nothing New Under the Sun Podcast NNUTS',
+          'link' => 'http://brianclincy.com/nnuts',
+          'description' => 'Nothing New Under the Sun aka NNUtSun is a tribute to the past and describing the present with lessons from the past',
+          'language' => 'en-us',
+          'image_title' => 'NNUtS',
+          'image_link' => 'http://brianclincy.com/nnuts',
+          'image_url' => 'http://brianclincy.com/nnut-rss.png',
+        ];
+        array_walk($channel, [$this, 'addItems'], $xml);
+
+        return $xml;
     }
 }

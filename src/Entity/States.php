@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * The docs class simple Doctrine Entity.
  *
- * @ORM\Entity(repositoryClass="StateRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\StateRepository")
  * @ORM\Table(name="states")
  */
 

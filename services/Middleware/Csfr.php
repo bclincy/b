@@ -47,6 +47,8 @@ class Csfr
 
     public function __invoke(ServerRequestInterface $req, Response $res, callable $next)
     {
+        $test = strpos($_SERVER["SCRIPT_URL"], '/admin');
+        $loggedIn = $test === 0 ? $this->verifyLogin('hel') : false;
         $this->req = $req->getParsedBody();
         $this->secCheck();
         $this->container->view->getEnvironment()
@@ -167,6 +169,12 @@ class Csfr
         }
 
         return isset($this->error['badToken']);
+    }
+
+    private function verifyLogin(string $token)
+    {
+        return true;
+
     }
 
 }

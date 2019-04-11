@@ -16,11 +16,13 @@ $app->group('/nnuts', function () {
 //    $this->get('', 'HomeController:nnutsIndex')->setName('plist');
     $this->get('[/]', 'HomeController:nnutsIndex')->setName('podcast');
     $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
-    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutspcast')->setName('nnutsids');
+    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutsids');
+    $this->get('/rss', 'HomeController:nnutsRssFeeds')->setName('rssFeed');
 });
 $app->group('/admin', function() {
     $this->get('[/]', 'AdminController:indexAction')->setName('admin');
-});
+    $this->get('/docs/edit/{id}', 'AdminController:editDocs')->setName('edit-docs');
+})->add(new \App\Middleware\Csfr($container));
 
 $app->get('/shoutouts', function (Request $request, Response $response) {
     $response->getBody()->write('I get busy over here');

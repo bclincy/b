@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The docs class simple Doctrine Entity.
- *
+ * @ORM\Entity(repositoryClass="App\Repository\DocsRepository")
  * @ORM\Table(name="docs")
  */
 
@@ -27,20 +27,26 @@ class Docs
     private $id;
 
     /**
-     * @var string
+     * @var string $title
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
     private $title;
 
     /**
-     * @var string
+     * @var string $keywords
      * @ORM\Column(type="string", nullable=false)
      */
     private $keywords;
 
     /**
+     * @var string $description
+     * @ORM\Column(type="string", nullable=false)
+     */
+    private $description;
+
+    /**
      * @var string
-     * @ORM\Column(type="string",nullable=false)
+     * @ORM\Column(type="text",nullable=false)
      */
     private $content;
 
@@ -113,6 +119,25 @@ class Docs
     public function setKeywords(string $keywords)
     {
         $this->keywords = $keywords;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return Docs
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
     }
 
     /**
@@ -223,6 +248,11 @@ class Docs
         $this->category = $category;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 
 }

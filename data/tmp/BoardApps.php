@@ -14,7 +14,7 @@ use App\Entity\Traits\TimeStamping;
 
 /**
  * Class BoardApps
- * @ORM/Entity(respositoryClass="Apps/Respository/BoardAppsRespository")
+ * @ORM/Entity(respositoryClass="Apps/Repository/BoardAppsRespository")
  * @ORM/Table(name="board_apps")
  */
 class BoardApps

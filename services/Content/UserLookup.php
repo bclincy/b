@@ -82,26 +82,6 @@ class UserLookup
 
 
     /**
-     * create and configure goutte client used for scraping
-     * @return GoutteClient
-     */
-    protected function getScrapClient()
-    {
-        $client = new GoutteClient();
-        $client->followRedirects();
-
-        $guzzleClient = new \GuzzleHttp\Client(array(
-            'curl' => array(
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ),
-        ));
-        $client->setClient($guzzleClient);
-
-        return $client;
-    }
-
-    /**
      * extrating the relative path from url string
      * @param  type $url
      * @return string $url
@@ -119,7 +99,7 @@ class UserLookup
      * Display output on a page
      * @return html
      */
-    public function displaySample ()
+    public function displaySample()
     {
         if (count($this->links) < 1) {
             return 'No Links';

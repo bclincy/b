@@ -14,7 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
  * The docs class simple Doctrine Entity.
  *
  * @ORM\Entity(repositoryClass="App\Repository\PostRepository")
- * @ORM\Table(name="Post")
+ * @ORM\Table(name="post")
  */
 
 class Post
@@ -51,7 +51,7 @@ class Post
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean", name="active", options={default:0})
+     * @ORM\Column(type="boolean", name="active", options={"default":false})
      */
     private $isActive;
 

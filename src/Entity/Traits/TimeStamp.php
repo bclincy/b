@@ -14,32 +14,32 @@ trait TimeStamping
 {
 
     /**
-     * @var DateTime $createAt
+     * @var DateTime $createdAt
      * @ORM\Column(type="datetime", name="created_at", options={"default": "CURRENT_TIMESTAMP"})
      */
-    protected $createAt;
+    protected $createdAt;
 
     /**
-     * @var  DateTime $updateAt
-     * @ORM\Column(type="datetime", name="update_at",options={"default": "CURRENT_TIMESTAMP"})
+     * @var  DateTime $updatedAt
+     * @ORM\Column(type="datetime", name="updated_at",options={"default": "CURRENT_TIMESTAMP"})
      */
-    protected $updateAt;
+    protected $updatedAt;
 
     /**
      * @return DateTime
      */
-    public function getCreateAt(): DateTime
+    public function getCreatedAt(): DateTime
     {
-        return $this->createAt;
+        return $this->createdAt;
     }
 
     /**
-     * @param DateTime $createAt
+     * @param DateTime $createdAt
      * @return self
      */
-    public function setCreateAt(DateTime $createAt): self
+    public function setCreatedAt(DateTime $createdAt): self
     {
-        $this->createAt = $createAt;
+        $this->createdAt = $createdAt;
 
         return $this;
     }
@@ -53,12 +53,12 @@ trait TimeStamping
     }
 
     /**
-     * @param DateTime $updateAt
+     * @param DateTime $updatedAt
      * @return self
      */
-    public function setUpdateAt(DateTime $updateAt): self
+    public function setUpdateAt(DateTime $updatedAt): self
     {
-        $this->updateAt = $updateAt;
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }
@@ -68,7 +68,7 @@ trait TimeStamping
      */
     public function onPersistTime()
     {
-        $this->createAt = new \DateTime();
+        $this->createdAt = new \DateTime();
         $this->updateAt = new \DateTime();
     }
 
