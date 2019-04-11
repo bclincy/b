@@ -317,9 +317,11 @@ class HomeController extends Controller
         $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
         $youtube = $youtube->init();
         $podcasts = $this->em->getRepository(Podcast::class)->findAll();
-        $data = [];
-        die('<pre>' . print_r($podcasts, true));
-        return $this->twig->render($response, 'home/new.html.twig', ['content' => 'NNUTS podcast']);
+        $data = [
+          'title'=>'Nothing New Under the Sun Podcast @NNUtSun',
+          'podcast' => $podcasts,
+          ];
+        return $this->twig->render($response, 'podcast/podcast.html.twig', ['content' => 'NNUTS podcast']);
     }
 
     public function advisoryBoard()

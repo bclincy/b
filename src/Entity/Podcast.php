@@ -37,7 +37,7 @@ class Podcast
 
     /**
      * @var string $description
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $description;
 
@@ -58,6 +58,12 @@ class Podcast
      * @ORM\Column(type="string", length=255, options={"default":"english"})
      */
     protected $language;
+
+    /**
+     * @var string $imageUrl
+     * @ORM\Column(type="string", name="image_url", length=200, options={"default":"http://brianclincy.com/images/nnuts-rss.jpg"})
+     */
+    protected $imageUrl;
 
     /**
      * @var \DateTime $lastBuildDate
@@ -214,6 +220,65 @@ class Podcast
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getWebmaster(): string
+    {
+        return $this->webmaster;
+    }
+
+    /**
+     * @param string $webmaster
+     * @return Podcast
+     */
+    public function setWebmaster(string $webmaster): self
+    {
+        $this->webmaster = $webmaster;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getImageUrl(): string
+    {
+        return $this->imageUrl;
+    }
+
+    /**
+     * @param string $imageUrl
+     * @return Podcast
+     */
+    public function setImageUrl(string $imageUrl): self
+    {
+        $this->imageUrl = $imageUrl;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getNotes(): ?PodcastNote
+    {
+        return $this->notes;
+    }
+
+    /**
+     * @param mixed $notes
+     * @return Podcast
+     */
+    public function setNotes(PodcastNote $notes): self
+    {
+        $this->notes = $notes;
+
+        return $this;
+    }
+
+
 
     /**
      * @return GUID

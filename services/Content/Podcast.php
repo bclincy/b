@@ -117,7 +117,9 @@ class Podcast extends Model
           'language' => 'en-us',
           'image_title' => 'NNUtS',
           'image_link' => 'http://brianclincy.com/nnuts',
-          'image_url' => 'http://brianclincy.com/nnut-rss.png',
+          'image_url' => 'http://brianclincy.com/nnut-rss.jpg',
+          'image_height' => 200,
+          'image_width' => 200,
         ];
         array_walk($channel, [$this, 'addItems'], $xml);
 

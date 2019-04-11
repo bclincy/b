@@ -34,13 +34,13 @@ class Docs
 
     /**
      * @var string $keywords
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $keywords;
 
     /**
      * @var string $description
-     * @ORM\Column(type="string", nullable=false)
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $description;
 
@@ -75,8 +75,15 @@ class Docs
     private $docName;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var int $authorId
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="author")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     */
+    private $authorId;
+
+    /**
+     * @var integer $category
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $category;
 
@@ -87,7 +94,6 @@ class Docs
     {
         return $this->id;
     }
-
 
     /**
      * @return string
@@ -237,6 +243,22 @@ class Docs
     public function getCategory(): int
     {
         return $this->category;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAuthorId(): int
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param int $authorId
+     */
+    public function setAuthorId(int $authorId)
+    {
+        $this->authorId = $authorId;
     }
 
     /**
