@@ -315,13 +315,14 @@ class HomeController extends Controller
     public function nnutsIndex(Request $request, Response $response)
     {
         $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
-        $youtube = $youtube->init();
+        $ydata = $youtube->getNNutsPodcast(50);
         $podcasts = $this->em->getRepository(Podcast::class)->findAll();
         $data = [
           'title'=>'Nothing New Under the Sun Podcast @NNUtSun',
-          'podcast' => $podcasts,
+          'podcasts' => $podcasts,
+           'youtubes' => array_reverse($ydata),
           ];
-        return $this->twig->render($response, 'podcast/podcast.html.twig', ['content' => 'NNUTS podcast']);
+        return $this->twig->render($response, 'podcast/podcast.html.twig', $data);
     }
 
     public function advisoryBoard()

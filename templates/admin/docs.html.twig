@@ -1,6 +1,5 @@
 {% extends "layout.html.twig" %}
 {% block content %}
-{{ dump(page) }}
 <div class="container">
   <form action="" method="post">
     <div class="form-group">
@@ -30,6 +29,7 @@
       <label for="exampleFormControlTextarea1">Example textarea</label>
       <textarea class="form-control" id="exampleFormControlTextarea1" rows="3">{{ page.content }}</textarea>
     </div>
+    <div><button class="btn btn-outline-primary">Save</button> </div>
   </form>
 </div>
 {% endblock %}

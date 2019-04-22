@@ -113,12 +113,6 @@ class User
     protected $customerId;
 
     /**
-     * @var Docs $author
-     * @ORM\OneToMany(targetEntity="User", mappedBy="authorId")
-     */
-    protected $author;
-
-    /**
      * @return int
      */
     public function getId(): int
@@ -352,25 +346,6 @@ class User
     public function setCustomerId(int $customerId): self
     {
         $this->customerId = $customerId;
-
-        return $this;
-    }
-
-    /**
-     * @return Docs
-     */
-    public function getAuthor(): Docs
-    {
-        return $this->author;
-    }
-
-    /**
-     * @param Docs $author
-     * @return User
-     */
-    public function setAuthor(Docs $author): self
-    {
-        $this->author = $author;
 
         return $this;
     }

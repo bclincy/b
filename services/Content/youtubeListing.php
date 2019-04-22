@@ -127,6 +127,42 @@ class youtubeListing
         return false;
     }
 
+    public function getNNutsPodcast($maxResults = 50)
+    {
+        $playId = 'PLbr65wHASbIfbTY-sMmUvWEIyojfXzkHm';
+        $url = 'https://www.googleapis.com/youtube/v3/playlistItems';
+        $res = $this->client->request('GET', $url, [
+          'query' => [
+            'part' =>'snippet,contentDetails',
+            'maxResults' => $maxResults,
+            'key' => $this->key,
+            'playlistId'=> $playId,
+          ]
+        ]);
+
+        $data = json_decode($res->getBody());
+        $details = [];
+        if ($data->items !== null) {
+            $details['channelTitle'] = $data->items[0]->snippet->channelTitle;
+            foreach ($data->items as $item) {
+                $details[] = [
+                  'title' => $item->snippet->title,
+                  'id' => $item->contentDetails->videoId,
+                  'description' => $item->snippet->description,
+                  'thumbnail' => [
+                    'url' => $item->snippet->thumbnails->high->url,
+                    'width' => $item->snippet->thumbnails->high->width,
+                    'height' => $item->snippet->thumbnails->high->height,
+                  ],
+                  'uploadOn' => $item->snippet->publishedAt,
+                  'url' => 'https://youtube.com/embed/' . $item->contentDetails->videoId,
+                ];
+            }
+        }
+
+        return $details;
+    }
+
     private function createGenesisBlock()
     {
         if (!isset($this->listing['hash'])) {
@@ -152,5 +188,10 @@ class youtubeListing
     private function generateHash()
     {
         return encryptor::encryptStr(serialize($this->listing));
+    }
+
+    public function getDetails(): array
+    {
+        return $this->listing;
     }
 }

@@ -9,6 +9,7 @@
 namespace App\Entity;
 
 use App\Entity\Traits\TimeStamping;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -76,8 +77,7 @@ class BoardApps
 
     /**
      * @var States $state
-     * @ORM\ManyToOne(targetEntity="States")
-     * @ORM\JoinColumn(name="state_id", referencedColumnName="stateId")
+     * @ORM\ManyToMany(targetEntity="States")
      */
     protected $state;
     /**
@@ -85,6 +85,11 @@ class BoardApps
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $zipcode;
+
+    public function __construct()
+    {
+        $this->state = new ArrayCollection();
+    }
 
     /**
      * @return int

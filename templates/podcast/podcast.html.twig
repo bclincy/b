@@ -2,29 +2,137 @@
 
 {% block content %}
 
-    <section class="listpodcast">
-        <div class="textual mp3 col-md-5">
-            <div class="fav-box"><i class="fa fa-heart-o" aria-hidden="true"></i>
-            </div>
-            <img class="d-flex align-self-start"
-                 src="https://images.pexels.com/photos/186077/pexels-photo-186077.jpeg?h=350&auto=compress&cs=tinysrgb"
-                 alt="Generic placeholder image">
-            <div class="media-body pl-3">
-                <div class="price">$799,000
-                    <small>New York</small>
-                </div>
-                <div class="stats">
-                    <span><i class="fa fa-arrows-alt"></i>1678 Sq ft</span>
-                    <span><i class="fa fa-bath"></i>2 Beadrooms</span>
-                </div>
-                <div class="address">4062 Walnut Hill Drive
-                    Cincinnati
-                </div>
-            </div>
-        </div>
-        <div class="youtube col-md-7">
-            Youtube Playlist
+    <section class="pcastIntro">
+        <div class="row d-flex justify-content-center"><img src="{{ asset('/images/NNUTsLeaderBoard.png') }}" width="728" height="90"></div>
+        <div class="row d-flex m-3">
+            <div class="col-md-2 col-sm-3 "><a class="btn btn-outline-secondary btn-lg" href="{{ asset('/nnuts/rss') }}">RSS Feed</a></div>
+            <div class="col-md-10 col-sm-9">Brian Clincy presents the Nothing New Under the Sun Podcast. This podcast is
+                my legacy project, and the goal is to transfer knowledge from the old-school to the new-school. Passing
+                the lessons that elders has blessed me with.</div>
         </div>
     </section>
+    <section class="listpodcast">
+        <div class="row">
+            <div class="textual mp3 col-md-5">
+                <h3>Audio Podcast</h3>
+                {% for podcast in podcasts %}
+                    <div class="fav-box"><i class="fa fa-heart-o" aria-hidden="true"></i>
+                    </div>
+                    <img class="d-flex align-self-start img-fluid"
+                         src="/images/nnuts-rss.jpg"
+                         alt="{{ podcast.title }}">
+                    <div class="media-body pl-3">
+                        <div class="price">$799,000
+                            <small>New York</small>
+                        </div>
+                        <div class="stats">
+                            <span><i class="fa fa-arrows-alt"></i>1678 Sq ft</span>
+                            <span><i class="fa fa-bath"></i>2 Beadrooms</span>
+                        </div>
+                        <div class="address">4062 Walnut Hill Drive
+                            Cincinnati
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="youtube col-md-7">
+                <h3>Podcast Videos</h3>
+                {% for pods in youtubes %}
+                    {% if loop.index0 % 2 == 0 %}
+                        <div class="row m-2">
+                            <div class="card-deck">
+                    {% endif %}
+                        <div class="card">
+                            <a href="#" class="play-video" data-toggle="modal" title="{{ pods.title }}"
+                               data-src="https://www.youtube.com/embed/{{ pods.id }}" data-target="#myModal">
+                            <img class="card-img-top" src="{{ pods.thumbnail.url }}"
+                                 alt="{{ pods.title }}"></a>
+                            <div class="card-body">
+                                <h5 class="card-title">{{ pods.title }}</h5>
+                                <p class="card-text">
+                                    {{ pods.description|split(" ")|slice(0, 25)|join(" ") }}</p>
+                            </div>
+                            <div class="card-footer">
+                                <div>
+                                    <a href="#" class="btn btn-secondary play-video" data-toggle="modal" title="{{ pods.title }}"
+                                       data-src="https://www.youtube.com/embed/{{ pods.id }}" data-target="#myModal">Play</a>
+                                    <a href="#" class="btn btn-dark play-video" data-toggle="modal" title="{{ pods.title }}"
+                                       data-src="https://www.youtube.com/embed/{{ pods.id }}" data-target="#myModal">More Info</a>
+                                </div>
+                                <small class="text-muted">{{ pods.uploadOn|date('m/d/Y') }}</small>
+                            </div>
+                        </div>
 
+                    {% if loop.index0 % 2 == 1 or loop.last %}
+                        <strong>{{ loop.index0 }}</strong></div>
+                        </div>
+                    {% endif %}
+
+                {% endfor %}
+
+                {{ dump(youtubes) }}
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog responsive" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body responsive">
+                    <!-- 16:9 aspect ratio -->
+                    <div class="modal-body">
+                        <div class="embed-responsive embed-responsive-16by9">
+                            <iframe class="embed-responsive-item" src="" id="video" allowscriptaccess="always"
+                                    allow="autoplay">
+                            </iframe>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block javascript %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+
+            // Gets the video src from the data-src on each button
+
+            let $videoSrc = '', $title = '';
+            let modelTitle = document.querySelector('.modal-title');
+            $('.play-video').click(function () {
+                $videoSrc = $(this).data("src");
+                $title = this.attributes[3].value;
+            });
+
+            // when the modal is opened autoplay it
+            $('#myModal').on('shown.bs.modal', function (e) {
+
+                // set the video src to autoplay and not to show related video. Youtube related video is like a box of chocolates... you never know what you're gonna get
+                $("#video").attr('src', $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0");
+                modelTitle.innerHTML = $title;
+            })
+
+
+            // stop playing the youtube video when I close the modal
+            $('#myModal').on('hide.bs.modal', function (e) {
+                // a poor man's stop video
+                $("#video").attr('src', $videoSrc);
+            })
+
+
+            // document ready
+        });
+
+    </script>
 {% endblock %}

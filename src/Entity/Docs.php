@@ -51,6 +51,12 @@ class Docs
     private $content;
 
     /**
+     * @var string
+     * @ORM\Column(type="string", length=150, nullable=true, options={"default":"/images/brianclincy.jpg"})"
+     */
+    private $defaultImage;
+
+    /**
      * @var \DateTime
      * @ORM\Column(type="datetime")
      */
@@ -76,8 +82,7 @@ class Docs
 
     /**
      * @var int $authorId
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="author")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=false)
+     * @ORM\Column(type="integer", options={"default":1}, name="author_id")
      */
     private $authorId;
 
@@ -259,6 +264,25 @@ class Docs
     public function setAuthorId(int $authorId)
     {
         $this->authorId = $authorId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultImage(): string
+    {
+        return $this->defaultImage;
+    }
+
+    /**
+     * @param string $defaultImage
+     * @return Docs
+     */
+    public function setDefaultImage(string $defaultImage): self
+    {
+        $this->defaultImage = $defaultImage;
+
+        return $this;
     }
 
     /**
