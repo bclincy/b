@@ -99,8 +99,16 @@ class Podcast extends Model
     {
         if ($value instanceof \DateTime) {
             $value = $value->format(DATE_ATOM);
+        } elseif (is_array($value)) {
+            $item = $xml->addChild($key);
+            array_walk($value, [$this, 'addItems'], $item);
         }
-        $xml->addChild($key, $value);
+        if (strpos($key, ':') > 0) {
+            list($ns, $name) = explode(':', $key);
+            $xml->addChild($ns . ':' . $name, $value, $ns);
+        } else {
+            $xml->addChild($key, $value);
+        }
     }
 
     /**
@@ -115,14 +123,36 @@ class Podcast extends Model
           'link' => 'http://brianclincy.com/nnuts',
           'description' => 'Nothing New Under the Sun aka NNUtSun is a tribute to the past and describing the present with lessons from the past',
           'language' => 'en-us',
+          'webmaster' => 'brian@brianclincy.com (Brian Clincy)',
+          'copyright' => '&#xA9;2016',
+          'keywords' => 'Culture, technology, Black People, old-school, new-school, hip-hop, news',
           'image_title' => 'NNUtS',
           'image_link' => 'http://brianclincy.com/nnuts',
           'image_url' => 'http://brianclincy.com/nnut-rss.jpg',
           'image_height' => 200,
           'image_width' => 200,
+          'image' => [
+            'url' => 'http://brianclincy.com/nnut-rss.jpg',
+            'title' => 'Brian Clincy Present Nothing New Under the Sun (NNUtS) the podcast',
+            'link' => 'http://brianclincy.com/nnuts'
+          ],
+            'itunes:owner' => [
+              'itunes:name' => 'Brian Clincy',
+              'itunes:email' => 'nnuts@briancllincy.com',
+            ],
+          'itunes:keywords' => 'Culture, technology, Black People, old-school, new-school, hip-hop, news',
+          'itunes:explicit' => 'yes',
+          'itunes:summary' => 'Brian Clincy Presents Nothing New Under the Sun the Podcast all about the culture of my elders being passed down to me to pass along to future generations',
+          'explicit' => 'yes',
+          'category' => 'Society & Culture',
         ];
         array_walk($channel, [$this, 'addItems'], $xml);
+        $cat = $xml->addChild('itunes:category', '');
+        $cat->addAttribute('text', 'Society & Culture');
+        $subcat = $cat->addChild('itunes:category', '')->addAttribute('text', 'History');
+        $addCat = $xml->addChild('itunes:category', '')->addAttribute('text', 'Technology');
 
         return $xml;
     }
+
 }

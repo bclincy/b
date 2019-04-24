@@ -77,7 +77,7 @@ class BoardApps
 
     /**
      * @var States $state
-     * @ORM\ManyToMany(targetEntity="States")
+     * @ORM\Column(type="string", length=70)
      */
     protected $state;
     /**
@@ -85,11 +85,6 @@ class BoardApps
      * @ORM\Column(type="string", length=100, nullable=true)
      */
     protected $zipcode;
-
-    public function __construct()
-    {
-        $this->state = new ArrayCollection();
-    }
 
     /**
      * @return int

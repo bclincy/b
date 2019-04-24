@@ -96,8 +96,18 @@ class Podcast
      */
     protected $video;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, options={"default":"01:00:00"})
+     */
+    protected $duration;
 
+    /**
+     * @var PodcastNote
+     * @ORM\ManyToMany(targetEntity="PodcastNote")
+     */
     protected $notes;
+
 
     /**
      * @return int
