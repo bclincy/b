@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.25, for Linux (x86_64)
 --
 -- Host: localhost    Database: brianclincy
 -- ------------------------------------------------------
--- Server version	5.7.24-0ubuntu0.18.04.1
+-- Server version	5.7.25-0ubuntu0.18.04.2
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -82,17 +82,21 @@ DROP TABLE IF EXISTS `board_apps`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `board_apps` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `fname` varchar(100) NOT NULL,
-  `lname` varchar(150) NOT NULL,
-  `title` varchar(150) DEFAULT NULL,
-  `email` varchar(100) NOT NULL,
+  `fname` varchar(255) NOT NULL,
+  `lname` varchar(100) NOT NULL,
+  `title` varchar(100) NOT NULL,
+  `email` varchar(150) DEFAULT NULL,
+  `phone` varchar(15) DEFAULT NULL,
   `bio` mediumtext,
-  `address` varchar(255) DEFAULT NULL,
-  `address_2` varchar(255) DEFAULT NULL,
+  `address` varchar(200) DEFAULT NULL,
+  `address_2` varchar(200) DEFAULT NULL,
   `city` varchar(200) DEFAULT NULL,
-  `state` varchar(50) DEFAULT NULL,
-  `zipcode` varchar(9) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `zipcode` varchar(100) DEFAULT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `state` varchar(70) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UNIQ_CA8A2779AF37D4EA` (`fname`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Board Applications';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -103,6 +107,32 @@ CREATE TABLE `board_apps` (
 LOCK TABLES `board_apps` WRITE;
 /*!40000 ALTER TABLE `board_apps` DISABLE KEYS */;
 /*!40000 ALTER TABLE `board_apps` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `boardapps_states`
+--
+
+DROP TABLE IF EXISTS `boardapps_states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `boardapps_states` (
+  `boardapps_id` int(11) NOT NULL,
+  `states_id` int(11) NOT NULL,
+  PRIMARY KEY (`boardapps_id`,`states_id`),
+  KEY `IDX_4430435EF7FAC555` (`boardapps_id`),
+  KEY `IDX_4430435EB17973F` (`states_id`),
+  CONSTRAINT `FK_4430435EF7FAC555` FOREIGN KEY (`boardapps_id`) REFERENCES `board_apps` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `boardapps_states`
+--
+
+LOCK TABLES `boardapps_states` WRITE;
+/*!40000 ALTER TABLE `boardapps_states` DISABLE KEYS */;
+/*!40000 ALTER TABLE `boardapps_states` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -124,7 +154,7 @@ CREATE TABLE `contact` (
   `serverDump` mediumtext COLLATE utf8_unicode_ci,
   `modifiedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +163,7 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
-INSERT INTO `contact` VALUES (1,'Brian','Clincy','bclincy@gmail.com','general','Let\'s go into the out now!!!',0,'2018-10-10 13:50:59',NULL,'2018-10-10 13:50:59');
+INSERT INTO `contact` VALUES (1,'Brian','Clincy','bclincy@gmail.com','general','Let\'s go into the out now!!!',0,'2018-10-10 13:50:59',NULL,'2018-10-10 13:50:59'),(2,'Brian','K','bclincy@gmail.com','suggestions','hello world',0,'2019-03-14 23:24:24',NULL,'2019-03-14 23:24:24'),(3,'Brian','Clincy','CEEC12@GMAIL.COM','Talk to me','testing',0,'2019-03-14 23:25:36',NULL,'2019-03-14 23:25:36');
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -185,14 +215,15 @@ CREATE TABLE `docs` (
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
   `createdDate` datetime NOT NULL,
-  `docType` varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT 'Web',
-  `authorID` tinyint(2) unsigned NOT NULL DEFAULT '1',
-  `active` smallint(6) NOT NULL DEFAULT '0',
-  `docName` varchar(255) CHARACTER SET utf8 DEFAULT NULL,
+  `docType` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `active` tinyint(1) NOT NULL,
+  `docName` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `category` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `author_id` int(11) NOT NULL DEFAULT '1',
+  `defaultImage` varchar(150) COLLATE utf8_unicode_ci DEFAULT '/images/brianclincy.jpg',
   PRIMARY KEY (`id`),
-  UNIQUE KEY `title_UNIQUE` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+  UNIQUE KEY `UNIQ_51572BB72B36786B` (`title`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,7 +232,7 @@ CREATE TABLE `docs` (
 
 LOCK TABLES `docs` WRITE;
 /*!40000 ALTER TABLE `docs` DISABLE KEYS */;
-INSERT INTO `docs` VALUES (1,'About Brian','Brian Clincy, bclincy, bclincy photos, photos by brian','Introducing Brian Clincy, one of the coolest hardworking technical guy you\'ll ever meet. On top of all of that he\'s just trying to be best person he can be and leave this world better than he found it.','<h1>I am...</h1><p>If you <a href=\"https://google.com/search?q=Brian#%20Clincy\" target=\"#_new\">google me</a> the results will have diverse results because I\'ve been around a few corners and been apart of different organizations, movements and I have an opinion on all of it. I\'m dynamic and my nature is to there is always more solutions to most challenges. I have been blessed with a life that has had a multitude of reinventions, becoming a better version of myself from a vision of knowledge and wisdom.</p><p>I don\'t like to talk about all of the things I\'ve done, the way I\'d have it is to let other people tell my story. I\'m one of those guys who won\'t tell you how talented his children are, I\'d like to let their body of work speak for them. I am all about action and letting someone narrate the process.</p>','2017-10-07 07:39:43','Web',1,1,'About','{\"about\": [\"personality\"]}'),(2,'The Business','Brian Clincy, bclincy, bclincy photos, photos by brian',NULL,'<h1>I am a Business</h1><p>If you google me, You\'ll find out about a lot of what I\'ve done online, but wait there\'s more. I am about to change a lot of people lives by launch a series of business, that will give them ownership of a company and say so in the direction of a company','2017-10-08 04:20:46','Web',1,1,'InBusiness','{\"about\": [\"Business\"]}'),(3,'ACHIEVE','Healthy Community, Brian Healthy Initatives, Wellness','Health and wellness is are one of the same, and Action Communities for Health Innovation and EnVironmental ChangE helped me understand. It was a journey of knowledge','<h1>Health and Wellness are not Same</h1><p>Action Communities for Health Innovation and EnVironmental ChangE (ACHIEVE) helped me understand. It was a journey of knowledge and wisdom. It help me understand how Enviormental changes can change also be health and have economical impact.<p>','2017-11-14 20:58:23','Web',1,1,'ACHIEVE','{\"community\":[\"community\", \"garden\", \"government\", \"health\", \"policy\"]}'),(4,'Testing','Brian','Sweet','Need more content','2017-11-19 07:19:59','web',1,1,'test','{\"about\":[\"garden\", \"life\", \"love\", \"real\"]}'),(5,'Goals','Goals, brian clincy, My goals, Goals from the hood','I got goals and they\'re really not ','    <img src=\"/images/seeMySuccess.jpg\" width=\"756\" height=\"351\" alt=\"I believe in the future\" />\n    <h1>My Goals</h1>\n    <p>Brian Clincy, I\'m a work in process. Everyday my goal is to be collectively be better than I was yesterday. Today at\n    the intersection of knowledge and wisdom meet is where you\'ll find me. As I share my journey and status of everyday\n    lessons my dream is to help other avoid my pitfalls, and connect my history with my future.</p>\n<p><a name=\"continue\"></a>\n    See my Granny (Beatrice Pascal) always had goals, and you\'d often see them written down around the house. I didn\'t\n    know how much of a hustler my granny was, but she was a dreamer. She was a person who bought real estate, and other\n    ways of making her dreams reality. She was my hero, and her motivation and had a lasting impact on me. So I developed\n    goals like my granny. The financial goals wasn\'t the only goals my granny had, she wanted to make sure her kids had\n    the tools they needed to make it. Out of this I learned how taking care of family is priority.\n</p>\n<p>I started a podcast called NNUtS as in Nothing New Under the Sun, because I thought about all the things my grandmother\n    had told me. All the game my great cousin Sonny-Man also gave me. Those old sayings, like \"See a fool leave a fool,\n    or you might end up acting like a fool!\" are classic and need to be shared. Nothing new under the sun is tribute to\n    how all things are \'New\' has already been done before (You aint doing nothing but the funky chicken). It is my hope\n    that I get to share these with my future generations, so they can see what was passed down to me, for them.\n</p>\n<p>Part of my work in progress is to leave the world a better place than what I found it. I want to be a net positive for\n    the future. My goal is to be as efficient as possible. I want to use less gasoline, least possible petroleum based\n    products and appreciate the earth resources\n</p>','2017-12-03 20:44:56','Post',1,1,'My Goals','{\"blog\": [\"Growth\", \"Personal Growth\"]}'),(6,'Brian Clincy Professional Bio','Brian Clincy, Professional Bio, The entrepreneur, technology, clincy in technology, Top 40 under 40','Brian Clincy professional bio, where you will learn about his contributes to Technology and technical ideology.','<h1>In my Profession</h1>Brian Clincy is an entrepreneur who specializes in innovative technology, designing and programming solutions in eCommerce, data aggregation, and customer added value services. The eternal optimist, Brian uses his powers to fight waste and increase usability. Brian’s hustle and thirst for knowledge propels him forward as one of the hardest working people in technology that you’ll ever have met. Brian channels his inner Steve Jobs by matching complexity of problems with solutions designed not to look like what it does, but to actually work like it’s designed. *\n                         Brian has landed coverage in numerous media outlets, he’s been a driving force for change and diversity. Between his work with technology and community organizing he’s landed in The Top 40 under 40 publish by mlive.com. His services to the community made him one of the founding board members of TEDx Muskegon, the Chairman of a federal designated Healthy Community Initiative Project (ACHIEVE),  a TEDx Presenter, a MPS Parent Advocate and PTO President, a candidate for a local school board, and published article writer. \n                         * Steve Jobs, “Design is not just what it looks like and feels like. Design is how it works.”\n                         --Brian co-founded a software solutions company and lead the start-up for over 10 years, working through the ranks of the Designer, Web Developer, Dev Manager, and project manager. Through failed deadlines, long nights, and early mornings, Brian created a process that helped produce products that have had a 5 year production life. \n','2018-10-31 07:21:00','web',1,1,'bio professional','{\"about\": [\"Bio\", \"Profession\"]}');
+INSERT INTO `docs` VALUES (1,'About Brian','Brian Clincy, bclincy, bclincy photos, photos by brian','Introducing Brian Clincy, one of the coolest hardworking technical guy you\'ll ever meet. On top of all of that he\'s just trying to be best person he can be and leave this world better than he found it.','<h1>I am...</h1><p>If you <a href=\"https://google.com/search?q=Brian#%20Clincy\" target=\"#_new\">google me</a> the results will have diverse results because I\'ve been around a few corners and been apart of different organizations, movements and I have an opinion on all of it. I\'m dynamic and my nature is to there is always more solutions to most challenges. I have been blessed with a life that has had a multitude of reinventions, becoming a better version of myself from a vision of knowledge and wisdom.</p><p>I don\'t like to talk about all of the things I\'ve done, the way I\'d have it is to let other people tell my story. I\'m one of those guys who won\'t tell you how talented his children are, I\'d like to let their body of work speak for them. I am all about action and letting someone narrate the process.</p>','2017-10-07 07:39:43','Web',1,'About','{\"about\": [\"personality\"]}',1,'/images/brianclincy.jpg'),(2,'The Business','Brian Clincy, bclincy, bclincy photos, photos by brian',NULL,'<h1>I am a Business</h1><p>If you google me, You\'ll find out about a lot of what I\'ve done online, but wait there\'s more. I am about to change a lot of people lives by launch a series of business, that will give them ownership of a company and say so in the direction of a company','2017-10-08 04:20:46','Web',1,'InBusiness','{\"about\": [\"Business\"]}',1,'/images/brianclincy.jpg'),(3,'ACHIEVE','Healthy Community, Brian Healthy Initatives, Wellness','Health and wellness is are one of the same, and Action Communities for Health Innovation and EnVironmental ChangE helped me understand. It was a journey of knowledge','<h1>Health and Wellness are not Same</h1><p>Action Communities for Health Innovation and EnVironmental ChangE (ACHIEVE) helped me understand. It was a journey of knowledge and wisdom. It help me understand how Enviormental changes can change also be health and have economical impact.<p>','2017-11-14 20:58:23','Web',1,'ACHIEVE','{\"community\":[\"community\", \"garden\", \"government\", \"health\", \"policy\"]}',1,'/images/brianclincy.jpg'),(4,'Testing','Brian','Sweet','Need more content','2017-11-19 07:19:59','web',1,'test','{\"about\":[\"garden\", \"life\", \"love\", \"real\"]}',1,'/images/brianclincy.jpg'),(5,'Goals','Goals, brian clincy, My goals, Goals from the hood','I got goals and they\'re really not ','    <img src=\"/images/seeMySuccess.jpg\" width=\"756\" height=\"351\" alt=\"I believe in the future\" />\n    <h1>My Goals</h1>\n    <p>Brian Clincy, I\'m a work in process. Everyday my goal is to be collectively be better than I was yesterday. Today at\n    the intersection of knowledge and wisdom meet is where you\'ll find me. As I share my journey and status of everyday\n    lessons my dream is to help other avoid my pitfalls, and connect my history with my future.</p>\n<p><a name=\"continue\"></a>\n    See my Granny (Beatrice Pascal) always had goals, and you\'d often see them written down around the house. I didn\'t\n    know how much of a hustler my granny was, but she was a dreamer. She was a person who bought real estate, and other\n    ways of making her dreams reality. She was my hero, and her motivation and had a lasting impact on me. So I developed\n    goals like my granny. The financial goals wasn\'t the only goals my granny had, she wanted to make sure her kids had\n    the tools they needed to make it. Out of this I learned how taking care of family is priority.\n</p>\n<p>I started a podcast called NNUtS as in Nothing New Under the Sun, because I thought about all the things my grandmother\n    had told me. All the game my great cousin Sonny-Man also gave me. Those old sayings, like \"See a fool leave a fool,\n    or you might end up acting like a fool!\" are classic and need to be shared. Nothing new under the sun is tribute to\n    how all things are \'New\' has already been done before (You aint doing nothing but the funky chicken). It is my hope\n    that I get to share these with my future generations, so they can see what was passed down to me, for them.\n</p>\n<p>Part of my work in progress is to leave the world a better place than what I found it. I want to be a net positive for\n    the future. My goal is to be as efficient as possible. I want to use less gasoline, least possible petroleum based\n    products and appreciate the earth resources\n</p>','2017-12-03 20:44:56','Post',1,'goals','{\"blog\": [\"Growth\", \"Personal Growth\"]}',1,'/images/brianclincy.jpg'),(6,'Brian Clincy Professional Bio','Brian Clincy, Professional Bio, The entrepreneur, technology, clincy in technology, Top 40 under 40','Brian Clincy professional bio, where you will learn about his contributes to Technology and technical ideology.','<h1>In my Profession</h1>Brian Clincy is an entrepreneur who specializes in innovative technology, designing and programming solutions in eCommerce, data aggregation, and customer added value services. The eternal optimist, Brian uses his powers to fight waste and increase usability. Brian’s hustle and thirst for knowledge propels him forward as one of the hardest working people in technology that you’ll ever have met. Brian channels his inner Steve Jobs by matching complexity of problems with solutions designed not to look like what it does, but to actually work like it’s designed. *\n                         Brian has landed coverage in numerous media outlets, he’s been a driving force for change and diversity. Between his work with technology and community organizing he’s landed in The Top 40 under 40 publish by mlive.com. His services to the community made him one of the founding board members of TEDx Muskegon, the Chairman of a federal designated Healthy Community Initiative Project (ACHIEVE),  a TEDx Presenter, a MPS Parent Advocate and PTO President, a candidate for a local school board, and published article writer. \n                         * Steve Jobs, “Design is not just what it looks like and feels like. Design is how it works.”\n                         --Brian co-founded a software solutions company and lead the start-up for over 10 years, working through the ranks of the Designer, Web Developer, Dev Manager, and project manager. Through failed deadlines, long nights, and early mornings, Brian created a process that helped produce products that have had a 5 year production life. \n','2018-10-31 07:21:00','web',1,'bio professional','{\"about\": [\"Bio\", \"Profession\"]}',1,'/images/brianclincy.jpg'),(7,'Brian Clincy presents NNUtS Nothing New Under the Sun with Brian Clincy','Podcast, NNUtS, Nothing New Under the Sun, Money, Family, Sports, Entertainment, Enlightment ','Brian Clincy presents the Nothing New Under the Sun the Podcast. This podcast is my legacy, it is the beautiful blessing of life and I\'m sharing knowledge from the old-school to the new-school.','<p>Brian Clincy presents the Nothing New Under the Sun the Podcast. NNUtS is legacy project to transfer the knowledge my family and friends has blessed me with. My granny was something like a profit and also a shooter, and just gives you context on how people can be dynamic and the lines are often blur. This is my journey of connecting the old-school with the new-school.</p>','2019-04-21 22:46:12','web',1,'nnuts','{\"podcast\" : [\"NNUts\"]}',1,'/images/socialMediaNNUts.jpeg');
 /*!40000 ALTER TABLE `docs` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -223,7 +254,7 @@ CREATE TABLE `jobleads` (
   `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -232,7 +263,7 @@ CREATE TABLE `jobleads` (
 
 LOCK TABLES `jobleads` WRITE;
 /*!40000 ALTER TABLE `jobleads` DISABLE KEYS */;
-INSERT INTO `jobleads` VALUES (1,'Brian Clincy','bclincy@gmail.com','None','DRUPAL','I think you\'re freaking awesome','http://linkedIn.com/in/bclincy','2018-10-20 02:04:56','2018-10-20 02:04:56'),(2,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying','http://linkedIn.com/in/bclincy','2018-10-21 05:35:42','2018-10-21 05:35:42'),(3,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:51:26','2018-10-21 05:51:26'),(4,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:54:17','2018-10-21 05:54:17'),(5,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:56:09','2018-10-21 05:56:09'),(6,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 06:46:33','2018-10-21 06:46:33'),(7,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello people','http://linkedIn.com/in/bclincy','2018-10-21 06:56:14','2018-10-21 06:56:14'),(8,'Brian Clincy','bclincy@gmail.com','None','DRUPAL','I think you\'re freaking awesome','http://linkedIn.com/in/bclincy','2018-10-21 08:22:44','2018-10-21 08:22:44');
+INSERT INTO `jobleads` VALUES (1,'Brian Clincy','bclincy@gmail.com','None','DRUPAL','I think you\'re freaking awesome','http://linkedIn.com/in/bclincy','2018-10-20 02:04:56','2018-10-20 02:04:56'),(2,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying','http://linkedIn.com/in/bclincy','2018-10-21 05:35:42','2018-10-21 05:35:42'),(3,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:51:26','2018-10-21 05:51:26'),(4,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:54:17','2018-10-21 05:54:17'),(5,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 05:56:09','2018-10-21 05:56:09'),(6,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello','http://linkedIn.com/in/bclincy','2018-10-21 06:46:33','2018-10-21 06:46:33'),(7,'Brian Clincy','bclincy@gmail.com','','PHP','I\'m trying hello people','http://linkedIn.com/in/bclincy','2018-10-21 06:56:14','2018-10-21 06:56:14'),(8,'Brian Clincy','bclincy@gmail.com','None','DRUPAL','I think you\'re freaking awesome','http://linkedIn.com/in/bclincy','2018-10-21 08:22:44','2018-10-21 08:22:44'),(9,'Brian Clincy','bclincy@gmail.com','none','DRUPAL','Just want to see the resume','https://linkedin.com/in/brianclincy','2019-02-04 10:57:00','2019-02-04 10:57:00');
 /*!40000 ALTER TABLE `jobleads` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -467,6 +498,32 @@ LOCK TABLES `payments` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `phinxlog`
+--
+
+DROP TABLE IF EXISTS `phinxlog`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `phinxlog` (
+  `version` bigint(20) NOT NULL,
+  `migration_name` varchar(100) DEFAULT NULL,
+  `start_time` timestamp NULL DEFAULT NULL,
+  `end_time` timestamp NULL DEFAULT NULL,
+  `breakpoint` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `phinxlog`
+--
+
+LOCK TABLES `phinxlog` WRITE;
+/*!40000 ALTER TABLE `phinxlog` DISABLE KEYS */;
+/*!40000 ALTER TABLE `phinxlog` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `podcast`
 --
 
@@ -476,18 +533,20 @@ DROP TABLE IF EXISTS `podcast`;
 CREATE TABLE `podcast` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `description` text COLLATE utf8_unicode_ci,
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `link` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `language` varchar(2) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `lastBuildDate` datetime NOT NULL,
-  `pubDate` datetime NOT NULL,
-  `webmaster` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
-  `guid` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `language` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'english',
+  `lastBuildDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `pubDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `webmaster` varchar(150) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `guid` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `media` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `video` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_D7E805BD36AC99F1` (`link`),
-  UNIQUE KEY `title_UNIQUE` (`title`)
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `image_url` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'http://brianclincy.com/images/nnuts-rss.jpg',
+  `duration` varchar(255) COLLATE utf8_unicode_ci NOT NULL DEFAULT '01:00:00',
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -497,8 +556,37 @@ CREATE TABLE `podcast` (
 
 LOCK TABLES `podcast` WRITE;
 /*!40000 ALTER TABLE `podcast` DISABLE KEYS */;
-INSERT INTO `podcast` VALUES (1,'1st Outtakes','Getting started with my podcast finally and Dez is fooling, it was good  look at how much fun you can have with your daughter. check us out on https://www.facebook.com/NNUTSun/ and more to come at brianclincy.com/NNUTS','http://brianclincy.com/nnuts/1st_outtakes','en','2017-10-24 03:18:38','2017-10-26 03:18:29','bclincy','1','http://brianclincy.com/podcast/1stouttakes.mp3','https://www.youtube.com/watch?v=3JDfJZCcgcg'),(2,'NNUTS Podcast Generational Credit eps 1','Nothing New Under the sun\'s With special Guest Destiana Clincy, tackling issues of lessons learn, Trump investigating University for reverse discrimination, Colin Stand, Smoking Weed Parenting, and word association, and naming cars.','http://brianclincy.com/nnuts/NNUTS_Podcast_Generational_Credit_eps_1','en','2018-09-09 16:40:53','2017-08-27 16:41:27','bclincy',NULL,'http://brianclincy.com/prodcast/NNUTS_Generational_Credit_eps 1.mp3','https://www.youtube.com/watch?v=DGlVLjbr2uo');
+INSERT INTO `podcast` VALUES (1,'1st Outtakes','Getting started with my podcast finally and Dez is fooling, it was good  look at how much fun you can have with your daughter. check us out on https://www.facebook.com/NNUTSun/ and more to come at brianclincy.com/NNUTS','http://brianclincy.com/nnuts/1st_outtakes','en','2017-10-24 03:18:38','2017-10-26 03:18:29','bclincy','https://s3.us-east-2.amazonaws.com/black-rob-place/NNUTS+OutTakes.mp3','http://brianclincy.com/podcast/1stouttakes.mp3','https://www.youtube.com/watch?v=3JDfJZCcgcg','2019-04-08 03:18:44','2019-04-08 03:18:45','http://brianclincy.com/images/nnuts-rss.jpg','01:00:00'),(2,'NNUTS Podcast Generational Credit eps 1','Nothing New Under the sun\'s With special Guest Destiana Clincy, tackling issues of lessons learn, Trump investigating University for reverse discrimination, Colin Stand, Smoking Weed Parenting, and word association, and naming cars.','http://brianclincy.com/nnuts/NNUTS_Podcast_Generational_Credit_eps_1','en','2018-09-09 16:40:53','2017-08-27 16:41:27','bclincy','https://s3.us-east-2.amazonaws.com/black-rob-place/NNUTS+Podcast+Generational+Credit+eps+1.mp3\n','http://brianclincy.com/prodcast/NNUTS_Generational_Credit_eps 1.mp3','https://www.youtube.com/watch?v=DGlVLjbr2uo','2019-04-08 03:18:44','2019-04-08 03:18:45','http://brianclincy.com/images/socialMediaNNUts.jpeg','01:00:00');
 /*!40000 ALTER TABLE `podcast` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `podcast_guest`
+--
+
+DROP TABLE IF EXISTS `podcast_guest`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `podcast_guest` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `firstName` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `lastName` varchar(120) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `phone` varchar(15) COLLATE utf8_unicode_ci NOT NULL,
+  `isConnected` tinyint(1) NOT NULL DEFAULT '0',
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `podcast_guest`
+--
+
+LOCK TABLES `podcast_guest` WRITE;
+/*!40000 ALTER TABLE `podcast_guest` DISABLE KEYS */;
+/*!40000 ALTER TABLE `podcast_guest` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -510,14 +598,17 @@ DROP TABLE IF EXISTS `podcast_notes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `podcast_notes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `note_name` varchar(255) NOT NULL,
-  `description` mediumtext NOT NULL,
-  `link` varchar(255) DEFAULT NULL,
+  `noteName` varchar(255) NOT NULL,
+  `description` longtext,
+  `link` varchar(200) DEFAULT NULL,
   `linkText` varchar(255) DEFAULT NULL,
-  `added_on` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `tags` varchar(255) DEFAULT NULL,
   `podcast_id` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `IDX_7E9A8FA9786136AB` (`podcast_id`),
+  CONSTRAINT `FK_7E9A8FA9786136AB` FOREIGN KEY (`podcast_id`) REFERENCES `podcast` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Pieces of podcast that make it';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -531,6 +622,33 @@ LOCK TABLES `podcast_notes` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `podcast_podcastnote`
+--
+
+DROP TABLE IF EXISTS `podcast_podcastnote`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `podcast_podcastnote` (
+  `podcast_id` int(11) NOT NULL,
+  `podcastnote_id` int(11) NOT NULL,
+  PRIMARY KEY (`podcast_id`,`podcastnote_id`),
+  KEY `IDX_3986B7E8786136AB` (`podcast_id`),
+  KEY `IDX_3986B7E894A5BAB8` (`podcastnote_id`),
+  CONSTRAINT `FK_3986B7E8786136AB` FOREIGN KEY (`podcast_id`) REFERENCES `podcast` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_3986B7E894A5BAB8` FOREIGN KEY (`podcastnote_id`) REFERENCES `podcast_notes` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `podcast_podcastnote`
+--
+
+LOCK TABLES `podcast_podcastnote` WRITE;
+/*!40000 ALTER TABLE `podcast_podcastnote` DISABLE KEYS */;
+/*!40000 ALTER TABLE `podcast_podcastnote` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `post`
 --
 
@@ -541,12 +659,14 @@ CREATE TABLE `post` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `tags` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `slug` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
   `body` mediumtext CHARACTER SET utf8 NOT NULL,
-  `createdOn` datetime NOT NULL,
-  `weight` tinyint(1) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '0',
+  `slug` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `weight` int(11) NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `title_UNIQUE` (`title`)
+  UNIQUE KEY `UNIQ_5A8A6C8D2B36786B` (`title`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -556,7 +676,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (1,'Growing','Growing, inspired, proverty, ','bee notes','<h1>I\'m Growing</h1><p>I used to think my life was special, I used to think that the stuff I went through probably nobody could do what I\'ve done. In actuality there is a lot of people that have had it worse, and then I put it in perspective. As I\'ve raised my kids and try to understand how bad they have it. I think about how I was so appreciative of what I did have. You\'ll here me say, \"My mom was 15 when she had me and I\'m the second oldest\". I grew up with my mother. I grew up in some of the poverty stricken, areas in Michigan and the growth is where I started.</p>\n<p>The time and experience gave me knowledge of myself. They gave me knowledge of the game. When I say the game, I\'m really saying how the system works. I\'m a systems guy I have to learn to operate where the holes in the system and opportunity cost of managing system processes.</p>','2018-09-22 08:52:25',100);
+INSERT INTO `post` VALUES (1,'Growing','Growing, inspired, proverty, ','<h1>I\'m Growing</h1><p>I used to think my life was special, I used to think that the stuff I went through probably nobody could do what I\'ve done. In actuality there is a lot of people that have had it worse, and then I put it in perspective. As I\'ve raised my kids and try to understand how bad they have it. I think about how I was so appreciative of what I did have. You\'ll here me say, \"My mom was 15 when she had me and I\'m the second oldest\". I grew up with my mother. I grew up in some of the poverty stricken, areas in Michigan and the growth is where I started.</p>\n<p>The time and experience gave me knowledge of myself. They gave me knowledge of the game. When I say the game, I\'m really saying how the system works. I\'m a systems guy I have to learn to operate where the holes in the system and opportunity cost of managing system processes.</p>',0,'bee notes',100,'2018-09-22 08:52:25','2019-04-07 22:21:12');
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -654,10 +774,10 @@ DROP TABLE IF EXISTS `states`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `states` (
-  `stateID` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
-  `state` varchar(20) NOT NULL DEFAULT '',
-  `abbreviation` char(2) NOT NULL DEFAULT '',
-  PRIMARY KEY (`stateID`)
+  `stateId` int(11) NOT NULL AUTO_INCREMENT,
+  `state` varchar(25) NOT NULL,
+  `abbreviation` varchar(2) NOT NULL,
+  PRIMARY KEY (`stateId`)
 ) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -680,25 +800,21 @@ DROP TABLE IF EXISTS `user`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
-  `username_canonical` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
-  `email` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
-  `email_canonical` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
-  `enabled` tinyint(1) NOT NULL,
-  `salt` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `last_login` datetime DEFAULT NULL,
-  `confirmation_token` varchar(180) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `password_requested_at` datetime DEFAULT NULL,
-  `roles` longtext COLLATE utf8_unicode_ci NOT NULL COMMENT '(DC2Type:array)',
-  `fname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `lname` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `DOB` date NOT NULL,
+  `username` varchar(35) COLLATE utf8_unicode_ci NOT NULL,
+  `usernamecanonical` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `isEnabled` tinyint(1) NOT NULL DEFAULT '0',
+  `salt` varchar(200) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_login` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `confirmationToken` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passwordRequestAt` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `role` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `firstName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `lastName` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `dob` datetime DEFAULT NULL,
   `customerId` int(11) DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNIQ_8D93D64992FC23A8` (`username_canonical`),
-  UNIQUE KEY `UNIQ_8D93D649A0D96FBF` (`email_canonical`),
-  UNIQUE KEY `UNIQ_8D93D649C05FB297` (`confirmation_token`)
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -720,4 +836,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-11 23:29:26
+-- Dump completed on 2019-04-24  1:54:06

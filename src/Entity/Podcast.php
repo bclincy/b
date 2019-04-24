@@ -61,7 +61,7 @@ class Podcast
 
     /**
      * @var string $imageUrl
-     * @ORM\Column(type="string", name="image_url", length=200, options={"default":"http://brianclincy.com/images/nnuts-rss.jpg"})
+     * @ORM\Column(type="string", name="image_url", length=255, options={"default":"http://brianclincy.com/images/nnuts-rss.jpg"})
      */
     protected $imageUrl;
 
@@ -80,7 +80,7 @@ class Podcast
 
     /**
      * @var string $guid
-     * @ORM\Column(type="guid", length=36)
+     * @ORM\Column(type="string", length=255)
      */
     protected $guid;
 
