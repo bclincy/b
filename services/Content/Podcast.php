@@ -137,19 +137,20 @@ class Podcast extends Model
             'link' => 'http://brianclincy.com/nnuts'
           ],
             'itunes:owner' => [
-              'itunes:name' => 'Brian Clincy',
-              'itunes:email' => 'nnuts@briancllincy.com',
-            ],
+            'itunes:name' => 'Brian Clincy',
+            'itunes:email' => 'nnuts@briancllincy.com',
+          ],
           'itunes:keywords' => 'Culture, technology, Black People, old-school, new-school, hip-hop, news',
           'itunes:explicit' => 'yes',
           'itunes:summary' => 'Brian Clincy Presents Nothing New Under the Sun the Podcast all about the culture of my elders being passed down to me to pass along to future generations',
           'explicit' => 'yes',
           'category' => 'Society & Culture',
+          'itunes:isClosedCaptioned' => 'No',
         ];
         array_walk($channel, [$this, 'addItems'], $xml);
         $cat = $xml->addChild('itunes:category', '');
         $cat->addAttribute('text', 'Society & Culture');
-        $subcat = $cat->addChild('itunes:category', '')->addAttribute('text', 'History');
+        $subcat = $cat->addChild('itunes'. ':' .'category', '')->addAttribute('text', 'History');
         $addCat = $xml->addChild('itunes:category', '')->addAttribute('text', 'Technology');
 
         return $xml;
