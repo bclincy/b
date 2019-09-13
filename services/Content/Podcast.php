@@ -147,6 +147,7 @@ class Podcast extends Model
           'explicit' => 'yes',
           'category' => 'Society & Culture',
           'itunes:isClosedCaptioned' => 'No',
+          'itunes:author' => 'Brian Clincy Nothing New Under the Sun',
         ];
         array_walk($channel, [$this, 'addItems'], $xml);
         $itunesns = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
@@ -154,6 +155,9 @@ class Podcast extends Model
         $cat->addAttribute('text','Society & Culture');
         $subCat = $cat->addChild('category', '', $itunesns);
         $subCat->addAttribute('text', 'Technology');
+        $atom = $xml->addChild('atom', '', 'link');
+        $atom->addAttribute('rel', 'self');
+        $atom->addAttribute('type', 'application/rss+xml');
 
         return $xml;
     }
