@@ -14,7 +14,7 @@ class Message extends Model
     const CREATED_AT = 'created_on';
     const UPDATED_AT = 'update_on';
 
-//    public $timestamps = false;
+//    public_html $timestamps = false;
 
     protected $fillable = [
         'name',

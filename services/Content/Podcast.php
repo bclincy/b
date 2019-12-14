@@ -31,8 +31,6 @@ class Podcast extends Model
      */
     private $notesId;
 
-    private $page;
-
     /**
      * Podcast constructor.
      * @param EntityManager $em
@@ -40,6 +38,13 @@ class Podcast extends Model
     public function __construct(EntityManager $em)
     {
         $this->em = $em;
+    }
+
+    public function totalPages (): ?int
+    {
+        $podcasts = $this->totalPodcast();
+
+        return ceil($podcasts/50);
     }
 
     public function totalPodcast()
@@ -83,6 +88,7 @@ class Podcast extends Model
         $this->createChannel($channel);
         foreach ($podcasts as $podcast) {
             $item = $channel->addChild('item');
+            $item->addChild('author', 'Brian Clincy');
             array_walk_recursive($podcast->toArray(), [$this, 'addItems'], $item);
         }
 
@@ -119,18 +125,22 @@ class Podcast extends Model
     {
         // RSS channel properties
         $channel = [
-          'title' => 'Nothing New Under the Sun Podcast NNUTS',
+          'title' => 'Nothing New Under the Sun Podcast AKA NNUtS',
           'link' => 'http://brianclincy.com/nnuts',
-          'description' => 'Nothing New Under the Sun aka NNUtSun is a tribute to the past and describing the present with lessons from the past',
+          'description' => 'From the thought proccess of Brian Clincy Nothing New Under the Sun AKA NNUtSun is a 
+          tribute to the past and describing the present with lessons from the past. Clincy and his guest chop it up 
+          about SCMEAT Sports, Culture, Music, Economy, Art and Technology. Understanding the past so we can recognize
+          the present and future state. Kind of reminds you of cool barbershop history lesson.',
           'language' => 'en-us',
           'webmaster' => 'brian@brianclincy.com (Brian Clincy)',
           'copyright' => '&#xA9;2016',
-          'keywords' => 'Culture, technology, Black People, old-school, new-school, hip-hop, news',
+          'keywords' => 'The Culture, technology, Black People, old-school, new-school, hip-hop, news',
           'image_title' => 'NNUtS',
           'image_link' => 'http://brianclincy.com/nnuts',
           'image_url' => 'http://brianclincy.com/nnut-rss.jpg',
           'image_height' => 200,
           'image_width' => 200,
+          'author' => 'Brian Clincy',
           'image' => [
             'url' => 'http://brianclincy.com/nnut-rss.jpg',
             'title' => 'Brian Clincy Present Nothing New Under the Sun (NNUtS) the podcast',
@@ -149,7 +159,7 @@ class Podcast extends Model
           'itunes:isClosedCaptioned' => 'No',
         ];
         array_walk($channel, [$this, 'addItems'], $xml);
-        $itunesns = 'http://www.itunes.com/dtds/podcast-1.0.dtd';
+        $itunesns = 'http://public_html.itunes.com/dtds/podcast-1.0.dtd';
         $cat = $xml->addChild('category', '', $itunesns);
         $cat->addAttribute('text','Society & Culture');
         $subCat = $cat->addChild('category', '', $itunesns);

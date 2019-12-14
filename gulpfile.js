@@ -10,11 +10,11 @@ const uglify = require('gulp-uglify');
 const util = require('gulp-util');
 
 const config = {
-	    assetsDir: 'public/assets',
+	    assetsDir: 'public_html/assets',
 	    bowerDir: 'vendor/components',
 	    production: !!util.env.production,
 	    sourceMaps: !util.env.production,
-	    webDir: 'public'
+	    webDir: 'public_html'
 };
 gulp.task('styles', function() {
 	console.log(config.production);

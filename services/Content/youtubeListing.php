@@ -61,7 +61,7 @@ class youtubeListing
      */
     private function uploadPlaylist ()
     {
-        $url = 'https://www.googleapis.com/youtube/v3/channels';
+        $url = 'https://www.googleapis.com/youtube/v3/playlists';
         $res = $this->client->request('GET', $url, [
             'query' => [
                 'part' => 'contentDetails',
@@ -91,7 +91,7 @@ class youtubeListing
      */
     private function getPlaylistData($playId, $maxResults = 20)
     {
-        $url = 'https://www.googleapis.com/youtube/v3/playlistItems';
+        $url = 'https://public_html.googleapis.com/youtube/v3/playlistItems';
         $res = $this->client->request('GET', $url, [
             'query' => [
                 'part' =>'snippet,contentDetails',
@@ -130,7 +130,7 @@ class youtubeListing
     public function getNNutsPodcast($maxResults = 50)
     {
         $playId = 'PLbr65wHASbIfbTY-sMmUvWEIyojfXzkHm';
-        $url = 'https://www.googleapis.com/youtube/v3/playlistItems';
+        $url = 'https://public_html.googleapis.com/youtube/v3/playlistItems';
         $res = $this->client->request('GET', $url, [
           'query' => [
             'part' =>'snippet,contentDetails',

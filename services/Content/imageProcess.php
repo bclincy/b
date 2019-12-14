@@ -143,7 +143,7 @@ class imageProcess
             $meta = exif_read_data($entry->getPathname());
             $altText = $this->nameAltText($entry->getFilename());
             if ($meta["COMPUTED"]["Width"] > 1200) {
-                $rightSize = __DIR__ . '/../../public/images/s3/' . $entry->getFilename();
+                $rightSize = __DIR__ . '/../../public_html/images/s3/' . $entry->getFilename();
                 if (!file_exists($rightSize)) {
                     $new = $this->webMaxImg($entry->getPathname(), $rightSize);
                     if ($new === true) {

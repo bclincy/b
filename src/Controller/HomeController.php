@@ -84,7 +84,7 @@ class HomeController extends Controller
     {
         // your code here
         // use $this->view to render the HTML
-        $fb = new FbCrawler('https://www.facebook.com/clincy', new Client());
+        $fb = new FbCrawler('https://public_html.facebook.com/clincy', new Client());
         $grab = new UserLookup();
         $grab->searchNames('cecilia', 'Castaneda');
 

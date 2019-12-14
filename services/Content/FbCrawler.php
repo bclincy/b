@@ -38,7 +38,7 @@ class FbCrawler
      * @param string $baseUrl
      * @param client $client
      */
-    public function __construct($baseUrl = 'https://www.facebook.com/brianclincy', client $client)
+    public function __construct($baseUrl = 'https://public_html.facebook.com/brianclincy', client $client)
     {
         $this->baseUrl = $baseUrl;
         $this->links = array();
@@ -97,7 +97,7 @@ class FbCrawler
     private function linkInfo ($link, $text)
     {
         if (preg_match('/^\/lovecommunitygarden\/posts\//', $link)) {
-            $this->links[$link] = 'https://www.facebook.com' . $link;
+            $this->links[$link] = 'https://public_html.facebook.com' . $link;
             //Todo: Add dates or post type from the Text
             return true;
         } else {
@@ -225,7 +225,7 @@ class FbCrawler
                         }(document, \'script\', \'facebook-jssdk\'));
                     </script>
                     <div class="row">
-            <div class="fb-post" data-href="https://www.facebook.com/lovecommunitygarden/posts/1174744925878700"></div></div>';
+            <div class="fb-post" data-href="https://public_html.facebook.com/lovecommunitygarden/posts/1174744925878700"></div></div>';
                     foreach ($this->links as $value) {
                         $str.= '<div class="row"> <div class="fb-post" data-href="'. $value . '"></div></div>'."\n";
                     }

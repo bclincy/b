@@ -130,7 +130,7 @@ class Csfr
     {
         $response = isset($_POST['g-recaptcha-response']) ? $_POST['g-recaptcha-response'] : $this->req["g-recaptcha-response"];
 
-        $url = 'https://www.google.com/recaptcha/api/siteverify';
+        $url = 'https://public_html.google.com/recaptcha/api/siteverify';
         $data = array(
             'secret' => $_ENV['RECAPTCHA_SEC'],
             'response' => $response

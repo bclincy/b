@@ -15,7 +15,7 @@ class Contact extends Model
     const UPDATED_AT = 'modifiedOn';
     protected $table = 'contact';
 
-//    public $timestamps = false;
+//    public_html $timestamps = false;
 
     protected $fillable = [
         'fname',

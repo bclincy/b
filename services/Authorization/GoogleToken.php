@@ -22,7 +22,7 @@ class GoogleToken
         putenv(__DIR__ . '/googleaipcoauthcreds.json');
 
         // define the scopes for your API call
-        $scopes = ['https://www.googleapis.com/auth/drive.readonly'];
+        $scopes = ['https://public_html.googleapis.com/auth/drive.readonly'];
 
         // create middleware
         $middleware = ApplicationDefaultCredentials::getMiddleware($scopes);
@@ -32,7 +32,7 @@ class GoogleToken
         // create the HTTP client
         $client = new Client([
             'handler' => $stack,
-            'base_uri' => 'https://www.googleapis.com',
+            'base_uri' => 'https://public_html.googleapis.com',
             'auth' => 'google_auth'  // authorize all requests
         ]);
 

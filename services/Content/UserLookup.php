@@ -29,9 +29,9 @@ class UserLookup
      * @var string
      */
     protected $baseUrls = [
-      'whitepages' => 'https://www.whitepages.com/name/',
-      'peoplebyname' => 'http://www.peoplebyname.com/people/',
-      'more' => 'https://www.whitepages.com/name/Cecilia-Castaneda/49442?q=Cecilia%20Castaneda&l=49442'
+      'whitepages' => 'https://public_html.whitepages.com/name/',
+      'peoplebyname' => 'http://public_html.peoplebyname.com/people/',
+      'more' => 'https://public_html.whitepages.com/name/Cecilia-Castaneda/49442?q=Cecilia%20Castaneda&l=49442'
 
     ];
 
@@ -61,7 +61,7 @@ class UserLookup
 
     public function searchNames(string $fname, string $lname)
     {
-        $lookup = $this->client->request('GET', 'http://www.peoplebyname.com/people/Castaneda/Cecilia/Muskegon/MI');
+        $lookup = $this->client->request('GET', 'http://public_html.peoplebyname.com/people/Castaneda/Cecilia/Muskegon/MI');
         if ($lookup->getStatusCode() === 200 ){
             $new = $lookup->getBody()->getContents();
             echo $new;
@@ -130,7 +130,7 @@ class UserLookup
                         }(document, \'script\', \'facebook-jssdk\'));
                     </script>
                     <div class="row">
-            <div class="fb-post" data-href="https://www.facebook.com/lovecommunitygarden/posts/1174744925878700"></div></div>';
+            <div class="fb-post" data-href="https://public_html.facebook.com/lovecommunitygarden/posts/1174744925878700"></div></div>';
                     foreach ($this->links as $value) {
                         $str.= '<div class="row"> <div class="fb-post" data-href="'. $value . '"></div></div>'."\n";
                     }
