@@ -19,6 +19,13 @@ $app->group('/nnuts', function () {
     $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutsids');
     $this->get('/rss', 'HomeController:nnutsRssFeeds')->setName('rssFeed');
 });
+$app->group('/NNUTS', function () {
+//    $this->get('', 'HomeController:nnutsIndex')->setName('plist');
+    $this->get('[/]', 'HomeController:nnutsIndex')->setName('podcast');
+    $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
+    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutsids');
+    $this->get('/rss', 'HomeController:nnutsRssFeeds')->setName('rssFeed');
+});
 $app->group('/admin', function() {
     $this->get('[/]', 'AdminController:indexAction')->setName('admin');
     $this->get('/docs/edit/{id}', 'AdminController:editDocs')->setName('edit-docs');

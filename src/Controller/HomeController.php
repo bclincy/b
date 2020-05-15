@@ -316,11 +316,11 @@ class HomeController extends Controller
     {
         $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
         $ydata = $youtube->getNNutsPodcast(50);
-        $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $podcasts = $this->em->getRepository(Podcast::class)->podcastNewestOrder();
         $data = [
-          'title'=>'Nothing New Under the Sun Podcast @NNUtSun',
-          'podcasts' => $podcasts,
-           'youtubes' => array_reverse($ydata),
+          'title'       =>  'Nothing New Under the Sun Podcast @NNUtSun',
+          'podcasts'    =>  $podcasts,
+          'youtubes'    => array_reverse($ydata),
           ];
         return $this->twig->render($response, 'podcast/podcast.html.twig', $data);
     }

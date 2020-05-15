@@ -11,17 +11,37 @@
               content="{% if title %}{{ title }}{% else %}Brian Clincy the mission for greatness!{% endif %}"/>
     {% endblock %}
     {% block metadata %}
-        <meta property="og:title" content="{{ title }}"/>
         <meta property="og:site_name" content="Brian Clincy From brianclincy.com" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta property="og:type" content="website" />
+        {% if meta.canonical is defined %}
+        <link rel=”canonical” href=”https://brianclincy.com/{{ meta.canonical }}”/>
+        <meta property="og:url" content="https://brianclincy.com/{{ meta.canonical }}" />
+        {% else %}
+            <link rel=”canonical” href=”{{ base_url() }}{{ current_path(app.request.attributes.get('_route'),
+                app.request.attributes.get('_route_params')) }}”/>
+            <meta property="og:url" content="{{ base_url() }}{{ current_path(app.request.attributes.get('_route'),
+                app.request.attributes.get('_route_params')) }}" />
+        {% endif %}
         {% if keywords %}
             <meta name="keywords" content="{{ keywords }}">
         {% endif %}
-        {% if meta %}
+        {% if meta.image %}
             <meta name="og:image" content="{{ meta.image }}">
+        {% else %}
+            <meta name="og:image" content="https://brianclincy.com/images/handed.jpg">
         {% endif %}
         {% if op.description %}
-            <meta name="description" content="{{ description }}">
+            <meta name="description" content="{{ description }}" />
+            <meta name="og:description" content="{{ description }}" />
+            {% else %}
+            <meta name="description" content="brianclincy.com is the playground for all of the activities that touch
+                Brian Clincy as person. It's lab of ideas put together to represent Clincyism as they come into alive.
+                Check it out and see if you can catch the good vibes">
+            <meta name="og:description" content="brianclincy.com is the playground for all of the activities that touch
+                Brian Clincy as person. It's lab of ideas put together to represent Clincyism as they come into alive.
+                Check it out and see if you can catch the good vibes" />
+
         {% endif %}
     {% endblock %}
 </head>
