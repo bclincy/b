@@ -28,8 +28,18 @@
         {% endif %}
         {% if meta.image %}
             <meta name="og:image" content="{{ meta.image }}">
+            <meta property="og:image:secure_url" content="{{ meta.image }}" />
+            <meta property="og:image:type" content="image/jpeg" />
+            <meta property="og:image:width" content="{{ meta.width }}" />
+            <meta property="og:image:height" content="{{ meta.height }}" />
+            <meta property="og:image:alt" content="{{ meta.alt }}" />
         {% else %}
-            <meta name="og:image" content="https://brianclincy.com/images/handed.jpg">
+            <meta property="og:image" content="http://brianclincy.com/images/handed.jpg" />
+            <meta property="og:image:secure_url" content="https://brianclincy.com/images/handed.jpg" />
+            <meta property="og:image:type" content="image/jpeg" />
+            <meta property="og:image:width" content="400" />
+            <meta property="og:image:height" content="400" />
+            <meta property="og:image:alt" content="Brian Clincy hand in his face" />
         {% endif %}
         {% if op.description %}
             <meta name="description" content="{{ description }}" />

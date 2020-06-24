@@ -4,7 +4,7 @@ use Slim\Http\Request;
 use Slim\Http\Response;
 use App\Content\Podcast;
 
-// Routes
+// Routeshttps://www.facebook.com/photo.php?fbid=3849577095083676&set=a.204548489586573&type=3&theater#
 
 $app->get('/', 'HomeController:index')->setName('home');
 $app->group('/contact', function () {
@@ -55,13 +55,13 @@ $app->group('/api', function () {
 })->add(new App\Middleware\Csfr($container));
 
 
-$app->get('/callback/{service}/{key}', function (Request $request, Response $response) {
-    die('<pre>' . print_r($request, true));
-    return $this->view->render($response, 'advisorySignup.html.twig',
+$app->get('/callback/{service}/{key}', function (Request $req, Response $res) {
+    die('<pre>' . print_r($req, true));
+    return $this->view->render($res, 'advisorySignup.html.twig',
       ['title' => 'Advisory Board', 'data' => $request]);
 });
 
-$app->get('/test[/{data}]', 'HomeController:test');
+$app->get('/test[/{data}]', 'HomeController:test')->setName('testing');
 $app->get('/message[/{data}]', 'HomeController:displayMessage');
 
 $app->get('/testme', function (Request $request, Response $response) {
@@ -81,5 +81,5 @@ $app->group('/gallery', function() {
  $this->get('[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
  $this->get('/{rewrite}', '\App\Controller\HomeController:gallery')->setName('Imgrewrite');
 });
-$app->get('/{category}/', 'HomeController:category')->setName('category');
-$app->get('/{slug}', 'HomeController:show')->setName('pages');
+$app->get('/category/{category}/', 'HomeController:category')->setName('category');
+$app->get('/{slug}', 'HomeController:post')->setName('post');

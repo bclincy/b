@@ -42,6 +42,10 @@ class Display extends Model
         return $this->formatContent($results);
     }
 
+    public function findPost(string $title): ?array
+    {
+        
+    }
     /**
      * @param $cat
      * @return mixed

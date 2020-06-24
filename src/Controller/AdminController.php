@@ -60,4 +60,9 @@ class AdminController extends Controller
 
         return $this->twig->render($res, 'admin/docs.html.twig', $data);
     }
+
+    public function jobleads(Request $req, Response $res): Response
+    {
+
+    }
 }

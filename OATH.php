@@ -21,7 +21,7 @@ function getClient()
     $client = new Google_Client();
     $client->setApplicationName('Gmail API PHP Quickstart');
     $client->setScopes(Google_Service_Gmail::GMAIL_READONLY);
-    $client->setAuthConfig(__DIR__ . '/services/Authorization/credentials.json');
+    $client->setAuthConfig(__DIR__ . '/services/Authorization/credentials_bkup.json');
     $client->setAccessType('offline');
 
     // Load previously authorized credentials from a file.

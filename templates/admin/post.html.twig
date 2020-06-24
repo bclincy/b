@@ -1,0 +1,96 @@
+{% extends "admin/layout.html.twig" %}
+{% block content %}
+    <form class="form-horizontal">
+        <fieldset>
+
+            <!-- Form Name -->
+            <legend>Post</legend>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="title">Title</label>
+                <div class="col-md-4">
+                    <input id="title" name="title" type="text" placeholder="Sam is my name" class="form-control input-md" required="">
+                    <span class="help-block">Add title</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="slug">Slug:</label>
+                <div class="col-md-4">
+                    <input id="slug" name="slug" type="text" placeholder="general_post" class="form-control input-md" required="">
+                    <span class="help-block">Page URL</span>
+                </div>
+            </div>
+
+            <!-- Prepended checkbox -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="Active">Active:</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+      <span class="input-group-addon">
+          <input type="checkbox">
+      </span>
+                        <input id="Active" name="Active" class="form-control" type="text" placeholder="">
+                    </div>
+                    <p class="help-block">Active pages are visual to the public</p>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Tags:</label>
+                <div class="col-md-4">
+                    <input id="tags" name="tags" type="text" placeholder="Hope, Dreams, Living" class="form-control input-md">
+                    <span class="help-block">Tags separated by comas</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="tags">Created Date:</label>
+                <div class="col-md-4">
+                    <input id="tags" name="tags" type="datetime-local" placeholder="Hope, Dreams, Living" class="form-control input-md">
+                    <span class="help-block">Please select a date</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="weight">Weight:</label>
+                <div class="col-md-4">
+                    <input id="weight" name="weight" type="text" placeholder="Weight of page" class="form-control input-md">
+                    <span class="help-block">Page ranking</span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="created">Created On:</label>
+                <div class="col-md-4">
+                    <input id="created" name="created" type="text" placeholder="placeholder" class="form-control input-md">
+                    <span class="help-block">Created on Date</span>
+                </div>
+            </div>
+
+            <!-- Textarea -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="body">Content:</label>
+                <div class="col-md-4">
+                    <textarea class="form-control" id="body" name="body">Content goes here</textarea>
+                </div>
+            </div>
+
+            <!-- Button -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="save">Save:</label>
+                <div class="col-md-4">
+                    <button id="save" name="save" class="btn btn-primary">Button</button>
+                </div>
+            </div>
+
+        </fieldset>
+    </form>
+
+{% endblock %}

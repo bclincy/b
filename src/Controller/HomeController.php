@@ -80,15 +80,19 @@ class HomeController extends Controller
     /**
      * @return string
      */
-    public function test()
+    public function test(Request $req, Response $res): Response
     {
         // your code here
         // use $this->view to render the HTML
-        $fb = new FbCrawler('https://public_html.facebook.com/clincy', new Client());
-        $grab = new UserLookup();
-        $grab->searchNames('cecilia', 'Castaneda');
+//        $fb = new FbCrawler('https://public_html.facebook.com/clincy', new Client());
+//        $leads = $this->container->db::table('links')->get();
+//        echo '<pre>';
+//        print_r($leads);
+//        die(var_dump($fb));
+//        $grab = new UserLookup();
+//        $grab->searchNames('cecilia', 'Castaneda');
 
-        return 'sike';
+        return $this->twig->render($res, 'admin/post.html.twig');
     }
 
     /**
@@ -284,8 +288,14 @@ class HomeController extends Controller
         return str_replace(' ', '_', $str);
     }
 
-
     public function show(Request $request, Response $response)
+    {
+        $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
+
+        return $this->twig->render($response, 'default.html.twig', $content);
+    }
+
+    public function post(Request $request, Response $response)
     {
         $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
 
