@@ -1,14 +1,14 @@
 FROM nginx:alpine
 
-ENV APP_DIR=/var/www/html
+ENV APP_DIR=/usr/share/nginx/html
 
 WORKDIR $APP_DIR
 
-#ADD ./php/config/composer.phar /usr/local/bin/composer
+#ADD ../config/backend/php/config/composer.phar /usr/local/bin/composer
 
 #RUN chmod 755 /usr/local/bin/composer
 
-ADD ./php/config/php.ini /usr/local/etc/php/conf.d/php.ini
+ADD ../config/backend/php/config/php.ini /usr/local/etc/php/conf.d/php.ini
 
 #COPY ./php/code $APP_DIR
 
