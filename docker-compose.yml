@@ -3,47 +3,46 @@ version: '3.7'
 services:
   back_end: # actual backend server
     build:
-      context: ./config/backend
-      dockerfile: Dockerfile-apiserver
+      context: ./backend
+      dockerfile: ./Dockerfile-apiserver
     container_name: php_backend
     restart: always
     volumes:
-      - ./app/backend/:/usr/share/nginx/html # copy php code to the nginx server
-      - ./config/backend/nginx/ssl/ssl:/etc/ssl
-      - ./config/backend/nginx/default.template.conf:/etc/nginx/conf.d/default.template # template conf to copy from
-      - ./app/backend/nginx/logs:/var/log/nginx
+      - ./backend/code:/usr/share/nginx/html # copy php code to the nginx server
+      - ./backend/nginx/ssl/ssl:/etc/ssl
+      - ./backend/nginx/default.template.conf:/etc/nginx/conf.d/default.template # template conf to copy from
+      - ./backend/nginx/logs:/var/log/nginx
     ports:
       - 8000:80
       - 3000:443
     env_file:
-      - ./app/backend/.env
+      - ./backend/code/.env
     command: /bin/sh -c "envsubst '$$NGINX_HOST' < /etc/nginx/conf.d/default.template > /etc/nginx/conf.d/default.conf && nginx -g 'daemon off;'"
     depends_on:
       - php_backend_fpm
       - mysqldb
   php_backend_fpm: # strictly used for debugging php
     build:
-      context: ./config/backend
-      dockerfile: Dockerfile-fpmserver
+      context: ./backend
+      dockerfile: ./Dockerfile-fpmserver
     container_name: php_backend_fpm
     restart: always
     ports:
       - 9001:9000
     volumes:
-      - ./app/backend:/var/www/html
-      - ./app/backend:/var/www/html # copy php code to the fpm gateway
-      - ./app/backend/.env:/var/www/html/.env # we should separate the values in this file from the actual app in production...
+      - ./backend/code:/var/www/html
+      - ./backend/code/.env:/var/www/html/.env # we should separate the values in this file from the actual app in production...
     #    command: ["composer", "install"]
     tty: true
     env_file:
-      - ./app/backend/.env
+      - backend/code/.env
   front_end:
-    build: ./app/frontend/
+    build: ./frontend/
     ports:
       - 88:2424
     #      - 2424:2424
     env_file:
-      - ./app/frontend/.env
+      - ./frontend/.env
   mysqldb:
     build: ./mysqldb/
     container_name: mysqldb

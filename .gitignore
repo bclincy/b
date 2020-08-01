@@ -17,3 +17,5 @@
 ###< symfony/phpunit-bridge ###
 /.idea
 ./mysqldb/presistance
+./mysqldb/._persistance
+backend/nginx/logs
