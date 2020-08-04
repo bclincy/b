@@ -7,7 +7,7 @@ COPY ./code/package*.json ./
 
 RUN npm install
 
-COPY ../config/frontend/code ./
+COPY ./code ./
 
 #run express server
 CMD [ "npm", "run", "start" ]
