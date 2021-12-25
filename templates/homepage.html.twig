@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="/css/animate.css"/>
     <link rel="stylesheet" href="/css/frontpage.css"/>
+    <link rel="stylesheet" href="js/sweetalert2.css">
     <meta property="og:type" content="Home Page"/>
     <meta property="og:url" content="http://brianclincy.com"/>
     <meta property="og:title" content="Brian Clincy Improving the Process."/>
@@ -15,7 +16,6 @@
     you'll have to check him out on his journey to making this world a better place."/>
     <meta property="og:site_name" content="Officially Brian Clincy from Muskegon, MI"/>
     <meta property="og:image" content="http://brianclincy.com/images/thinking.jpg"/>
-
     <meta itemscope content="Brian Clincy you're witnessing a miracle in the making that stands in front of you as Man he's become"
           itemtype="description" name="description" property="og:description"/>
     <meta content="http://www.brianclincy.com/images/thinking.jpg" itemprop="image" property="og:image"/>
@@ -367,7 +367,7 @@
         xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
         xhr.onprogress = function(pe) {
             console.log('WHAT THE BOOYA');
-        }
+        };
         xhr.onreadystatechange = function (data) {
             console.log(data);
             if (this.readyState === 4 && this.status === 200) {

@@ -10,29 +10,15 @@ namespace App\Controllers;
 
 
 use App\Controller\Controller;
-use Psr\Container\ContainerInterface;
 use Slim\Http\Request;
 use Slim\Http\Response;
-use App\Authorization\Encryptor;
 
 /**
  * Class DefaultController
- * @package app\Controllers
+ * @package App\Controllers
  */
 class DefaultController extends Controller
 {
-    /** @var  ContainerInterface */
-    private $container;
-
-    /**
-     * DefaultController constructor.
-     * @param ContainerInterface $container
-     */
-    public function __construct(ContainerInterface $container)
-    {
-        $this->container = $container;
-    }
-
 
     /**
      * @param Request $request
@@ -41,6 +27,9 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request, Response $response)
     {
+        $q = $request->getQueryParams();
+        $response->getStatusCode();
+
         return 'Home Controller';
     }
 }

@@ -13,6 +13,7 @@
 namespace App\Content;
 
 use GuzzleHttp\Client as client;
+use Symfony\Component\DomCrawler\Crawler;
 
 /**
  * Class UserLookup
@@ -21,12 +22,20 @@ use GuzzleHttp\Client as client;
  */
 class UserLookup
 {
+
+
     /**
      * The base URL from which the crawler begins crawling
      * @var string
      */
-    protected $baseUrl;
+    protected $baseUrls = [
+      'whitepages' => 'https://www.whitepages.com/name/',
+      'peoplebyname' => 'http://www.peoplebyname.com/people/',
+      'more' => 'https://www.whitepages.com/name/Cecilia-Castaneda/49442?q=Cecilia%20Castaneda&l=49442'
 
+    ];
+
+    protected $name = ['whitepages' => 'fname-lname', 'peoplebyname' => 'lname/fname'];
 
     /**
      * Array of links (and related data) found by the crawler
@@ -34,41 +43,43 @@ class UserLookup
      */
     protected $links;
 
+    /** @var client $client */
     protected $client;
 
-
     /**
-     * FbCrawler constructor.
-     * @param string $baseUrl
-     * @param client $client
+     * UserLookup constructor.
      */
-    public function __construct($baseUrl = 'https://www.facebook.com/brianclincy', client $client)
+    public function __construct()
     {
-        $this->baseUrl = $baseUrl;
-        $this->links = array();
-        $this->client = $client;
+        $this->client = new client([
+          'headers' => ['user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36'],
+          'timeout' => 60,
+          'verify' => false,
+        ]);
     }
 
 
-    /**
-     * create and configure goutte client used for scraping
-     * @return GoutteClient
-     */
-    protected function getScrapClient()
+    public function searchNames(string $fname, string $lname)
     {
-        $client = new GoutteClient();
-        $client->followRedirects();
+        $lookup = $this->client->request('GET', 'http://www.peoplebyname.com/people/Castaneda/Cecilia/Muskegon/MI');
+        if ($lookup->getStatusCode() === 200 ){
+            $new = $lookup->getBody()->getContents();
+            echo $new;
+            $crawler = new Crawler($new);
+            $hope = $crawler->filter('#hdr_middle > div > ul')->children();
 
-        $guzzleClient = new \GuzzleHttp\Client(array(
-            'curl' => array(
-                CURLOPT_SSL_VERIFYHOST => false,
-                CURLOPT_SSL_VERIFYPEER => false,
-            ),
-        ));
-        $client->setClient($guzzleClient);
-
-        return $client;
+            foreach($hope as $value)
+            {
+                var_dump($value->childNodes->item(3)->nodeValue);
+            }
+//            echo var_dump($hope->each('node'));
+            $i = 0;
+        }
+//        foreach ($this->baseUrls as $url) {
+//
+//        }
     }
+
 
     /**
      * extrating the relative path from url string
@@ -88,13 +99,13 @@ class UserLookup
      * Display output on a page
      * @return html
      */
-    public function displaySample ()
+    public function displaySample()
     {
         if (count($this->links) < 1) {
             return 'No Links';
         }
 
-        $str = '
+        $str = ' https://radaris.com/p/Brian/Clincy/
             <!DOCTYPE html>
             <html lang="en">
             <head>

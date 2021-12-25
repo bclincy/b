@@ -15,7 +15,7 @@ a:hover {
 header {
     background: url('/images/bc_header.jpg') no-repeat center;
     background-size: cover;
-    min-height: 400px;
+    min-height: 200px;
 }
 header > nav > #navbarSupportedContent > ul > li > a {
     font-weight: bolder;
@@ -89,4 +89,28 @@ footer img {
     min-height: 10rem;
     text-align: center;
     padding: 2rem;
+}
+
+.reponsive {
+    width: 100%;
+    height: auto;
+}
+.modal-dialog {
+    max-width: 90vw;
+    margin: 30px auto;
+}
+
+.modal-body {
+    position:relative;
+    padding:0px;
+}
+.close {
+    position:absolute;
+    right:-30px;
+    top:0;
+    z-index:999;
+    font-size:2rem;
+    font-weight: normal;
+    color:#fff;
+    opacity:1;
 }

@@ -4,7 +4,25 @@ Using slim php framework for the backend, and vanilla javascript, bootstrap, jqu
 front-end all used at [brianclincy.com](http://brianclincy.com)
 
 ## Installing
+git clone project
 
+cd b (or cloned dir)
+
+COPY .ENV.DIST .env
+
+EDIT .env to reflect settings
+
+COPY .phinx.yml.dist to phinx.yml
+
+EDIT .phinx.yml accordingly
+
+mkdir -p var/doctrine var/twig
+
+sudo chmod 777 var/ -R
+
+composer install
+
+RUN vendor/bin/phinx migrate
 
 ## Project structure
 

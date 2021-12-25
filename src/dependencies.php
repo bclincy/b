@@ -30,8 +30,8 @@ $container['pdo'] = function ($c) {
 
 $container['view'] = function ($container) {
     $view = new \Slim\Views\Twig('../templates/', [
-        'cache' => false,
-        'debug'=> true
+        'cache' => $_ENV['APP_ENV'] === 'dev' ? false : '../var/twig',
+        'debug'=> $_ENV['APP_ENV'] === 'dev',
     ]);
     $basePath = rtrim(str_ireplace('index.php', '', $container->get('request')->getUri()->getBasePath()), '/');
     $view->addExtension(new \Slim\Views\TwigExtension(
@@ -110,10 +110,6 @@ $container['flash'] = function () {
     return new \Slim\Flash\Messages();
 };
 
-$container['Models'] = function (\Slim\Container $container) {
-    return new \App\Content\Model($container, $container['pdo']);
-};
-
 $container['hasAccess'] = function (\Slim\Container $container) {
     $container->environment;
     // Todo: This authenticate users of the API for now return true
@@ -132,10 +128,29 @@ $container['HomeController'] = function (\Slim\Container $container) {
     return new \App\Controller\HomeController($container);
 };
 
-$container['State'] = function (\Slim\Container $container)
-{
-    return new \App\Entity\StateRepository($container);
+$container['AdminController'] = function (\Slim\Container $container) {
+    return new \App\Controllers\AdminController($container);
 };
 
+$container['Display'] = function (\Slim\Container $container) {
+    return new \App\Content\Display($container, $container->pdo);
+};
+
+$container['State'] = function (\Slim\Container $container)
+{
+    return new \App\Entity\States($container);
+};
+
+$container['docs'] = function ($container) {
+    return new \App\Entity\Docs($container);
+};
+
+$container['baseUrl'] = function () {
+    return sprintf(
+      "%s://%s",
+      isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off' ? 'https' : 'http',
+      $_SERVER['SERVER_NAME']
+    );
+};
 
 return $container;

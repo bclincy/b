@@ -2,10 +2,16 @@
 
 namespace App\Controller;
 
-use app\Content\imageProcess;
+use App\Content\Display;
+use App\Content\FbCrawler;
+use App\Content\UserLookup;
+use App\Entity\Docs;
+use App\Entity\Podcast;
 use App\Models\Message;
+use Doctrine\ORM\Mapping\Entity;
 use Exception;
 use Interop\Container\ContainerInterface;
+use Slim\Http\Body;
 use Slim\Http\Request;
 use Slim\Http\Response;
 use Slim\Views\Twig as twig;
@@ -36,12 +42,26 @@ class HomeController extends Controller
     protected $content;
 
     /** @var string */
-    protected $meta ='';
+    protected $meta = '';
 
     /** @var array */
     protected $image;
 
-    public function index (Request $req, Response $resp)
+    /** @var  Display */
+    protected $displaySvc;
+
+
+    /**
+     * HomeController constructor.
+     * @param ContainerInterface $container
+     */
+    public function __construct(ContainerInterface $container)
+    {
+        parent::__construct($container);
+    }
+
+
+    public function index(Request $req, Response $resp)
     {
         return $this->container->view->render($resp, 'homepage.html.twig', ['title' => 'Hello']);
     }
@@ -56,12 +76,18 @@ class HomeController extends Controller
 
         return $this->twig->render($res, 'default.html.twig', $data);
     }
+
     /**
      * @return string
      */
-    public function test() {
+    public function test()
+    {
         // your code here
         // use $this->view to render the HTML
+        $fb = new FbCrawler('https://www.facebook.com/clincy', new Client());
+        $grab = new UserLookup();
+        $grab->searchNames('cecilia', 'Castaneda');
+
         return 'sike';
     }
 
@@ -70,7 +96,7 @@ class HomeController extends Controller
      * @param Response $response
      * @return mixed
      */
-    public function contact (Request $request, Response $response)
+    public function contact(Request $request, Response $response)
     {
         $data = ['title' => 'Contact Clincy', 'breadcrum' => ['Contact']];
         return $this->twig->render($response, 'contact.html.twig', $data);
@@ -81,15 +107,15 @@ class HomeController extends Controller
      * @param Response $response
      * @return \Psr\Http\Message\ResponseInterface|static
      */
-    public function contactPost (Request $request, Response $response)
+    public function contactPost(Request $request, Response $response)
     {
         $gvalid = $this->container->flash->getMessages();
         $required = [
-            'fname' => v::length(3)->notEmpty(),
-            'lname' => v::length(3)->notEmpty(),
-            'email'=> v::notEmpty()->noWhitespace()->email(),
-            'subject' => v::notEmpty()->noWhitespace()->length(3),
-            'message' => v::notEmpty()->length(3)
+          'fname' => v::length(3)->notEmpty(),
+          'lname' => v::length(3)->notEmpty(),
+          'email' => v::notEmpty()->noWhitespace()->email(),
+          'subject' => v::notEmpty()->noWhitespace()->length(3),
+          'message' => v::notEmpty()->length(3)
         ];
         $validate = $this->container->validator->validate($request, $required);
         if (!$validate->failed() && !isset($gvalid['captcha'][0])) {
@@ -97,7 +123,7 @@ class HomeController extends Controller
               'fname' => ucwords($request->getParam('fname')),
               'lname' => ucwords($request->getParam('lname')),
               'subject' => $request->getParam('subject'),
-              'message'=> $request->getParam('message'),
+              'message' => $request->getParam('message'),
               'email' => $request->getParam('email'),
               'recievedOn' => time()
             ]);
@@ -105,7 +131,7 @@ class HomeController extends Controller
             $return['form'] = $validate->getErrors();
             $return['form']['captcha'] = $gvalid['captcha'][0];
         }
-        if ($contact->id > 0){
+        if (isset($contact) && $contact->id > 0) {
             $_SESSION['person'] = $contact;
 
             return $response->withStatus(302)->withHeader('Location', '/message');
@@ -123,7 +149,7 @@ class HomeController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function pageAction (Request $request, Response $response, $data = null)
+    public function pageAction(Request $request, Response $response, $data = null)
     {
         if ($request->getAttribute('title') !== null || !$this->title) {
             try {
@@ -132,7 +158,7 @@ class HomeController extends Controller
                 $stmt = $this->pdo->prepare($sql);
                 $stmt->execute([':title' => '%' . $title . '%']);
                 $content = $stmt->fetchAll();
-                if (isset($content[0])){
+                if (isset($content[0])) {
                     $content = $content[0];
                 } else {
                     $notFoundHandler = $this->container->get('notFoundHandler');
@@ -142,10 +168,10 @@ class HomeController extends Controller
                     $this->content['breadcrum'] = $data['breadcrum'] !== null ? $data['breadcrum'] : null;
                 }
             } catch (\Exception $e) {
-                $notFoundHandler = $this->container->get('notFoundHandler');
+                $notFoundHandler = $this->container->notFoundHandler;
             }
         } else {
-            $notFoundHandler = $this->container->get('notFoundHandler');
+            $notFoundHandler = $this->container->notFoundHandler;
         }
         if (isset($notFoundHandler)) {
             return $notFoundHandler($request, $response);
@@ -164,10 +190,10 @@ class HomeController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function category (Request $request, Response $response, $args)
+    public function category(Request $request, Response $response, $args)
     {
-        $this->cat= ucwords(str_replace('_', ' ', $request->getAttribute('category')));
-        $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/'.$this->cat.'/'];
+        $this->cat = ucwords(str_replace('_', ' ', $request->getAttribute('category')));
+        $data['breadcrum'][] = ['name' => $this->cat, 'link' => '/' . $this->cat . '/'];
         $this->title = $request->getAttribute('title') !== null ? ucwords($request->getAttribute('title')) : null;
         if ($this->title !== null) {
             // Not an index page
@@ -176,25 +202,22 @@ class HomeController extends Controller
         $cat = "%{$this->cat}%";
         $sql = 'SELECT * FROM docs WHERE category like :cat';
         $stmt = $this->pdo->prepare($sql);
-        $stmt->execute(['cat' =>$cat]);
+        $stmt->execute(['cat' => $cat]);
         $result = $stmt->fetchAll();
 
         return $this->twig->render(
-            $response,
-            'category.html.twig',
-            ['title' => $this->cat, 'data' => $result, 'breadcrum' => '']
+          $response,
+          'category.html.twig',
+          ['title' => $this->cat, 'data' => $result, 'breadcrum' => '']
         );
     }
 
-    public function gallery (Request $req, Response $res)
+    public function gallery(Request $req, Response $res)
     {
-        $root = $_SERVER['DOCUMENT_ROOT'];
-        $images = new Img($root, '/images/gallery/', true );
-        $img = $images->createImgList();
-
-        $images->createResize();
-        die('<pre>' . print_r($images, true));
-        return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images->images]);
+        $this->displaySvc = $this->container->Display;
+        $images = $this->displaySvc->galleryOptions('gallery', $_SERVER['DOCUMENT_ROOT'],
+          $req->getAttribute('rewrite'));
+        return $this->twig->render($res, 'gallery.html.twig', ['title' => 'Clincy Gallery', 'img' => $images]);
     }
 
     /**
@@ -203,12 +226,13 @@ class HomeController extends Controller
      * @param $args
      * @return mixed
      */
-    public function aboutIndex (Request $request, Response $response, $args)
+    public function aboutIndex(Request $request, Response $response, $args)
     {
         return $this->twig->render($response, 'goals.html.twig', ['title' => 'My Goals', 'data' => $args]);
     }
 
-    public function nnutsByName (Request $request, Response $response) {
+    public function nnutsByName(Request $request, Response $response)
+    {
 
 
         return $response;
@@ -219,11 +243,21 @@ class HomeController extends Controller
      * @param Response $resp
      * @return object
      */
-    public function resumeFrm (Request $req, Response $resp, $args)
+    public function resumeFrm(Request $req, Response $resp, $args)
     {
         if (isset($args['id'])) {
-            $data = ['title' => 'Brian Clincy Resume'];
-            $template ='hireme/resume.html.twig';
+            if ($this->container->Display->authorize($args['id']) === false) {
+                $this->container->flash->addMessage('EnterForm', 'Please first fill out the form');
+                $data = [
+                  'title' => 'Please Complete form',
+                  'error' => 'Please fill out the form to continue',
+                  'breadcrum' => ['<a href="/resume">Hire Me</a>']
+                ];
+                $template = 'hireme/resumeReq.html.twig';
+            } else {
+                $data = ['title' => 'Brian Clincy Resume'];
+                $template = 'hireme/resume.html.twig';
+            }
         } else {
             $data = ['title' => 'Resume Request', 'breadcrum' => ['Hire Me', 'Resume Request']];
             $template = 'hireme/resumeReq.html.twig';
@@ -250,60 +284,23 @@ class HomeController extends Controller
         return str_replace(' ', '_', $str);
     }
 
-    /**
-     * @param $data
-     */
-    private function metadata($data)
-    {
-        $url = isset($this->content['title']) ?
-            $this->createCanonicalUrl($this->content['title']) :
-            null;
-        $this->meta .= '<meta property="og:link" content="' . $url . '" />';
-        $this->meta .= '<meta property="og:image" content="' . $this->openGraphImage() . '" />';
 
+    public function show(Request $request, Response $response)
+    {
+        $content = $this->container->Display->searchDocs($request->getAttribute('slug'));
+
+        return $this->twig->render($response, 'default.html.twig', $content);
     }
 
-    /**
-     * @return bool
-     */
-    private function openGraphImage ()
+    public function nnuts(Request $req, Response $resp)
     {
-        if ($this->content['content'] !== null) {
-            $images = preg_match_all(
-                '|<img.*?src=[\'"](.*?)[\'"].*?>|i',
-                $this->content['content'],
-                $matches
-            );
-            $imgurl = $_SERVER['HTTP_HOST'] . $matches[ 1 ][ 0 ];
-            $this->image = strlen($imgurl) !== null ? $imgurl : $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png';
-        }
-
-        //Return false if use the default image
-        return $_SERVER['HTTP_HOST'] . '/images/brianclincy-type.png' == $this->image ? false: true;
-    }
-
-    /**
-     * @param $title
-     * @return string
-     */
-    private function createCanonicalUrl ($title)
-    {
-        //This is direct contact link
-        $title = stristr($title, '_') ? $title : $this->addUnderScore($title);
-
-        return '/'.$title;
-    }
-
-    public function show (Request $request, Response $response)
-    {
-        die($request->getAttribute('slug'));
-
+        die('here world');
     }
 
     public function nnutsById(Request $request, Response $response)
     {
-        $data = $this->postFrom('/nnuts/'.$request->getAttribute('id'));
-        echo '<pre>'. print_r($data, true);
+        $data = $this->postFrom('/nnuts/' . $request->getAttribute('id'));
+        echo '<pre>' . print_r($data, true);
     }
 
     private function postFrom($resource)
@@ -315,4 +312,33 @@ class HomeController extends Controller
 
     }
 
+    public function nnutsIndex(Request $request, Response $response)
+    {
+        $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
+        $ydata = $youtube->getNNutsPodcast(50);
+        $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $data = [
+          'title'=>'Nothing New Under the Sun Podcast @NNUtSun',
+          'podcasts' => $podcasts,
+           'youtubes' => array_reverse($ydata),
+          ];
+        return $this->twig->render($response, 'podcast/podcast.html.twig', $data);
+    }
+
+    public function advisoryBoard()
+    {
+
+    }
+
+    public function nnutsRssFeeds(Request $req, Response $res)
+    {
+        $podcasts = $this->em->getRepository(Podcast::class)->findAll();
+        $content = new \App\Content\Podcast($this->em);
+        $xml = $content->rssFeed($podcasts);
+        $body = new Body(fopen('php://temp', 'r+'));
+        $body->write($xml->asXML());
+
+        return $res->withHeader('Content-type', 'application/xml')
+          ->withBody($body);
+    }
 }

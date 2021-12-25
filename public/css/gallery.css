@@ -1,17 +1,9 @@
 .gallery {
     display: grid;
 }
+
 #current {
     width: 100%;
-}
-.imgs {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 5px 10px;
-}
-.imgs, img {
-    width: 100%;
-    border: 1px solid #ddd;
 }
 
 .imgs {
@@ -21,6 +13,12 @@
     grid-gap: 5px;
 }
 
+.imgs img {
+    height: auto;
+    width: auto;
+    max-width: 300px;
+    max-height: 300px;
+}
 #grid {
     display: grid;
     width: 100%;

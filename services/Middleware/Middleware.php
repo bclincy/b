@@ -9,7 +9,16 @@
 namespace App\Middleware;
 
 
+use Psr\Container\ContainerInterface;
+use Slim\Container;
+
 class Middleware
 {
+    public $container;
+
+    public function __construct(ContainerInterface $container)
+    {
+
+    }
 
 }

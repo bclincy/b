@@ -1,8 +1,10 @@
 <?php
 return [
     'settings' => [
-        'displayErrorDetails' => $_ENV['APP_ENV'] === 'dev' ? true : false, // set to false in production
+        'displayErrorDetails' => $_ENV['APP_ENV'] === 'dev', // set to false in production
         'addContentLengthHeader' => false, // Allow the web server to send the content-length header
+        'determineRouteBeforeAppMiddleware' => true,
+        'env' => $_ENV['APP_ENV'],
 
         // Renderer settings
         'renderer' => [
@@ -26,7 +28,7 @@ return [
         ],
         'doctrine' => [
             // if true, metadata caching is forcefully disabled
-            'dev_mode' => true,
+            'dev_mode' => $_ENV['APP_ENV'] === 'dev',
 
             // path where the compiled metadata info will be cached
             // make sure the path exists and it is writable
@@ -43,6 +45,6 @@ return [
                 'user' => isset($_ENV['dbuser']) ? $_ENV['dbuser'] : 'root',
                 'password' => isset($_ENV['dbpass']) ? $_ENV['dbpass'] : 'root',
             ]
-        ]
+        ],
     ],
 ];

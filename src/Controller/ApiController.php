@@ -159,6 +159,7 @@ class ApiController extends Controller
                 'note' => $data['message'],
                 'email' => $data['email']
             ]);
+            $_SESSION['viewResume'] = [$data, time()];
             $msg = sprintf('%s thank you!', $data['name']);
             $return = $this->restSuccessful($msg, $newLead->id);
         } else {
@@ -167,10 +168,11 @@ class ApiController extends Controller
             $return['form'] = $validate->getErrors();
             $return['form']['captcha'] = $gvalid['captcha'][0];
         }
-        $return['key'] = base64_encode(json_encode($data) . '-' . time());
+        $data['ts'] = time();
+        $return['key'] = base64_encode(json_encode([$data['name'], $data['email']]));
         $return['repost'] = $data;
-        return $resp->withJson($return);
 
+        return $resp->withJson($return, 201);
     }
 
     public function newsSignup(Request $request, Response $response, $args)

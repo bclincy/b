@@ -11,8 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * The docs class simple Doctrine Entity.
- *
- * @ORM\Entity(repositoryClass="DocRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DocsRepository")
  * @ORM\Table(name="docs")
  */
 
@@ -28,22 +27,34 @@ class Docs
     private $id;
 
     /**
-     * @var string
+     * @var string $title
      * @ORM\Column(type="string", nullable=false, unique=true)
      */
     private $title;
 
     /**
-     * @var string
-     * @ORM\Column(type="string", nullable=false)
+     * @var string $keywords
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $keywords;
 
     /**
+     * @var string $description
+     * @ORM\Column(type="string", nullable=true, length=255)
+     */
+    private $description;
+
+    /**
      * @var string
-     * @ORM\Column(type="string",nullable=false)
+     * @ORM\Column(type="text",nullable=false)
      */
     private $content;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=150, nullable=true, options={"default":"/images/brianclincy.jpg"})"
+     */
+    private $defaultImage;
 
     /**
      * @var \DateTime
@@ -70,8 +81,14 @@ class Docs
     private $docName;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer")
+     * @var int $authorId
+     * @ORM\Column(type="integer", options={"default":1}, name="author_id")
+     */
+    private $authorId;
+
+    /**
+     * @var integer $category
+     * @ORM\Column(type="string", nullable=true, length=255)
      */
     private $category;
 
@@ -82,7 +99,6 @@ class Docs
     {
         return $this->id;
     }
-
 
     /**
      * @return string
@@ -119,6 +135,25 @@ class Docs
     /**
      * @return string
      */
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string $description
+     * @return Docs
+     */
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getContent(): string
     {
         return $this->content;
@@ -128,7 +163,7 @@ class Docs
      * @param string $content
      * @return $this
      */
-    public function setContent(string $content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
         return $this;
@@ -162,7 +197,7 @@ class Docs
      * @param bool $isActive
      * @return $this
      */
-    public function setIsActive(bool $isActive)
+    public function setIsActive(bool $isActive): self
     {
         $this->isActive = $isActive;
 
@@ -181,7 +216,7 @@ class Docs
      * @param string $docType
      * @return $this
      */
-    public function setDocType(string $docType)
+    public function setDocType(string $docType): self
     {
         $this->docType = $docType;
 
@@ -200,7 +235,7 @@ class Docs
      * @param string $docName
      * @return $this
      */
-    public function setDocName(string $docName)
+    public function setDocName(string $docName): self
     {
         $this->docName = $docName;
 
@@ -216,14 +251,54 @@ class Docs
     }
 
     /**
+     * @return int
+     */
+    public function getAuthorId(): int
+    {
+        return $this->authorId;
+    }
+
+    /**
+     * @param int $authorId
+     */
+    public function setAuthorId(int $authorId)
+    {
+        $this->authorId = $authorId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultImage(): string
+    {
+        return $this->defaultImage;
+    }
+
+    /**
+     * @param string $defaultImage
+     * @return Docs
+     */
+    public function setDefaultImage(string $defaultImage): self
+    {
+        $this->defaultImage = $defaultImage;
+
+        return $this;
+    }
+
+    /**
      * @param int $category
      * @return $this
      */
-    public function setCategory(int $category)
+    public function setCategory(int $category): self
     {
         $this->category = $category;
 
         return $this;
+    }
+
+    public function toArray(): array
+    {
+        return get_object_vars($this);
     }
 
 }

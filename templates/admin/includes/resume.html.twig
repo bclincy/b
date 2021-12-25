@@ -1,0 +1,17 @@
+{% if leads %}
+<table>
+  <tr>
+    <td>Name</td>
+    <td>email</td>
+    <td>agency</td>
+    <td>Developer</td>
+    <td>linkedIn</td>
+    <td>Date</td>
+  </tr>
+  <tr>
+      {% for lead in leads %}
+
+      {% endfor %}
+  </tr>
+</table>
+{% endif %}

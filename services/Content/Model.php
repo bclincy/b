@@ -17,13 +17,13 @@ use Psr\Container\ContainerInterface;
 class Model
 {
     /** @var  ContainerInterface */
-    private $container;
+    protected $container;
 
     /** @var  \PDO */
-    private $pdo;
+    protected $pdo;
 
     /** @var  array  */
-    private $error;
+    protected $error;
 
     /**
      * Model constructor.

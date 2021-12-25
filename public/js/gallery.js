@@ -1,15 +1,15 @@
-const current = document.querySelector("#current");
-const images = document.querySelectorAll(".imgs img");
+const current = document.querySelector('#current');
+const images = document.querySelectorAll('.imgs img');
 const opacity = 0.6;
 
 // Set first img opacity
 images[0].style.opacity = opacity;
 
-images.forEach(img => img.addEventListener("click", imgClick));
+images.forEach(img => img.addEventListener('click', imgClick));
 
 function imgClick(e) {
     current.className = 'animated';
-    current.classList.add("fadeOutRightBig");
+    current.classList.add('fadeOutRightBig');
     // Reset the opacity
     images.forEach(img => (img.style.opacity = 1));
 
@@ -20,12 +20,11 @@ function imgClick(e) {
 
     // Add fade in class
 
-    current.classList.add("fadeInRightBig");
-
     // Remove fade-in class after .5 seconds
-    setTimeout(() => current.classList.remove("fadeOutRightBig"), 500);
-    setTimeout(() => current.classList.add("fadeInLeftBig"), 500);
+    setTimeout(() => current.classList.remove('fadeOutRightBig'), 500);
+    setTimeout(() => current.classList.add('bounceInUp'), 500);
 
     // Change the opacity to opacity var
     e.target.style.opacity = opacity;
+    current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }

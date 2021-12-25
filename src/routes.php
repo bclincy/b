@@ -13,17 +13,20 @@ $app->group('/contact', function () {
 })->add(new \App\Middleware\Csfr($container));
 
 $app->group('/nnuts', function () {
+//    $this->get('', 'HomeController:nnutsIndex')->setName('plist');
+    $this->get('[/]', 'HomeController:nnutsIndex')->setName('podcast');
     $this->get('/nnuts/episode/{name}', 'HomeController:nnutsByName')->setName('nnutsByName');
-    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutspcast')->setName('nnutsids');
+    $this->get('/nnuts/{id}', 'HomeController:nnutsById')->setName('nnutsids');
+    $this->get('/rss', 'HomeController:nnutsRssFeeds')->setName('rssFeed');
 });
+$app->group('/admin', function() {
+    $this->get('[/]', 'AdminController:indexAction')->setName('admin');
+    $this->get('/docs/edit/{id}', 'AdminController:editDocs')->setName('edit-docs');
+})->add(new \App\Middleware\Csfr($container));
 
 $app->get('/shoutouts', function (Request $request, Response $response) {
     $response->getBody()->write('I get busy over here');
     return $response;
-});
-
-$app->get('/home', function (Request $request, Response $response) {
-    return $this->view->render($response, 'home/index.html.twig', ['title' => 'Home again']);
 });
 
 $app->group('/resume', function () {
@@ -51,13 +54,14 @@ $app->get('/callback/{service}/{key}', function (Request $request, Response $res
       ['title' => 'Advisory Board', 'data' => $request]);
 });
 
-$app->get('/test[/{data}]', 'HomeController:gallery');
+$app->get('/test[/{data}]', 'HomeController:test');
 $app->get('/message[/{data}]', 'HomeController:displayMessage');
 
 $app->get('/testme', function (Request $request, Response $response) {
     $youtube = new \App\Content\youtubeListing('youngbmale', new \GuzzleHttp\Client(), $_ENV['GOOGLE_API']);
     $youtube = $youtube->init();
-    echo '<pre>' . print_r($youtube, true);
+    echo '<pre>' . print_r($youtube, true) . '</pre>';
+
 //    $str = encrypt::decryptStr($youtube['hash']);
 //    $fight = new \App\Authorization\GoogleToken();
 //    $fight->init();
@@ -65,10 +69,10 @@ $app->get('/testme', function (Request $request, Response $response) {
       ['title' => 'Advisory Board', 'data' => $request]);
 });
 
-
-$app->get('/gallery[/]', '\App\Controller\HomeController:gallery');
-//$app->get('/gallery/', function (Request $req, Response $resp) {
-//    die('<pre>'. print_r($this, true));
-//});
+$app->get('/advisoryBoard', 'homeController:advisor')->setName('advisory');
+$app->group('/gallery', function() {
+ $this->get('[/]', '\App\Controller\HomeController:gallery')->setName('gallery');
+ $this->get('/{rewrite}', '\App\Controller\HomeController:gallery')->setName('Imgrewrite');
+});
+$app->get('/{category}/', 'HomeController:category')->setName('category');
 $app->get('/{slug}', 'HomeController:show')->setName('pages');
-$app->get('/{category}/', 'HomeController:category');

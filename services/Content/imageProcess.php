@@ -8,6 +8,9 @@
 
 namespace App\Content;
 
+use Egulias\EmailValidator\Warning\IPV6MaxGroups;
+use \Gumlet\ImageResize;
+
 
 /**
  * Class imageProcess
@@ -76,12 +79,14 @@ class imageProcess
         $this->imageRoot = $imageRoot;
         $this->recursive = $recursive;
         $this->resize = $resize;
+        $this->createImgList();
     }
 
     /**
+     * @param bool $thumbnails
      * @return bool
      */
-    public function createImgList()
+    public function createImgList($thumbnails = false)
     {
         $this->currentDir = $this->siteRoot . $this->imageRoot;
         $images = array_filter($this->scandirs($this->currentDir));
@@ -136,11 +141,18 @@ class imageProcess
         $thumbnail = substr($this->currentDir,-1,1) === '/' ? 'thumbnail/' : '/thumbnail/';
         foreach($filter as $entry) {
             $meta = exif_read_data($entry->getPathname());
-            if ($this->resize === true || $meta['XResolution'] === '300/1') {
-                //resize it to the maxim width
-                $newPath = $this->resizeImg($entry->getPathname(),'git fetch');
-            }
             $altText = $this->nameAltText($entry->getFilename());
+            if ($meta["COMPUTED"]["Width"] > 1200) {
+                $rightSize = __DIR__ . '/../../public/images/s3/' . $entry->getFilename();
+                if (!file_exists($rightSize)) {
+                    $new = $this->webMaxImg($entry->getPathname(), $rightSize);
+                    if ($new === true) {
+                        $webpath = str_replace($this->siteRoot, '',  $entry->getPathname());
+                    }
+                } else { $webpath = '/images/s3/' . $entry->getFilename(); }
+                $newImgMeta = exif_read_data($rightSize);
+                $meta['COMPUTED']['html'] = $newImgMeta['COMPUTED']['html'];
+            }
             $fileList[] = [
                 'fullpath' => $entry->getPathname(),
                 'filename' => $entry->getFilename(),
@@ -148,12 +160,34 @@ class imageProcess
                 'thumbnail' => $this->currentDir . $thumbnail . $entry->getFilename(),
                 'thumbLink' => $this->imageRoot . $thumbnail . $entry->getFilename(),
                 'imgUrl' => $this->imageRoot . $entry->getFilename(),
-                'html' => $meta['COMPUTED']['html']
+                'html' => $meta['COMPUTED']['html'],
+                'webpath' => !is_null($webpath) ? $webpath : '',
             ];
         }
 
         return $fileList;
     }
+
+    public function maxWebImg (array $images)
+    {//todo: this does not work
+        foreach ($images as $key => $image) {
+            $img = new ImageResize($image['fullpath']);
+            $img->resizeToWidth(1200);
+            $return = $img->save($image['fullpath']);
+        }
+
+        return $return;
+    }
+
+    public function webMaxImg (string $path, string $rightSize)
+    {
+        $img = new ImageResize($path);
+        $img->resizeToWidth(1200);
+        $img->save($rightSize);
+
+        return file_exists($rightSize);
+    }
+
     /**
      * @param $filename
      * @return null|string|string[]
@@ -189,6 +223,7 @@ class imageProcess
 
     /**
      * @param array $images
+     * @return string
      */
     private function createThumbnails(array $images)
     {
@@ -196,6 +231,8 @@ class imageProcess
         foreach($images as $img) {
             print_r($img);
         }
+
+        return 'nothing';
     }
 
     /**
@@ -314,7 +351,7 @@ class imageProcess
                 $tmpImage = imagecreatetruecolor($width, $height);
 
                 // copy and resize old image into new image
-                imagecopyresized($tmpImage, $img, 0, 0, 0, 0, $width, $height);
+                imagecopyresized($tmpImage, $img, 0, 0, 0, 0, $width, $height, $currentWidth, $currentHeight);
                 // save thumbnail into a file
                 imagejpeg($tmpImage, $copyto);
                 $result = $copyto;

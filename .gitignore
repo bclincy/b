@@ -11,5 +11,7 @@
 /services/Authorization/*.json
 .env
 /data/db/mysql/
-var/doctrine/
 public/podcast/
+token.json
+phinx.yml
+var/

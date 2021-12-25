@@ -1,9 +1,9 @@
 -- MySQL dump 10.13  Distrib 5.7.23, for Linux (x86_64)
 --
--- Host: 127.0.0.1    Database: brianclincy
+-- Host: localhost    Database: brianclincy
 -- ------------------------------------------------------
 -- Server version	5.7.23-0ubuntu0.18.04.1
-
+use brianclincy;
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
@@ -27,10 +27,11 @@ CREATE TABLE `Community` (
   `project` varchar(255) NOT NULL,
   `Description` mediumtext NOT NULL,
   `location` varchar(255) NOT NULL DEFAULT 'Muskegon, MI',
-  `created_on` datetime DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
   `modified` datetime DEFAULT CURRENT_TIMESTAMP,
+  `created_on` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Community';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Community';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -39,6 +40,7 @@ CREATE TABLE `Community` (
 
 LOCK TABLES `Community` WRITE;
 /*!40000 ALTER TABLE `Community` DISABLE KEYS */;
+INSERT INTO `Community` VALUES (1,'Love Community Garden','Grassroots organization that works toward improving the quality of life Muskegon and surround commmunity. A faction of people who just wanted to grow food, became a group of people who created change in Muskegon, MI. \nI learned best principles in garden. I Learned how to care for the soil, I learned the difference from the soil and the dirt. I learn that people come together around food, and how important it is for clean water. \nI met some pretty inspiring people. Throughout the garden world it was people building some incredible things from design an rain water system to growing plants for fixtures for shade. Amazing people that fought for fair treatment of people and their freedom from systems that put junk food in school meals. I met modern day freedom fighters that just wanted to do good for their community\nDuties: Built the Web sites, create marketing material, photographer, videographer and promotional video producer, grant writer, developing reporting, creating and presenting project deliverable to other organizations and help in community projects: building a hoop house, putting together multiple Mini gardens, organizing youth events and leading youth in field trips and activities.','400 Monroe Ave, Muskegon, MI 49441','Learning, garden, impressive people','2018-09-23 07:04:26','2018-09-23 07:04:14');
 /*!40000 ALTER TABLE `Community` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -120,8 +122,9 @@ CREATE TABLE `contact` (
   `isReturned` tinyint(1) NOT NULL DEFAULT '0',
   `recievedOn` datetime NOT NULL,
   `serverDump` mediumtext COLLATE utf8_unicode_ci,
+  `modifiedOn` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,8 +133,42 @@ CREATE TABLE `contact` (
 
 LOCK TABLES `contact` WRITE;
 /*!40000 ALTER TABLE `contact` DISABLE KEYS */;
-INSERT INTO `contact` VALUES (1,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello World we have the time to go',0,'2018-01-21 01:54:15',NULL),(2,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello World',0,'2018-01-21 10:28:51',NULL),(3,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello World',0,'2018-01-21 10:29:57',NULL),(4,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello world',0,'2018-01-21 10:38:29',NULL),(5,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello world',0,'2018-01-21 10:40:19',NULL),(6,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello world',0,'2018-01-21 10:46:12',NULL),(7,'Brian','Clincy','bclincy@gmail.com','Talk to me','Hello world',0,'2018-01-21 10:48:39',NULL);
+INSERT INTO `contact` VALUES (1,'Brian','Clincy','bclincy@gmail.com','general','Let\'s go into the out now!!!',0,'2018-10-10 13:50:59',NULL,'2018-10-10 13:50:59');
 /*!40000 ALTER TABLE `contact` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `customers`
+--
+
+DROP TABLE IF EXISTS `customers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `customers` (
+  `customerNumber` int(11) NOT NULL,
+  `customerName` varchar(50) NOT NULL,
+  `contactLastName` varchar(50) NOT NULL,
+  `contactFirstName` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `addressLine1` varchar(50) NOT NULL,
+  `addressLine2` varchar(50) DEFAULT NULL,
+  `city` varchar(50) NOT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `postalCode` varchar(15) DEFAULT NULL,
+  `country` varchar(50) NOT NULL,
+  `salesRepEmployeeNumber` int(11) DEFAULT NULL,
+  `creditLimit` decimal(10,2) DEFAULT NULL,
+  PRIMARY KEY (`customerNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `customers`
+--
+
+LOCK TABLES `customers` WRITE;
+/*!40000 ALTER TABLE `customers` DISABLE KEYS */;
+/*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -169,6 +206,93 @@ INSERT INTO `docs` VALUES (1,'About Brian','Brian Clincy, bclincy, bclincy photo
 UNLOCK TABLES;
 
 --
+-- Table structure for table `jobleads`
+--
+
+DROP TABLE IF EXISTS `jobleads`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `jobleads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) NOT NULL,
+  `agency` varchar(255) DEFAULT NULL,
+  `DevType` varchar(50) DEFAULT NULL,
+  `note` mediumtext,
+  `linkedIn` varchar(200) DEFAULT NULL,
+  `create_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `jobleads`
+--
+
+LOCK TABLES `jobleads` WRITE;
+/*!40000 ALTER TABLE `jobleads` DISABLE KEYS */;
+/*!40000 ALTER TABLE `jobleads` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `links`
+--
+
+DROP TABLE IF EXISTS `links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `links` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `url` varchar(255) NOT NULL,
+  `description` mediumtext,
+  `isActive` tinyint(4) DEFAULT '0',
+  `created` datetime DEFAULT CURRENT_TIMESTAMP,
+  `modified` datetime DEFAULT NULL,
+  `tags` varchar(255) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `links_url_uindex` (`url`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COMMENT='All the links I think are cool';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `links`
+--
+
+LOCK TABLES `links` WRITE;
+/*!40000 ALTER TABLE `links` DISABLE KEYS */;
+INSERT INTO `links` VALUES (2,'https://www.ted.com/tedx/events/1670','TEDxMuskegon was started with two of my mentors brought me to the table as they felt like it was an awesome opportunity, to share ideas. Sharing ideas that could help our community be prospers. We pull it off and it was great, and during the years we got to hear and meet some some pretty interesting people. Checkout the videos and let me know what you think. I also got to do my own TEDx Talk.',1,'2018-09-07 00:38:44','2018-09-07 00:38:49',NULL),(3,'https://c9.io','Awesome cloud provider that great for testing and deploying and it\'s free so learn how to administrator your software and application. Start up a node app and create something awesome.',1,'2018-09-07 01:32:44','2018-09-07 01:32:49',NULL),(4,'http://lovecommunitygarden.com','Love Community Garden is a real garden in the city of Muskegon, Michigan providing knowledge, a safe place, and fresh produce to the community in which it\'s vital piece in sustainability and progress. ',1,'2018-09-23 09:20:47','2018-09-23 09:21:00',NULL);
+/*!40000 ALTER TABLE `links` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `messages`
+--
+
+DROP TABLE IF EXISTS `messages`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
+  `message` mediumtext NOT NULL,
+  `created_on` datetime DEFAULT NULL,
+  `update_on` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1 COMMENT='Site messages';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `messages`
+--
+
+LOCK TABLES `messages` WRITE;
+/*!40000 ALTER TABLE `messages` DISABLE KEYS */;
+INSERT INTO `messages` VALUES (1,'contactFrm','<h3>Thank you for Being Awesome!</h3>\n<p>We have received your message and would like to thank you for writing to us. If your inquiry is urgent, please use the telephone number listed below to talk to one of our staff members. Otherwise, we will reply by email as soon as possible.</p>\n   \n<p class=\"mt-3\">If your email requires a response please allow 24 hours to response.</p>','2018-09-21 09:25:21','2018-09-21 09:25:32');
+/*!40000 ALTER TABLE `messages` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `newsletter`
 --
 
@@ -197,6 +321,119 @@ LOCK TABLES `newsletter` WRITE;
 UNLOCK TABLES;
 
 --
+-- Table structure for table `offices`
+--
+
+DROP TABLE IF EXISTS `offices`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `offices` (
+  `officeCode` varchar(10) NOT NULL,
+  `city` varchar(50) NOT NULL,
+  `phone` varchar(50) NOT NULL,
+  `addressLine1` varchar(50) NOT NULL,
+  `addressLine2` varchar(50) DEFAULT NULL,
+  `state` varchar(50) DEFAULT NULL,
+  `country` varchar(50) NOT NULL,
+  `postalCode` varchar(15) NOT NULL,
+  `territory` varchar(10) NOT NULL,
+  PRIMARY KEY (`officeCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `offices`
+--
+
+LOCK TABLES `offices` WRITE;
+/*!40000 ALTER TABLE `offices` DISABLE KEYS */;
+/*!40000 ALTER TABLE `offices` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orderdetails`
+--
+
+DROP TABLE IF EXISTS `orderdetails`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orderdetails` (
+  `orderNumber` int(11) NOT NULL,
+  `productCode` varchar(15) NOT NULL,
+  `quantityOrdered` int(11) NOT NULL,
+  `priceEach` decimal(10,2) NOT NULL,
+  `orderLineNumber` smallint(6) NOT NULL,
+  PRIMARY KEY (`orderNumber`,`productCode`),
+  KEY `productCode` (`productCode`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orderdetails`
+--
+
+LOCK TABLES `orderdetails` WRITE;
+/*!40000 ALTER TABLE `orderdetails` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orderdetails` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `orders`
+--
+
+DROP TABLE IF EXISTS `orders`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `orders` (
+  `orderNumber` int(11) NOT NULL,
+  `orderDate` date NOT NULL,
+  `requiredDate` date NOT NULL,
+  `shippedDate` date DEFAULT NULL,
+  `status` varchar(15) NOT NULL,
+  `comments` text,
+  `customerNumber` int(11) NOT NULL,
+  PRIMARY KEY (`orderNumber`),
+  KEY `customerNumber` (`customerNumber`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customerNumber`) REFERENCES `customers` (`customerNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `orders`
+--
+
+LOCK TABLES `orders` WRITE;
+/*!40000 ALTER TABLE `orders` DISABLE KEYS */;
+/*!40000 ALTER TABLE `orders` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `payments`
+--
+
+DROP TABLE IF EXISTS `payments`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `payments` (
+  `customerNumber` int(11) NOT NULL,
+  `checkNumber` varchar(50) NOT NULL,
+  `paymentDate` date NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  PRIMARY KEY (`customerNumber`,`checkNumber`),
+  CONSTRAINT `payments_ibfk_1` FOREIGN KEY (`customerNumber`) REFERENCES `customers` (`customerNumber`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `payments`
+--
+
+LOCK TABLES `payments` WRITE;
+/*!40000 ALTER TABLE `payments` DISABLE KEYS */;
+/*!40000 ALTER TABLE `payments` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `podcast`
 --
 
@@ -218,7 +455,7 @@ CREATE TABLE `podcast` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_D7E805BD36AC99F1` (`link`),
   UNIQUE KEY `title_UNIQUE` (`title`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -227,7 +464,7 @@ CREATE TABLE `podcast` (
 
 LOCK TABLES `podcast` WRITE;
 /*!40000 ALTER TABLE `podcast` DISABLE KEYS */;
-INSERT INTO `podcast` VALUES (1,'1st Outtakes','Getting started with my podcast finally and Dez is fooling, it was good  look at how much fun you can have with your daughter. check us out on https://www.facebook.com/NNUTSun/ and more to come at brianclincy.com/NNUTS','http://brianclincy.com/nnuts/1st_outtakes','en','2017-10-24 03:18:38','2017-10-26 03:18:29','bclincy','1','http://brianclincy.com/podcast/1stouttakes.mp3','https://www.youtube.com/watch?v=3JDfJZCcgcg');
+INSERT INTO `podcast` VALUES (1,'1st Outtakes','Getting started with my podcast finally and Dez is fooling, it was good  look at how much fun you can have with your daughter. check us out on https://www.facebook.com/NNUTSun/ and more to come at brianclincy.com/NNUTS','http://brianclincy.com/nnuts/1st_outtakes','en','2017-10-24 03:18:38','2017-10-26 03:18:29','bclincy','1','http://brianclincy.com/podcast/1stouttakes.mp3','https://www.youtube.com/watch?v=3JDfJZCcgcg'),(2,'NNUTS Podcast Generational Credit eps 1','Nothing New Under the sun\'s With special Guest Destiana Clincy, tackling issues of lessons learn, Trump investigating University for reverse discrimination, Colin Stand, Smoking Weed Parenting, and word association, and naming cars.','http://brianclincy.com/nnuts/NNUTS_Podcast_Generational_Credit_eps_1','en','2018-09-09 16:40:53','2017-08-27 16:41:27','bclincy',NULL,'http://brianclincy.com/prodcast/NNUTS_Generational_Credit_eps 1.mp3','https://www.youtube.com/watch?v=DGlVLjbr2uo');
 /*!40000 ALTER TABLE `podcast` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -277,7 +514,7 @@ CREATE TABLE `post` (
   `weight` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `title_UNIQUE` (`title`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,6 +523,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
+INSERT INTO `post` VALUES (1,'Growing','Growing, inspired, proverty, ','bee notes','<h1>I\'m Growing</h1><p>I used to think my life was special, I used to think that the stuff I went through probably nobody could do what I\'ve done. In actuality there is a lot of people that have had it worse, and then I put it in perspective. As I\'ve raised my kids and try to understand how bad they have it. I think about how I was so appreciative of what I did have. You\'ll here me say, \"My mom was 15 when she had me and I\'m the second oldest\". I grew up with my mother. I grew up in some of the poverty stricken, areas in Michigan and the growth is where I started.</p>\n<p>The time and experience gave me knowledge of myself. They gave me knowledge of the game. When I say the game, I\'m really saying how the system works. I\'m a systems guy I have to learn to operate where the holes in the system and opportunity cost of managing system processes.</p>','2018-09-22 08:52:25',100);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -314,6 +552,90 @@ CREATE TABLE `post_type` (
 LOCK TABLES `post_type` WRITE;
 /*!40000 ALTER TABLE `post_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `post_type` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `productlines`
+--
+
+DROP TABLE IF EXISTS `productlines`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `productlines` (
+  `productLine` varchar(50) NOT NULL,
+  `textDescription` varchar(4000) DEFAULT NULL,
+  `htmlDescription` mediumtext,
+  `image` mediumblob,
+  PRIMARY KEY (`productLine`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `productlines`
+--
+
+LOCK TABLES `productlines` WRITE;
+/*!40000 ALTER TABLE `productlines` DISABLE KEYS */;
+INSERT INTO `productlines` VALUES ('Outfits','Live life and go random, let me know a little about your style and I\'ll put something together for you. Outfits from head to toe customized just for you.',NULL,NULL),('T-Shirts','Attention smart enthusiasts: I\'m got some custom smart witty T-shirts. When people read\n  your shirt, the response will be a woke head-nod or look of wonder that might question you.',NULL,NULL);
+/*!40000 ALTER TABLE `productlines` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `products`
+--
+
+DROP TABLE IF EXISTS `products`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `products` (
+  `prod_id` int(11) NOT NULL AUTO_INCREMENT,
+  `productCode` varchar(15) NOT NULL,
+  `productLine` varchar(50) NOT NULL,
+  `productScale` varchar(10) NOT NULL,
+  `productVendor` varchar(50) NOT NULL,
+  `productDescription` text NOT NULL,
+  `quantityInStock` smallint(6) NOT NULL,
+  `buyPrice` decimal(10,2) NOT NULL,
+  `MSRP` decimal(10,2) NOT NULL,
+  `productName` varchar(70) NOT NULL,
+  PRIMARY KEY (`prod_id`),
+  KEY `productLine` (`productLine`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `products`
+--
+
+LOCK TABLES `products` WRITE;
+/*!40000 ALTER TABLE `products` DISABLE KEYS */;
+INSERT INTO `products` VALUES (2,'t00198901','2','1:10','clincy','T-shirt Supreme Legal Team Thurgood Marshall Est 1908',0,19.99,25.99,'Supreme Legal Team'),(3,'t00198901','2','1:10','clincy','Stay Woke, Can\'t afford to Sleep',0,19.99,25.99,'Stay Woke');
+/*!40000 ALTER TABLE `products` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `states`
+--
+
+DROP TABLE IF EXISTS `states`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `states` (
+  `stateID` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `state` varchar(20) NOT NULL DEFAULT '',
+  `abbreviation` char(2) NOT NULL DEFAULT '',
+  PRIMARY KEY (`stateID`)
+) ENGINE=MyISAM AUTO_INCREMENT=60 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `states`
+--
+
+LOCK TABLES `states` WRITE;
+/*!40000 ALTER TABLE `states` DISABLE KEYS */;
+INSERT INTO `states` VALUES (1,'Alabama','AL'),(2,'Alaska','AK'),(3,'American Samoa','AS'),(4,'Arizona','AZ'),(5,'Arkansas','AR'),(6,'California','CA'),(7,'Colorado','CO'),(8,'Connecticut','CT'),(9,'Delaware','DE'),(10,'District of Co','DC'),(11,'FS OF Micrones','FM'),(12,'Florida','FL'),(13,'Georgia','GA'),(14,'Guam','GU'),(15,'Hawaii','HI'),(16,'Idaho','ID'),(17,'Illinois','IL'),(18,'Indiana','IN'),(19,'Iowa','IA'),(20,'Kansas','KS'),(21,'Kentucky','KY'),(22,'Louisiana','LA'),(23,'Maine','ME'),(24,'Marshall Islan','MH'),(25,'Maryland','MD'),(26,'Massachusetts','MA'),(27,'Michigan','MI'),(28,'Minnesota','MN'),(29,'Mississippi','MS'),(30,'Missouri','MO'),(31,'Montana','MT'),(32,'Nebraska','NE'),(33,'Nevada','NV'),(34,'New Hampshire','NH'),(35,'New Jersey','NJ'),(36,'New Mexico','NM'),(37,'New York','NY'),(38,'North Carolina','NC'),(39,'North Dakota','ND'),(40,'N. Mariana Isl','MP'),(41,'Ohio','OH'),(42,'Oklahoma','OK'),(43,'Oregon','OR'),(44,'Palau','PW'),(45,'Pennsylvania','PA'),(46,'Puerto Rico','PR'),(47,'Rhode Island','RI'),(48,'South Carolina','SC'),(49,'South Dakota','SD'),(50,'Tennessee','TN'),(51,'Texas','TX'),(52,'Utah','UT'),(53,'Vermont','VT'),(54,'Virgin Islands','VI'),(55,'Virginia','VA'),(56,'Washington','WA'),(57,'West Virginia','WV'),(58,'Wisconsin','WI'),(59,'Wyoming','WY');
+/*!40000 ALTER TABLE `states` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -365,4 +687,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-05 23:06:19
+-- Dump completed on 2018-10-11  8:26:25
